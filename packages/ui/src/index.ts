@@ -10,3 +10,5 @@ export * from "./i18n/locales";
 export * from "./i18n/format";
 export * from "./i18n/messages";
 export * from "./i18n/locale-provider";
+export * from "./lib/utils";
+export * from "./provider/ui-provider";
