@@ -12,3 +12,6 @@
 | 8 | Video hosting / player for course activities | 5 | |
 | 9 | Backend brand endpoint: URL, auth, caching, and does it follow the JSON in THEMING.md? | 2.1 | |
 | 10 | Who guarantees brand contrast (backend validation or frontend warn-only)? | 2.1 | |
+| 11 | Store currency: Toman or Rial for display? Stored in which unit by the backend? | 2.2 | |
+| 12 | Default time zone for dates (proposal: Asia/Tehran)? | 2.1 | |
+| 13 | Confirm next-intl for app-level messages and `[locale]` URL routing (e.g. /fa, /en)? | 2.1 | |
