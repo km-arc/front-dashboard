@@ -11,9 +11,9 @@ Full requirement list: `docs/REQUIREMENTS.md`.
 ## Stack (see docs/decisions for the why)
 - Monorepo: pnpm workspaces + Turborepo
 - Next.js (App Router) + TypeScript (strict), React
-- Tailwind CSS + shadcn/ui (Radix primitives)
+- Tailwind CSS v4 + shadcn/ui (Radix primitives); OKLCH semantic tokens (see `docs/THEMING.md`)
 - i18n: English (`en`, LTR) and Persian (`fa`, RTL); Jalali calendar for `fa`
-- Themes: two independent axes – mode (light/dark) × brand (customer brand tokens)
+- Themes: two independent axes – mode (light/dark) × brand (loaded at runtime from the backend; default light blue)
 - API: OpenAPI contract with a generated TypeScript client; mocks until backend exists
 
 ## Non-negotiable rules

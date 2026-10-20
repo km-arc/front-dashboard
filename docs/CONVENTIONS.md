@@ -16,7 +16,7 @@ Flip directional icons with `rtl:rotate-180` (or `rtl:-scale-x-100`). Do not har
 Numbers/dates are formatted through shared helpers, not manually.
 
 ## Theming
-No raw hex/rgb or Tailwind palette colors (`bg-blue-500`) in components. Use semantic tokens (`bg-background`,
+Full guide: `docs/THEMING.md`. No raw hex/rgb or Tailwind palette colors (`bg-blue-500`) in components. Use semantic tokens (`bg-background`,
 `text-foreground`, `bg-primary`…). Every component must be checked in light, dark and one brand theme.
 
 ## i18n

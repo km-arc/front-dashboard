@@ -1,6 +1,6 @@
 # Phase 1 – Design system (`packages/ui`)
 
-Status: **draft – awaiting owner approval**
+Status: approved by owner
 
 ## Goal
 A reusable, accessible, mobile-first component library with mode × brand theming and en/fa (LTR/RTL),
