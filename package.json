@@ -2,7 +2,9 @@
   "name": "front-dashboard",
   "private": true,
   "packageManager": "pnpm@9.15.0",
-  "engines": { "node": ">=20.11" },
+  "engines": {
+    "node": ">=20.11"
+  },
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",

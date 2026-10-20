@@ -22,8 +22,7 @@ export interface BrandDefinition {
 }
 
 export type BrandValidationResult =
-  | { ok: true; brand: BrandDefinition }
-  | { ok: false; issues: string[] };
+  { ok: true; brand: BrandDefinition } | { ok: false; issues: string[] };
 
 export class BrandValidationError extends Error {
   readonly issues: string[];
