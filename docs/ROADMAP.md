@@ -8,7 +8,7 @@ A step may start only when its dependencies are `done` and its plan is approved 
 | 0 | 0.1 | Monorepo foundation, tooling, agent docs | – | done |
 | 1 | 1.1 | Design tokens + theming (mode × brand) | 0.1 | done* |
 | 1 | 1.2 | i18n + direction (en/fa, RTL, Jalali, number formats) | 0.1 | done* |
-| 1 | 1.3 | shadcn base setup in packages/ui, `cn`, provider | 1.1, 1.2 | planned |
+| 1 | 1.3 | shadcn base setup in packages/ui, `cn`, provider | 1.1, 1.2 | done\*  |
 | 1 | 1.4 | Primitives: Button, Input, Label, Checkbox, Radio, Switch, Select, Badge, Card | 1.3 | planned |
 | 1 | 1.5 | Overlays and feedback: Dialog, Sheet, Dropdown, Tooltip, Toast, Skeleton, Alert | 1.4 | planned |
 | 1 | 1.6 | Data display: Table, Pagination, Tabs, Accordion, Empty state | 1.4 | planned |
