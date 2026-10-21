@@ -6,12 +6,19 @@ import { directions, expectNoA11yViolations, renderWithDir } from "../../test/ut
 import { Button } from "./button";
 
 describe.each(directions)("Button (%s)", (dir) => {
-  it("calls onClick and supports keyboard activation", async () => {
+  it("calls onClick when clicked", async () => {
+    const onClick = vi.fn();
+    renderWithDir(<Button onClick={onClick}>Save</Button>, dir);
+    await userEvent.setup().click(screen.getByRole("button", { name: "Save" }));
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  it("is operable with the keyboard (Enter and Space)", async () => {
     const onClick = vi.fn();
     renderWithDir(<Button onClick={onClick}>Save</Button>, dir);
     const user = userEvent.setup();
-    await user.click(screen.getByRole("button", { name: "Save" }));
     await user.tab();
+    expect(screen.getByRole("button", { name: "Save" })).toBe(document.activeElement);
     await user.keyboard("{Enter}");
     await user.keyboard(" ");
     expect(onClick).toHaveBeenCalledTimes(2);
@@ -19,7 +26,12 @@ describe.each(directions)("Button (%s)", (dir) => {
 
   it("does not fire when disabled", async () => {
     const onClick = vi.fn();
-    renderWithDir(<Button disabled onClick={onClick}>Save</Button>, dir);
+    renderWithDir(
+      <Button disabled onClick={onClick}>
+        Save
+      </Button>,
+      dir,
+    );
     await userEvent.setup().click(screen.getByRole("button", { name: "Save" }));
     expect(onClick).not.toHaveBeenCalled();
   });

@@ -7,7 +7,7 @@ import { Input, getInputDir } from "./input";
 import { Label } from "./label";
 
 describe("getInputDir", () => {
-  it("forces LTR for inherently left-to-right content", () => {
+  it("forces LTR for inherently LTR-only content", () => {
     for (const type of ["email", "tel", "url", "number"]) expect(getInputDir(type)).toBe("ltr");
     for (const mode of ["email", "tel", "url", "numeric", "decimal"]) {
       expect(getInputDir("text", mode)).toBe("ltr");

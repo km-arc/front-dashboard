@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import "../../test/polyfills";
@@ -28,6 +28,16 @@ function Plans(props: { onValueChange?: (v: string) => void; horizontal?: boolea
 const checked = () =>
   screen.getAllByRole("radio").find((r) => r.getAttribute("aria-checked") === "true");
 
+async function pressArrow(
+  user: ReturnType<typeof userEvent.setup>,
+  key: "ArrowUp" | "ArrowDown" | "ArrowLeft" | "ArrowRight",
+) {
+  // Radix selects the focused radio in requestAnimationFrame only while the key is held.
+  await user.keyboard(`{${key}>}`);
+  await new Promise((resolve) => setTimeout(resolve, 50));
+  await user.keyboard(`{/${key}}`);
+}
+
 describe.each(directions)("RadioGroup (%s)", (dir) => {
   it("selects an option by click and by its label", async () => {
     const onValueChange = vi.fn();
@@ -43,10 +53,10 @@ describe.each(directions)("RadioGroup (%s)", (dir) => {
     renderWithDir(<Plans />, dir);
     const user = userEvent.setup();
     await user.tab();
-    await user.keyboard("{ArrowDown}");
-    expect(checked()?.id).toBe("pro");
-    await user.keyboard("{ArrowUp}");
-    expect(checked()?.id).toBe("free");
+    await pressArrow(user, "ArrowDown");
+    await waitFor(() => expect(checked()?.id).toBe("pro"));
+    await pressArrow(user, "ArrowUp");
+    await waitFor(() => expect(checked()?.id).toBe("free"));
   });
 
   it("does not select a disabled option", async () => {
@@ -71,17 +81,17 @@ describe("RadioGroup horizontal arrow keys follow the reading direction", () => 
     renderWithDir(<Plans horizontal />, "ltr");
     const user = userEvent.setup();
     await user.tab();
-    await user.keyboard("{ArrowRight}");
-    expect(checked()?.id).toBe("pro");
+    await pressArrow(user, "ArrowRight");
+    await waitFor(() => expect(checked()?.id).toBe("pro"));
   });
 
   it("RTL: ArrowLeft goes to the next option", async () => {
     renderWithDir(<Plans horizontal />, "rtl");
     const user = userEvent.setup();
     await user.tab();
-    await user.keyboard("{ArrowLeft}");
-    expect(checked()?.id).toBe("pro");
-    await user.keyboard("{ArrowRight}");
-    expect(checked()?.id).toBe("free");
+    await pressArrow(user, "ArrowLeft");
+    await waitFor(() => expect(checked()?.id).toBe("pro"));
+    await pressArrow(user, "ArrowRight");
+    await waitFor(() => expect(checked()?.id).toBe("free"));
   });
 });
