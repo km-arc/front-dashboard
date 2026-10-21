@@ -23,7 +23,8 @@ const rules: Record<string, RegExp> = {
   ),
   "physical spacing/position utility (use logical)": /(?<![\w-])-?(?:ml|mr|pl|pr|left|right)-\S/,
   "physical text alignment (use text-start/end)": /(?<![\w-])text-(?:left|right)(?![\w-])/,
-  "physical border/radius (use -s/-e)": /(?<![\w-])(?:rounded|border)-(?:l|r|tl|tr|bl|br)(?![a-zA-Z])/,
+  "physical border/radius (use -s/-e)":
+    /(?<![\w-])(?:rounded|border)-(?:l|r|tl|tr|bl|br)(?![a-zA-Z])/,
 };
 
 describe("component conventions (AGENTS.md rules 4 and 5)", () => {

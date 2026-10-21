@@ -94,12 +94,11 @@ describe("getThemeInitScript", () => {
   });
 
   it("does not throw if storage is blocked", () => {
-    const blocked = new Function(
-      "localStorage",
-      "window",
-      "document",
-      script,
-    ) as (a: unknown, b: unknown, c: unknown) => void;
+    const blocked = new Function("localStorage", "window", "document", script) as (
+      a: unknown,
+      b: unknown,
+      c: unknown,
+    ) => void;
     const throwing = {
       getItem: () => {
         throw new Error("blocked");

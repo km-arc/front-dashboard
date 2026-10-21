@@ -19,7 +19,12 @@ describe.each(directions)("Button (%s)", (dir) => {
 
   it("does not fire when disabled", async () => {
     const onClick = vi.fn();
-    renderWithDir(<Button disabled onClick={onClick}>Save</Button>, dir);
+    renderWithDir(
+      <Button disabled onClick={onClick}>
+        Save
+      </Button>,
+      dir,
+    );
     await userEvent.setup().click(screen.getByRole("button", { name: "Save" }));
     expect(onClick).not.toHaveBeenCalled();
   });
