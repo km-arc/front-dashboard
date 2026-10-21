@@ -9,3 +9,5 @@ coverage/
 .DS_Store
 *.log
 storybook-static/
+storybook-static
+storybook-static

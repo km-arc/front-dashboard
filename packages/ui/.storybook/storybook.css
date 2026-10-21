@@ -1,0 +1,4 @@
+/* Storybook-only entry: apps do the same (`@import "tailwindcss"` + the ui styles). */
+@import "tailwindcss";
+@import "../src/styles/index.css";
+@source "../src";
