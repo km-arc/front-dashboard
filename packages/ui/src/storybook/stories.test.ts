@@ -5,8 +5,7 @@ import { describe, expect, it } from "vitest";
 
 const uiDir = fileURLToPath(new URL("../components/ui/", import.meta.url));
 
-// TODO(1.8b): these primitives get their stories in step 1.8b; empty this list then.
-const PENDING = new Set(["checkbox", "input", "radio-group", "select", "switch", "icons"]);
+const PENDING = new Set<string>();
 
 const components = readdirSync(uiDir)
   .filter((file) => /^[a-z-]+\.tsx$/.test(file))

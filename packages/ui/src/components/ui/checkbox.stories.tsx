@@ -12,7 +12,11 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function Row({ id, label, ...props }: ComponentProps<typeof Checkbox> & { id: string; label: string }) {
+function Row({
+  id,
+  label,
+  ...props
+}: ComponentProps<typeof Checkbox> & { id: string; label: string }) {
   return (
     <div className="flex items-center gap-2">
       <Checkbox id={id} {...props} />

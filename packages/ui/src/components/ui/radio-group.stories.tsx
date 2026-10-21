@@ -11,7 +11,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function Plans({ orientation, disableTeam }: { orientation?: "horizontal" | "vertical"; disableTeam?: boolean }) {
+function Plans({
+  orientation,
+  disableTeam,
+}: {
+  orientation?: "horizontal" | "vertical";
+  disableTeam?: boolean;
+}) {
   const t = useFormText();
   const plans = [
     { value: "free", label: t.free },
@@ -27,7 +33,11 @@ function Plans({ orientation, disableTeam }: { orientation?: "horizontal" | "ver
     >
       {plans.map(({ value, label }) => (
         <div key={value} className="flex items-center gap-2">
-          <RadioGroupItem value={value} id={`sb-plan-${value}`} disabled={disableTeam && value === "team"} />
+          <RadioGroupItem
+            value={value}
+            id={`sb-plan-${value}`}
+            disabled={disableTeam && value === "team"}
+          />
           <Label htmlFor={`sb-plan-${value}`}>{label}</Label>
         </div>
       ))}
