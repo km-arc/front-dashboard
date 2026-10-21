@@ -10,11 +10,12 @@ A step may start only when its dependencies are `done` and its plan is approved 
 | 1 | 1.2 | i18n + direction (en/fa, RTL, Jalali, number formats) | 0.1 | done* |
 | 1 | 1.3 | shadcn base setup in packages/ui, `cn`, provider | 1.1, 1.2 | done\*  |
 | 1     | 1.3b | ThemeProvider + BrandProvider (mode switching, no-flash, runtime brand)         | 1.3           | done\*  |
-| 1 | 1.4 | Primitives: Button, Input, Label, Checkbox, Radio, Switch, Select, Badge, Card | 1.3 | planned |
-| 1 | 1.5 | Overlays and feedback: Dialog, Sheet, Dropdown, Tooltip, Toast, Skeleton, Alert | 1.4 | planned |
-| 1 | 1.6 | Data display: Table, Pagination, Tabs, Accordion, Empty state | 1.4 | planned |
-| 1 | 1.7 | Forms: react-hook-form + zod integration, field components | 1.4 | planned |
-| 1 | 1.8 | Storybook with theme/brand/locale/direction toolbar + a11y checks | 1.4 | planned |
+| 1     | 1.4a | Primitives (1/2): Button, Badge, Card, Label + test infra                       | 1.3           | done\*  |
+| 1     | 1.4b | Primitives (2/2): Input, Checkbox, Radio, Switch, Select                        | 1.4a          | done\*  |
+| 1     | 1.5  | Overlays and feedback: Dialog, Sheet, Dropdown, Tooltip, Toast, Skeleton, Alert | 1.4a          | planned |
+| 1     | 1.6  | Data display: Table, Pagination, Tabs, Accordion, Empty state                   | 1.4a          | planned |
+| 1     | 1.7  | Forms: react-hook-form + zod integration, field components                      | 1.4b          | planned |
+| 1     | 1.8  | Storybook with theme/brand/locale/direction toolbar + a11y checks               | 1.4a          | planned |
 | 2 | 2.1 | `apps/store` shell: layout, nav, auth stub, API client + mocks | Phase 1 | planned |
 | 2 | 2.2 | Store: product listing + detail (read) | 2.1 | planned |
 | 2 | 2.3 | Store: cart and checkout creating an order | 2.2 | planned |
