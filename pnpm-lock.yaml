@@ -54,12 +54,9 @@ importers:
       '@eslint/js':
         specifier: ^9.15.0
         version: 9.39.5
-<<<<<<< HEAD
       '@hookform/resolvers':
         specifier: ^5.9.2
         version: 5.9.2(@sinclair/typebox@0.34.52)(react-hook-form@7.91.0(@types/react@19.3.0)(react@19.3.1))(zod@4.6.7)
-=======
->>>>>>> step/1.8a-storybook
       '@storybook/addon-a11y':
         specifier: ^10.6.3
         version: 10.6.3(storybook@10.6.3(@types/react@19.3.0)(prettier@3.9.10)(react@19.3.1))
@@ -102,12 +99,9 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.3.1(react@19.3.1)
-<<<<<<< HEAD
       react-hook-form:
         specifier: ^7.91.0
         version: 7.91.0(@types/react@19.3.0)(react@19.3.1)
-=======
->>>>>>> step/1.8a-storybook
       storybook:
         specifier: ^10.6.3
         version: 10.6.3(@types/react@19.3.0)(prettier@3.9.10)(react@19.3.1)
@@ -126,12 +120,9 @@ importers:
       vitest:
         specifier: ^2.1.5
         version: 2.1.9(@types/node@20.19.43)(jsdom@26.1.0)(lightningcss@1.33.0)
-<<<<<<< HEAD
       zod:
         specifier: ^4.6.7
         version: 4.6.7
-=======
->>>>>>> step/1.8a-storybook
 
 packages:
 
@@ -1368,12 +1359,9 @@ packages:
   '@sinclair/typebox@0.34.52':
     resolution: {integrity: sha512-XiMQh7qqVlxZzcVD+kkGMNGMzcTrDMLWI7S4x7z1MkCkbDPrekpZXEUK0eZqZFMuHQg2a2DZOcDIh9o5v3Gonw==}
 
-<<<<<<< HEAD
   '@standard-schema/utils@0.3.0':
     resolution: {integrity: sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==}
 
-=======
->>>>>>> step/1.8a-storybook
   '@storybook/addon-a11y@10.6.3':
     resolution: {integrity: sha512-nqvjpmu5g+PPtEKwgE0qAi4wfuQ9yngOb/1Gm24pBBZOuRsd3UMEBjKORSuAGrIAz9X3LCFfQi7sCcBFXvFbwg==}
     peerDependencies:
@@ -3937,11 +3925,8 @@ snapshots:
 
   '@sinclair/typebox@0.34.52': {}
 
-<<<<<<< HEAD
   '@standard-schema/utils@0.3.0': {}
 
-=======
->>>>>>> step/1.8a-storybook
   '@storybook/addon-a11y@10.6.3(storybook@10.6.3(@types/react@19.3.0)(prettier@3.9.10)(react@19.3.1))':
     dependencies:
       '@storybook/global': 5.0.0
