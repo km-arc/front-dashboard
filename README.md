@@ -7,8 +7,11 @@ English/Persian with full RTL support.
 - Plan & status: [`docs/ROADMAP.md`](./docs/ROADMAP.md)
 - Requirements: [`docs/REQUIREMENTS.md`](./docs/REQUIREMENTS.md)
 
+
 ```
 corepack enable
 pnpm install
 pnpm lint && pnpm typecheck && pnpm test
+(cd packages/ui && pnpm storybook)    # http://localhost:6006
+
 ```

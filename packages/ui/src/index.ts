@@ -12,3 +12,4 @@ export * from "./i18n/messages";
 export * from "./i18n/locale-provider";
 export * from "./lib/utils";
 export * from "./provider/ui-provider";
+export * from "./components/ui";
