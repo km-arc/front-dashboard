@@ -23,6 +23,7 @@ import { Label } from "./label";
 import { RadioGroup, RadioGroupItem } from "./radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
 import { Switch } from "./switch";
+import "../../test/polyfills";
 
 const schema = z.object({
   name: z.string().min(2, "Name is too short"),

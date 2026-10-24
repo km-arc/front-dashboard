@@ -95,59 +95,62 @@ export const FormItem = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement
 );
 FormItem.displayName = "FormItem";
 
-export const FormLabel = forwardRef<ElementRef<typeof Label>, ComponentPropsWithoutRef<typeof Label>>(
-  ({ className, ...props }, ref) => {
-    const { error, formItemId, formLabelId } = useFormField();
-    return (
-      <Label
-        ref={ref}
-        id={formLabelId}
-        htmlFor={formItemId}
-        className={cn(error && "text-destructive", className)}
-        {...props}
-      />
-    );
-  },
-);
+export const FormLabel = forwardRef<
+  ElementRef<typeof Label>,
+  ComponentPropsWithoutRef<typeof Label>
+>(({ className, ...props }, ref) => {
+  const { error, formItemId, formLabelId } = useFormField();
+  return (
+    <Label
+      ref={ref}
+      id={formLabelId}
+      htmlFor={formItemId}
+      className={cn(error && "text-destructive", className)}
+      {...props}
+    />
+  );
+});
 FormLabel.displayName = "FormLabel";
 
 /** Wraps the control (Input, SelectTrigger, Checkbox, ...) and gives it the id and ARIA attributes. */
-export const FormControl = forwardRef<ElementRef<typeof Slot>, ComponentPropsWithoutRef<typeof Slot>>(
-  (props, ref) => {
-    const { error, formItemId, formDescriptionId, formMessageId, hasDescription } = useFormField();
-    const describedBy = [hasDescription ? formDescriptionId : null, error ? formMessageId : null]
-      .filter(Boolean)
-      .join(" ");
-    return (
-      <Slot
-        ref={ref}
-        id={formItemId}
-        aria-describedby={describedBy || undefined}
-        aria-invalid={error ? true : undefined}
-        {...props}
-      />
-    );
-  },
-);
+export const FormControl = forwardRef<
+  ElementRef<typeof Slot>,
+  ComponentPropsWithoutRef<typeof Slot>
+>((props, ref) => {
+  const { error, formItemId, formDescriptionId, formMessageId, hasDescription } = useFormField();
+  const describedBy = [hasDescription ? formDescriptionId : null, error ? formMessageId : null]
+    .filter(Boolean)
+    .join(" ");
+  return (
+    <Slot
+      ref={ref}
+      id={formItemId}
+      aria-describedby={describedBy || undefined}
+      aria-invalid={error ? true : undefined}
+      {...props}
+    />
+  );
+});
 FormControl.displayName = "FormControl";
 
-export const FormDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLParagraphElement>>(
-  ({ className, ...props }, ref) => {
-    const { formDescriptionId, setHasDescription } = useFormField();
-    useEffect(() => {
-      setHasDescription(true);
-      return () => setHasDescription(false);
-    }, [setHasDescription]);
-    return (
-      <p
-        ref={ref}
-        id={formDescriptionId}
-        className={cn("text-sm text-muted-foreground", className)}
-        {...props}
-      />
-    );
-  },
-);
+export const FormDescription = forwardRef<
+  HTMLParagraphElement,
+  HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => {
+  const { formDescriptionId, setHasDescription } = useFormField();
+  useEffect(() => {
+    setHasDescription(true);
+    return () => setHasDescription(false);
+  }, [setHasDescription]);
+  return (
+    <p
+      ref={ref}
+      id={formDescriptionId}
+      className={cn("text-sm text-muted-foreground", className)}
+      {...props}
+    />
+  );
+});
 FormDescription.displayName = "FormDescription";
 
 /** Shows the field error (announced to assistive technology); falls back to its children. */
