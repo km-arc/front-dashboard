@@ -6,8 +6,8 @@ A step may start only when its dependencies are `done` and its plan is approved 
 | Phase | Step | Title | Depends on | Status |
 |-------|------|-------|------------|--------|
 | 0 | 0.1 | Monorepo foundation, tooling, agent docs | – | done |
-| 1 | 1.1 | Design tokens + theming (mode × brand) | 0.1 | done* |
-| 1 | 1.2 | i18n + direction (en/fa, RTL, Jalali, number formats) | 0.1 | done* |
+| 1 | 1.1 | Design tokens + theming (mode × brand) | 0.1 | done |
+| 1 | 1.2 | i18n + direction (en/fa, RTL, Jalali, number formats) | 0.1 | done |
 | 1 | 1.3 | shadcn base setup in packages/ui, `cn`, provider | 1.1, 1.2 | done  |
 | 1     | 1.3b | ThemeProvider + BrandProvider (mode switching, no-flash, runtime brand)         | 1.3           | done  |
 | 1     | 1.4a | Primitives (1/2): Button, Badge, Card, Label + test infra                       | 1.3           | done  |
@@ -34,4 +34,3 @@ A step may start only when its dependencies are `done` and its plan is approved 
 Phases ≥ 2 are provisional. Each gets a plan doc and owner approval before work starts.
 Order follows the owner's instruction: components first, then store (cart/order) → view cart → admin orders → next module.
 
-\* Code and tests done; visual verification across mode × brand × dir happens with Storybook in Step 1.8.
