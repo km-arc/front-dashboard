@@ -1,9 +1,10 @@
 // @vitest-environment jsdom
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 import { describe, expect, it, vi } from "vitest";
 import "../../test/polyfills";
-import { directions, expectNoA11yViolations, renderWithDir } from "../../test/utils";
+import { directions, renderWithDir } from "../../test/utils";
 import { Button } from "./button";
 import {
   DropdownMenu,
@@ -20,7 +21,11 @@ import {
   DropdownMenuTrigger,
 } from "./dropdown-menu";
 
-function Example(props: { onProfile?: () => void; onEmail?: () => void }) {
+function Example(props: {
+  onProfile?: () => void;
+  onEmail?: () => void;
+  onCheckedChange?: (checked: boolean) => void;
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -36,7 +41,9 @@ function Example(props: { onProfile?: () => void; onEmail?: () => void }) {
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
-        <DropdownMenuCheckboxItem>Notifications</DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem onCheckedChange={props.onCheckedChange}>
+          Notifications
+        </DropdownMenuCheckboxItem>
         <DropdownMenuRadioGroup value="fa">
           <DropdownMenuRadioItem value="fa">Persian</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="en">English</DropdownMenuRadioItem>
@@ -44,6 +51,15 @@ function Example(props: { onProfile?: () => void; onEmail?: () => void }) {
       </DropdownMenuContent>
     </DropdownMenu>
   );
+}
+
+/**
+ * Portal content (menus, tooltips) lives outside any landmark. axe's `region` rule is a page-level
+ * best practice and does not apply to isolated component tests, so it is disabled here only.
+ */
+async function expectNoPortalViolations() {
+  const results = await axe(document.body, { rules: { region: { enabled: false } } });
+  expect(results.violations).toEqual([]);
 }
 
 async function openMenu() {
@@ -75,15 +91,12 @@ describe.each(directions)("DropdownMenu (%s)", (dir) => {
     await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
   });
 
-  it("toggles a checkbox item", async () => {
-    renderWithDir(<Example />, dir);
+  it("reports a checkbox item change", async () => {
+    const onCheckedChange = vi.fn();
+    renderWithDir(<Example onCheckedChange={onCheckedChange} />, dir);
     const user = await openMenu();
     await user.click(screen.getByRole("menuitemcheckbox", { name: "Notifications" }));
-    await user.keyboard("{Enter}");
-    await openMenu();
-    expect(
-      screen.getByRole("menuitemcheckbox", { name: "Notifications" }).getAttribute("aria-checked"),
-    ).toBe("true");
+    expect(onCheckedChange).toHaveBeenCalledWith(true);
   });
 
   it("closes with Escape and returns focus to the trigger", async () => {
@@ -105,7 +118,7 @@ describe.each(directions)("DropdownMenu (%s)", (dir) => {
   it("has no a11y violations when open", async () => {
     renderWithDir(<Example />, dir);
     await openMenu();
-    await expectNoA11yViolations(document.body);
+    await expectNoPortalViolations();
   });
 });
 

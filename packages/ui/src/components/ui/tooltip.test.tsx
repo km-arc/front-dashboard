@@ -1,11 +1,21 @@
 // @vitest-environment jsdom
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 import { describe, expect, it } from "vitest";
 import "../../test/polyfills";
-import { directions, expectNoA11yViolations, renderWithDir } from "../../test/utils";
+import { directions, renderWithDir } from "../../test/utils";
 import { Button } from "./button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
+
+/**
+ * Portal content (menus, tooltips) lives outside any landmark. axe's `region` rule is a page-level
+ * best practice and does not apply to isolated component tests, so it is disabled here only.
+ */
+async function expectNoPortalViolations() {
+  const results = await axe(document.body, { rules: { region: { enabled: false } } });
+  expect(results.violations).toEqual([]);
+}
 
 function Example() {
   return (
@@ -50,6 +60,6 @@ describe.each(directions)("Tooltip (%s)", (dir) => {
     renderWithDir(<Example />, dir);
     await userEvent.setup().tab();
     await screen.findByRole("tooltip");
-    await expectNoA11yViolations(document.body);
+    await expectNoPortalViolations();
   });
 });

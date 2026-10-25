@@ -1,7 +1,6 @@
 "use client";
 
 import * as MenuPrimitive from "@radix-ui/react-dropdown-menu";
-import { useDirection } from "@radix-ui/react-direction";
 import {
   forwardRef,
   type ComponentPropsWithoutRef,
@@ -46,27 +45,24 @@ const itemBase =
 const panelBase =
   "z-50 min-w-32 overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md";
 
+/** Direction (also inside the portal) comes from the Radix DirectionProvider, i.e. UiProvider. */
 export const DropdownMenuContent = forwardRef<
   ElementRef<typeof MenuPrimitive.Content>,
   ComponentPropsWithoutRef<typeof MenuPrimitive.Content>
->(({ className, sideOffset = 4, ...props }, ref) => {
-  const dir = useDirection();
-  return (
-    <MenuPrimitive.Portal>
-      <MenuPrimitive.Content
-        ref={ref}
-        dir={dir}
-        sideOffset={sideOffset}
-        className={cn(
-          panelBase,
-          "max-h-[var(--radix-dropdown-menu-content-available-height)]",
-          className,
-        )}
-        {...props}
-      />
-    </MenuPrimitive.Portal>
-  );
-});
+>(({ className, sideOffset = 4, ...props }, ref) => (
+  <MenuPrimitive.Portal>
+    <MenuPrimitive.Content
+      ref={ref}
+      sideOffset={sideOffset}
+      className={cn(
+        panelBase,
+        "max-h-[var(--radix-dropdown-menu-content-available-height)]",
+        className,
+      )}
+      {...props}
+    />
+  </MenuPrimitive.Portal>
+));
 DropdownMenuContent.displayName = "DropdownMenuContent";
 
 export const DropdownMenuItem = forwardRef<
@@ -160,10 +156,7 @@ DropdownMenuSubTrigger.displayName = "DropdownMenuSubTrigger";
 export const DropdownMenuSubContent = forwardRef<
   ElementRef<typeof MenuPrimitive.SubContent>,
   ComponentPropsWithoutRef<typeof MenuPrimitive.SubContent>
->(({ className, ...props }, ref) => {
-  const dir = useDirection();
-  return (
-    <MenuPrimitive.SubContent ref={ref} dir={dir} className={cn(panelBase, className)} {...props} />
-  );
-});
+>(({ className, ...props }, ref) => (
+  <MenuPrimitive.SubContent ref={ref} className={cn(panelBase, className)} {...props} />
+));
 DropdownMenuSubContent.displayName = "DropdownMenuSubContent";
