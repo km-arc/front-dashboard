@@ -23,8 +23,7 @@ export const alertVariants = cva(
 );
 
 export interface AlertProps
-  extends HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof alertVariants> {}
+  extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof alertVariants> {}
 
 /** Errors and warnings are announced assertively (`alert`); everything else politely (`status`). */
 export function getAlertRole(variant?: AlertProps["variant"]): "alert" | "status" {

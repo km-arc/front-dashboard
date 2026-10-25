@@ -1,3 +1,5 @@
+"use client";
+
 import * as SheetPrimitive from "@radix-ui/react-dialog";
 import { useDirection } from "@radix-ui/react-direction";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -43,15 +45,22 @@ export const sheetVariants = cva(
 );
 
 export interface SheetContentProps
-  extends ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
+  extends
+    ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
     VariantProps<typeof sheetVariants> {
   /** Accessible name of the close button. Pass the translated text (e.g. `t("common.close")`). */
   closeLabel?: string;
   hideClose?: boolean;
 }
 
-export const SheetContent = forwardRef<ElementRef<typeof SheetPrimitive.Content>, SheetContentProps>(
-  ({ side = "end", className, children, closeLabel = "Close", hideClose = false, ...props }, ref) => {
+export const SheetContent = forwardRef<
+  ElementRef<typeof SheetPrimitive.Content>,
+  SheetContentProps
+>(
+  (
+    { side = "end", className, children, closeLabel = "Close", hideClose = false, ...props },
+    ref,
+  ) => {
     const dir = useDirection();
     return (
       <SheetPortal>

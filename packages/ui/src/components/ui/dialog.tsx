@@ -1,3 +1,5 @@
+"use client";
+
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useDirection } from "@radix-ui/react-direction";
 import {
@@ -22,7 +24,9 @@ export const DialogOverlay = forwardRef<
 ));
 DialogOverlay.displayName = "DialogOverlay";
 
-export interface DialogContentProps extends ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
+export interface DialogContentProps extends ComponentPropsWithoutRef<
+  typeof DialogPrimitive.Content
+> {
   /** Accessible name of the close button. Pass the translated text (e.g. `t("common.close")`). */
   closeLabel?: string;
   hideClose?: boolean;
