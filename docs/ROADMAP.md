@@ -12,8 +12,8 @@ A step may start only when its dependencies are `done` and its plan is approved 
 | 1     | 1.3b | ThemeProvider + BrandProvider (mode switching, no-flash, runtime brand)         | 1.3           | done  |
 | 1     | 1.4a | Primitives (1/2): Button, Badge, Card, Label + test infra                       | 1.3           | done  |
 | 1     | 1.4b | Primitives (2/2): Input, Checkbox, Radio, Switch, Select                        | 1.4a          | done  |
-| 1     | 1.5a | Overlays (1/2): Dialog, Sheet, Alert, Skeleton                                  | 1.4a          | done\*  |
-| 1     | 1.5b | Overlays (2/2): DropdownMenu, Tooltip, Toast (sonner)                           | 1.5a          | done\*  |
+| 1     | 1.5a | Overlays (1/2): Dialog, Sheet, Alert, Skeleton                                  | 1.4a          | done    |
+| 1     | 1.5b | Overlays (2/2): DropdownMenu, Tooltip, Toast (sonner)                           | 1.5a          | done    |
 | 1     | 1.6  | Data display: Table, Pagination, Tabs, Accordion, Empty state                   | 1.4a          | planned |
 | 1     | 1.7  | Forms: react-hook-form + zod integration, field components                      | 1.4b          | done    |
 | 1     | 1.8a | Storybook infra: mode/locale toolbar + Button, Badge, Card, Label               | 1.4a, 1.3b    | done    |

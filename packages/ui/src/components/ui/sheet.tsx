@@ -10,7 +10,7 @@ import {
   type HTMLAttributes,
 } from "react";
 import { cn } from "../../lib/utils";
-import { OVERLAY_SCRIM, OverlayCloseButton } from "./overlay-parts";
+import { OVERLAY_SCRIM, OverlayCloseButton } from "../internal/overlay-parts";
 
 export const Sheet = SheetPrimitive.Root;
 export const SheetTrigger = SheetPrimitive.Trigger;
