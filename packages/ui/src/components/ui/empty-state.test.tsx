@@ -8,7 +8,11 @@ import { EmptyState } from "./empty-state";
 describe.each(directions)("EmptyState (%s)", (dir) => {
   it("renders title, description and action", () => {
     renderWithDir(
-      <EmptyState title="No orders" description="Try another filter" action={<Button>Retry</Button>} />,
+      <EmptyState
+        title="No orders"
+        description="Try another filter"
+        action={<Button>Retry</Button>}
+      />,
       dir,
     );
     expect(screen.getByText("No orders")).toBeTruthy();
@@ -32,7 +36,11 @@ describe.each(directions)("EmptyState (%s)", (dir) => {
 
   it("has no a11y violations", async () => {
     const { container } = renderWithDir(
-      <EmptyState title="No orders" description="Try another filter" action={<Button>Retry</Button>} />,
+      <EmptyState
+        title="No orders"
+        description="Try another filter"
+        action={<Button>Retry</Button>}
+      />,
       dir,
     );
     await expectNoA11yViolations(container);

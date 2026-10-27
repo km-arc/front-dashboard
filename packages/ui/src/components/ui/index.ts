@@ -16,3 +16,6 @@ export * from "./form";
 export * from "./dropdown-menu";
 export * from "./toaster";
 export * from "./tooltip";
+export * from "./empty-state";
+export * from "./pagination";
+export * from "./table";

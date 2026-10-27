@@ -22,7 +22,17 @@ describe("getPageItems", () => {
   });
 
   it("supports more siblings", () => {
-    expect(getPageItems(6, 20, 2)).toEqual([1, "start-ellipsis", 4, 5, 6, 7, 8, "end-ellipsis", 20]);
+    expect(getPageItems(6, 20, 2)).toEqual([
+      1,
+      "start-ellipsis",
+      4,
+      5,
+      6,
+      7,
+      8,
+      "end-ellipsis",
+      20,
+    ]);
   });
 
   it("is safe with out-of-range input", () => {
@@ -72,7 +82,10 @@ describe.each(testLocales)("Pagination (%s)", (locale) => {
   });
 
   it("disables previous on the first page and next on the last", () => {
-    const first = renderLocalized(<Pagination page={1} pageCount={3} onPageChange={() => {}} />, locale);
+    const first = renderLocalized(
+      <Pagination page={1} pageCount={3} onPageChange={() => {}} />,
+      locale,
+    );
     const previous = screen.getByRole("button", { name: messages["common.previous"] });
     expect((previous as HTMLButtonElement).disabled).toBe(true);
     first.unmount();
