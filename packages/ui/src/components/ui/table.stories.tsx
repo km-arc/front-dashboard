@@ -82,7 +82,9 @@ function Orders() {
       <TableFooter>
         <TableRow>
           <TableCell colSpan={3}>{t.total}</TableCell>
-          <TableCell className="text-end tabular-nums">{formatters.money(total, t.currency)}</TableCell>
+          <TableCell className="text-end tabular-nums">
+            {formatters.money(total, t.currency)}
+          </TableCell>
         </TableRow>
       </TableFooter>
     </Table>

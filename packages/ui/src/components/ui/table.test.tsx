@@ -60,7 +60,9 @@ describe.each(directions)("Table (%s)", (dir) => {
 
   it("aligns headers to the reading direction and merges custom classes", () => {
     renderWithDir(<Sample />, dir);
-    expect(screen.getByRole("columnheader", { name: "Customer" }).className).toContain("text-start");
+    expect(screen.getByRole("columnheader", { name: "Customer" }).className).toContain(
+      "text-start",
+    );
     expect(screen.getByRole("columnheader", { name: "Amount" }).className).toContain("text-end");
   });
 
