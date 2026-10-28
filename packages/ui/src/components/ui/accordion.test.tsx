@@ -37,7 +37,9 @@ describe.each(directions)("Accordion (%s)", (dir) => {
 
     await user.click(trigger("Question one"));
     expect(expanded("Question one")).toBe(true);
-    expect(screen.getByRole("region", { name: "Question one" }).textContent).toContain("Answer one");
+    expect(screen.getByRole("region", { name: "Question one" }).textContent).toContain(
+      "Answer one",
+    );
 
     await user.click(trigger("Question one"));
     await waitFor(() => expect(screen.queryByText("Answer one")).toBeNull());

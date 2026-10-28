@@ -19,3 +19,5 @@ export * from "./tooltip";
 export * from "./empty-state";
 export * from "./pagination";
 export * from "./table";
+export * from "./accordion";
+export * from "./tabs";

@@ -13,10 +13,16 @@ const TEXT = {
   en: [
     { q: "How do I track my order?", a: "Open Orders and select the shipment to see its status." },
     { q: "Can I change my address?", a: "Yes, until the order is handed to the carrier." },
-    { q: "How do refunds work?", a: "Refunds return to the original payment method within a week." },
+    {
+      q: "How do refunds work?",
+      a: "Refunds return to the original payment method within a week.",
+    },
   ],
   fa: [
-    { q: "چطور سفارشم را پیگیری کنم؟", a: "به بخش سفارش‌ها بروید و مرسوله را برای دیدن وضعیت باز کنید." },
+    {
+      q: "چطور سفارشم را پیگیری کنم؟",
+      a: "به بخش سفارش‌ها بروید و مرسوله را برای دیدن وضعیت باز کنید.",
+    },
     { q: "آیا می‌توانم نشانی را عوض کنم؟", a: "بله، تا پیش از تحویل بسته به شرکت حمل‌ونقل." },
     { q: "بازپرداخت چگونه انجام می‌شود؟", a: "مبلغ تا یک هفته به روش پرداخت اولیه برمی‌گردد." },
   ],
