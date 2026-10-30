@@ -1,9 +1,8 @@
-import type { ColumnDef } from "@tanstack/react-table";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useMemo, useState, type ChangeEvent } from "react";
 import { type DemoOrder, useDataTableText } from "../../storybook/data-table-text";
 import { Button } from "./button";
-import { DataTable, type DataTableColumnMeta } from "./data-table";
+import { DataTable, type DataTableColumnDef, type DataTableColumnMeta } from "./data-table";
 import { EmptyState } from "./empty-state";
 import { Input } from "./input";
 
@@ -20,7 +19,7 @@ function Example({ selectable, filterable }: { selectable?: boolean; filterable?
   const t = useDataTableText();
   const [filter, setFilter] = useState("");
 
-  const columns = useMemo<ColumnDef<DemoOrder>[]>(
+  const columns = useMemo<DataTableColumnDef<DemoOrder>[]>(
     () => [
       {
         accessorKey: "customer",
