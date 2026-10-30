@@ -11,7 +11,14 @@ export interface DemoOrder {
 }
 
 const customers = {
-  en: ["Sara Ahmadi", "Reza Karimi", "Maryam Hosseini", "Ali Rezaei", "Neda Moradi", "Omid Farhadi"],
+  en: [
+    "Sara Ahmadi",
+    "Reza Karimi",
+    "Maryam Hosseini",
+    "Ali Rezaei",
+    "Neda Moradi",
+    "Omid Farhadi",
+  ],
   fa: ["سارا احمدی", "رضا کریمی", "مریم حسینی", "علی رضایی", "ندا مرادی", "امید فرهادی"],
 };
 

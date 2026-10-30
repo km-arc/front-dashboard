@@ -1,14 +1,22 @@
 "use client";
 
 import {
+  columnFilteringFeature,
+  createFilteredRowModel,
+  createPaginatedRowModel,
+  createSortedRowModel,
+  filterFns,
   flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
+  globalFilteringFeature,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  rowSortingFeature,
+  sortFns,
+  tableFeatures,
+  useTable,
   type ColumnDef,
   type Header,
+  type RowData,
   type RowSelectionState,
   type SortingState,
 } from "@tanstack/react-table";
@@ -29,6 +37,32 @@ import {
   TableRow,
 } from "./table";
 
+/**
+ * TanStack Table v9: a table declares the features and row models it uses. Defined once at module
+ * scope (stable reference). Add a feature here when DataTable needs it, e.g. column visibility.
+ */
+const features = tableFeatures({
+  columnFilteringFeature,
+  globalFilteringFeature,
+  rowSortingFeature,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  filteredRowModel: createFilteredRowModel(),
+  sortedRowModel: createSortedRowModel(),
+  paginatedRowModel: createPaginatedRowModel(),
+  filterFns,
+  sortFns,
+});
+
+type DataTableFeatures = typeof features;
+
+/** Column definition for DataTable (`ColumnDef` with DataTable's feature set already applied). */
+export type DataTableColumnDef<TData extends RowData, TValue = unknown> = ColumnDef<
+  DataTableFeatures,
+  TData,
+  TValue
+>;
+
 /** Per-column layout hints, set through `meta` in a column definition. */
 export interface DataTableColumnMeta {
   /** Reading-end aligned with equal-width digits (amounts, quantities). */
@@ -37,8 +71,8 @@ export interface DataTableColumnMeta {
   sticky?: boolean;
 }
 
-export interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+export interface DataTableProps<TData extends RowData> {
+  columns: DataTableColumnDef<TData>[];
   data: TData[];
   /** Accessible name of the table (read by screen readers, also names the scrolling region). */
   caption: string;
@@ -59,10 +93,10 @@ export interface DataTableProps<TData, TValue> {
 const metaOf = (column: { columnDef: { meta?: unknown } }) =>
   column.columnDef.meta as DataTableColumnMeta | undefined;
 
-function createSelectColumn<TData, TValue>(labels: {
+function createSelectColumn<TData extends RowData>(labels: {
   selectAll: string;
   selectRow: string;
-}): ColumnDef<TData, TValue> {
+}): DataTableColumnDef<TData> {
   return {
     id: "select",
     enableSorting: false,
@@ -91,7 +125,11 @@ function createSelectColumn<TData, TValue>(labels: {
   };
 }
 
-function HeaderCell<TData>({ header }: { header: Header<TData, unknown> }) {
+function HeaderCell<TData extends RowData>({
+  header,
+}: {
+  header: Header<DataTableFeatures, TData, unknown>;
+}) {
   if (header.isPlaceholder) return <TableHead />;
   const meta = metaOf(header.column);
   const content = flexRender(header.column.columnDef.header, header.getContext());
@@ -128,11 +166,11 @@ function HeaderCell<TData>({ header }: { header: Header<TData, unknown> }) {
 }
 
 /**
- * Client-side data table built on TanStack Table: sorting, global filter, row selection and paging.
+ * Client-side data table built on TanStack Table v9: sorting, global filter, row selection and paging.
  * Texts and digits come from the LocaleProvider (like Pagination). For server-side paging/sorting of
  * large admin lists, build on the Table primitives and Pagination instead.
  */
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends RowData>({
   columns,
   data,
   caption,
@@ -143,7 +181,7 @@ export function DataTable<TData, TValue>({
   getRowId,
   emptyState,
   className,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData>) {
   const { t, formatters } = useLocale();
   const selectAll = t("table.selectAll");
   const selectRow = t("table.selectRow");
@@ -152,24 +190,19 @@ export function DataTable<TData, TValue>({
 
   const allColumns = useMemo(
     () =>
-      selectable
-        ? [createSelectColumn<TData, TValue>({ selectAll, selectRow }), ...columns]
-        : columns,
+      selectable ? [createSelectColumn<TData>({ selectAll, selectRow }), ...columns] : columns,
     [selectable, columns, selectAll, selectRow],
   );
 
-  const table = useReactTable({
+  const table = useTable({
+    features,
     data,
     columns: allColumns,
     getRowId,
     state: { sorting, rowSelection, globalFilter },
     onSortingChange: setSorting,
     onRowSelectionChange: setRowSelection,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    initialState: { pagination: { pageSize } },
+    initialState: { pagination: { pageIndex: 0, pageSize } },
   });
 
   useEffect(() => {
@@ -198,7 +231,7 @@ export function DataTable<TData, TValue>({
           {rows.length > 0 ? (
             rows.map((row) => (
               <TableRow key={row.id} data-state={row.getIsSelected() ? "selected" : undefined}>
-                {row.getVisibleCells().map((cell) => {
+                {row.getAllCells().map((cell) => {
                   const meta = metaOf(cell.column);
                   return (
                     <TableCell key={cell.id} numeric={meta?.numeric} sticky={meta?.sticky}>
@@ -232,7 +265,7 @@ export function DataTable<TData, TValue>({
           )}
           <Pagination
             className="sm:justify-end"
-            page={table.getState().pagination.pageIndex + 1}
+            page={table.state.pagination.pageIndex + 1}
             pageCount={pageCount}
             onPageChange={(page) => table.setPageIndex(page - 1)}
           />

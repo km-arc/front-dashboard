@@ -1,13 +1,12 @@
 // @vitest-environment jsdom
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { ColumnDef } from "@tanstack/react-table";
 import type { ReactElement } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { LocaleProvider } from "../../i18n/locale-provider";
 import "../../test/polyfills";
 import { directions, expectNoA11yViolations, renderWithDir } from "../../test/utils";
-import { DataTable, type DataTableColumnMeta } from "./data-table";
+import { DataTable, type DataTableColumnDef, type DataTableColumnMeta } from "./data-table";
 
 interface Person {
   id: string;
@@ -18,9 +17,13 @@ interface Person {
 const names = ["Zoe", "Adam", "Mia", "Bob", "Eve", "Cyd", "Dan", "Fay", "Gus", "Hal", "Ivy", "Jon"];
 const people: Person[] = names.map((name, i) => ({ id: `p${i}`, name, amount: (i + 1) * 100 }));
 
-const columns: ColumnDef<Person>[] = [
+const columns: DataTableColumnDef<Person>[] = [
   { accessorKey: "name", header: "Name", meta: { sticky: true } satisfies DataTableColumnMeta },
-  { accessorKey: "amount", header: "Amount", meta: { numeric: true } satisfies DataTableColumnMeta },
+  {
+    accessorKey: "amount",
+    header: "Amount",
+    meta: { numeric: true } satisfies DataTableColumnMeta,
+  },
 ];
 
 const getRowId = (row: Person) => row.id;
@@ -37,7 +40,13 @@ const firstNames = () => bodyRows().map((r) => within(r).getAllByRole("cell")[0]
 describe.each(directions)("DataTable (%s)", (dir) => {
   it("renders a named, scrollable table with the first page", () => {
     renderTable(
-      <DataTable caption="People" columns={columns} data={people} pageSize={5} getRowId={getRowId} />,
+      <DataTable
+        caption="People"
+        columns={columns}
+        data={people}
+        pageSize={5}
+        getRowId={getRowId}
+      />,
       dir,
     );
     expect(screen.getByRole("table", { name: "People" })).toBeTruthy();
@@ -47,7 +56,13 @@ describe.each(directions)("DataTable (%s)", (dir) => {
 
   it("sorts by a column and reports aria-sort", async () => {
     renderTable(
-      <DataTable caption="People" columns={columns} data={people} pageSize={5} getRowId={getRowId} />,
+      <DataTable
+        caption="People"
+        columns={columns}
+        data={people}
+        pageSize={5}
+        getRowId={getRowId}
+      />,
       dir,
     );
     const user = userEvent.setup();
@@ -63,7 +78,13 @@ describe.each(directions)("DataTable (%s)", (dir) => {
 
   it("filters rows with globalFilter", () => {
     renderTable(
-      <DataTable caption="People" columns={columns} data={people} globalFilter="y" getRowId={getRowId} />,
+      <DataTable
+        caption="People"
+        columns={columns}
+        data={people}
+        globalFilter="y"
+        getRowId={getRowId}
+      />,
       dir,
     );
     expect(firstNames()).toEqual(["Cyd", "Fay", "Ivy"]);
@@ -71,7 +92,13 @@ describe.each(directions)("DataTable (%s)", (dir) => {
 
   it("shows the empty state when nothing matches", () => {
     renderTable(
-      <DataTable caption="People" columns={columns} data={people} globalFilter="zzz" getRowId={getRowId} />,
+      <DataTable
+        caption="People"
+        columns={columns}
+        data={people}
+        globalFilter="zzz"
+        getRowId={getRowId}
+      />,
       dir,
     );
     expect(screen.getByText("No data to display")).toBeTruthy();
@@ -79,7 +106,13 @@ describe.each(directions)("DataTable (%s)", (dir) => {
 
   it("pages through the data", async () => {
     renderTable(
-      <DataTable caption="People" columns={columns} data={people} pageSize={5} getRowId={getRowId} />,
+      <DataTable
+        caption="People"
+        columns={columns}
+        data={people}
+        pageSize={5}
+        getRowId={getRowId}
+      />,
       dir,
     );
     await userEvent.setup().click(screen.getByRole("button", { name: "Next" }));
@@ -113,7 +146,13 @@ describe.each(directions)("DataTable (%s)", (dir) => {
 
   it("pins and aligns columns with logical utilities", () => {
     renderTable(
-      <DataTable caption="People" columns={columns} data={people} pageSize={5} getRowId={getRowId} />,
+      <DataTable
+        caption="People"
+        columns={columns}
+        data={people}
+        pageSize={5}
+        getRowId={getRowId}
+      />,
       dir,
     );
     const cells = within(bodyRows()[0]!).getAllByRole("cell");
