@@ -60,8 +60,3 @@ export function useLocale(): LocaleContextValue {
   if (!value) throw new Error("useLocale must be used inside <LocaleProvider>");
   return value;
 }
-
-/** Like useLocale, but returns null outside a LocaleProvider (for components that fall back to English). */
-export function useOptionalLocale(): LocaleContextValue | null {
-  return useContext(LocaleContext);
-}
