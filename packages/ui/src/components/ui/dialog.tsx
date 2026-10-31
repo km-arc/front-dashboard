@@ -9,7 +9,11 @@ import {
   type HTMLAttributes,
 } from "react";
 import { cn } from "../../lib/utils";
+<<<<<<< HEAD
 import { OVERLAY_SCRIM, OverlayCloseButton } from "../internal/overlay-parts";
+=======
+import { OVERLAY_SCRIM, OverlayCloseButton } from "./overlay-parts";
+>>>>>>> step/1.5-overlays
 
 export const Dialog = DialogPrimitive.Root;
 export const DialogTrigger = DialogPrimitive.Trigger;

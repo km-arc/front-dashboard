@@ -50,6 +50,7 @@ importers:
       '@radix-ui/react-switch':
         specifier: ^1.4.1
         version: 1.4.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+<<<<<<< HEAD
       '@radix-ui/react-tabs':
         specifier: ^1.2.1
         version: 1.2.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -59,6 +60,11 @@ importers:
       '@tanstack/react-table':
         specifier: ^9.3.1
         version: 9.3.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+=======
+      '@radix-ui/react-tooltip':
+        specifier: ^1.4.1
+        version: 1.4.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+>>>>>>> step/1.5-overlays
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -1136,6 +1142,7 @@ packages:
       '@types/react-dom':
         optional: true
 
+<<<<<<< HEAD
   '@radix-ui/react-tabs@1.2.1':
     resolution: {integrity: sha512-hRoJlode+hg5ZNlR+3tkfkUliIybdTpD5lkAvHQ9yaXseGf7XVO9Ib2GPEIOuaJJbo7YWYbNpDDRfo8Dhf6/xA==}
     peerDependencies:
@@ -1149,6 +1156,8 @@ packages:
       '@types/react-dom':
         optional: true
 
+=======
+>>>>>>> step/1.5-overlays
   '@radix-ui/react-tooltip@1.4.1':
     resolution: {integrity: sha512-NxLFGSFtZ78zVfcoOhTwR1xwqo5qx1Jh8Pw6FMZ9McCaqfRzz7/gIRahs2Oy5XlPgQ+8QkUcKbN5B0U44J/kCg==}
     peerDependencies:
@@ -3971,6 +3980,7 @@ snapshots:
       '@types/react': 19.3.0
       '@types/react-dom': 19.3.0(@types/react@19.3.0)
 
+<<<<<<< HEAD
   '@radix-ui/react-tabs@1.2.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@radix-ui/primitive': 1.2.0
@@ -3987,6 +3997,8 @@ snapshots:
       '@types/react': 19.3.0
       '@types/react-dom': 19.3.0(@types/react@19.3.0)
 
+=======
+>>>>>>> step/1.5-overlays
   '@radix-ui/react-tooltip@1.4.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@radix-ui/primitive': 1.2.0

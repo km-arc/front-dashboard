@@ -58,9 +58,13 @@
     "@radix-ui/react-select": "^2.4.1",
     "@radix-ui/react-slot": "^1.5.0",
     "@radix-ui/react-switch": "^1.4.1",
+<<<<<<< HEAD
     "@radix-ui/react-tabs": "^1.2.1",
     "@radix-ui/react-tooltip": "^1.4.1",
     "@tanstack/react-table": "^9.3.1",
+=======
+    "@radix-ui/react-tooltip": "^1.4.1",
+>>>>>>> step/1.5-overlays
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "sonner": "^2.0.8",
