@@ -16,11 +16,15 @@ A step may start only when its dependencies are `done` and its plan is approved 
 | 1     | 1.5b | Overlays (2/2): DropdownMenu, Tooltip, Toast (sonner)                           | 1.5a          | done    |
 | 1     | 1.6a | Data display (1/2): Table, Pagination, Empty state                              | 1.4a          | done    |
 <<<<<<< HEAD
+<<<<<<< HEAD
 | 1     | 1.6c | Data display (extra): DataTable (TanStack: sort, filter, selection)             | 1.6a          | done\*  |
 | 1     | 1.6b | Data display (2/2): Tabs, Accordion                                             | 1.6a          | planned |
 =======
 | 1     | 1.6b | Data display (2/2): Tabs, Accordion                                             | 1.6a          | done    |
 >>>>>>> step/1.6a-data-display
+=======
+| 1     | 1.6b | Data display (2/2): Tabs, Accordion                                             | 1.6a          | done    |
+>>>>>>> step/1.6b-tabs-accordion
 | 1     | 1.7  | Forms: react-hook-form + zod integration, field components                      | 1.4b          | done    |
 | 1     | 1.8a | Storybook infra: mode/locale toolbar + Button, Badge, Card, Label               | 1.4a, 1.3b    | done    |
 | 1     | 1.8b | Storybook: brand toolbar, 1.4b stories, visual review checklist                 | 1.8a, 1.4b    | done    |

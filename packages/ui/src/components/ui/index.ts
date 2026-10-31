@@ -19,4 +19,9 @@ export * from "./tooltip";
 export * from "./empty-state";
 export * from "./pagination";
 export * from "./table";
+<<<<<<< HEAD
 export * from "./data-table";
+=======
+export * from "./accordion";
+export * from "./tabs";
+>>>>>>> step/1.6b-tabs-accordion
