@@ -6,6 +6,7 @@ import { describe, expect, it } from "vitest";
 const uiDir = fileURLToPath(new URL("../components/ui/", import.meta.url));
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Add a component name here only while its story is in progress; keep it empty otherwise.
 const PENDING = new Set<string>();
 =======
@@ -22,6 +23,10 @@ const PENDING = new Set([
   "tooltip",
 ]);
 >>>>>>> step/1.5-overlays
+=======
+// Add a component name here only while its story is in progress; keep it empty otherwise.
+const PENDING = new Set<string>();
+>>>>>>> step/1.5-stories
 
 const components = readdirSync(uiDir)
   .filter((file) => /^[a-z-]+\.tsx$/.test(file))

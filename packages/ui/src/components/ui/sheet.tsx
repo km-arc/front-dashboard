@@ -11,10 +11,14 @@ import {
 } from "react";
 import { cn } from "../../lib/utils";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { OVERLAY_SCRIM, OverlayCloseButton } from "../internal/overlay-parts";
 =======
 import { OVERLAY_SCRIM, OverlayCloseButton } from "./overlay-parts";
 >>>>>>> step/1.5-overlays
+=======
+import { OVERLAY_SCRIM, OverlayCloseButton } from "../internal/overlay-parts";
+>>>>>>> step/1.5-stories
 
 export const Sheet = SheetPrimitive.Root;
 export const SheetTrigger = SheetPrimitive.Trigger;
