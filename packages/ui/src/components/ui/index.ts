@@ -20,3 +20,5 @@ export * from "./empty-state";
 export * from "./pagination";
 export * from "./table";
 export * from "./data-table";
+export * from "./accordion";
+export * from "./tabs";
