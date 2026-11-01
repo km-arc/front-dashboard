@@ -16,15 +16,7 @@ export * from "./form";
 export * from "./dropdown-menu";
 export * from "./toaster";
 export * from "./tooltip";
-<<<<<<< HEAD
 export * from "./empty-state";
 export * from "./pagination";
 export * from "./table";
-<<<<<<< HEAD
 export * from "./data-table";
-=======
-export * from "./accordion";
-export * from "./tabs";
->>>>>>> step/1.6b-tabs-accordion
-=======
->>>>>>> step/1.5-overlays

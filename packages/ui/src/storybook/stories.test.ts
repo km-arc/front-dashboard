@@ -5,28 +5,8 @@ import { describe, expect, it } from "vitest";
 
 const uiDir = fileURLToPath(new URL("../components/ui/", import.meta.url));
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 // Add a component name here only while its story is in progress; keep it empty otherwise.
 const PENDING = new Set<string>();
-=======
-// TODO(1.5-stories): stories for the 1.5 overlays are in progress; empty this list then.
-// (overlay-parts is internal: give it a story or move its check when emptying.)
-const PENDING = new Set([
-  "alert",
-  "dialog",
-  "dropdown-menu",
-  "overlay-parts",
-  "sheet",
-  "skeleton",
-  "toaster",
-  "tooltip",
-]);
->>>>>>> step/1.5-overlays
-=======
-// Add a component name here only while its story is in progress; keep it empty otherwise.
-const PENDING = new Set<string>();
->>>>>>> step/1.5-stories
 
 const components = readdirSync(uiDir)
   .filter((file) => /^[a-z-]+\.tsx$/.test(file))
