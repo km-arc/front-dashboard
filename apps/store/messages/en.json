@@ -1,0 +1,10 @@
+{
+  "app": {
+    "name": "Store",
+    "description": "Online store"
+  },
+  "home": {
+    "title": "Welcome to the store",
+    "subtitle": "This page is a placeholder and will be completed in the next steps."
+  }
+}

@@ -10,3 +10,4 @@ coverage/
 *.log
 storybook-static/
 storybook-static
+next-env.d.ts

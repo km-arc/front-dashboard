@@ -8,6 +8,8 @@
   ],
   "exports": {
     ".": "./src/index.ts",
+    "./locales": "./src/i18n/locales.ts",
+    "./theme-ssr": "./src/theme/ssr.ts",
     "./styles.css": "./src/styles/index.css"
   },
   "scripts": {
