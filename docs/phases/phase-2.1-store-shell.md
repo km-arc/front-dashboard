@@ -130,9 +130,19 @@ Decisions taken while implementing:
   the client `Providers`, which avoids evaluating every component module in the server layer.
 - Not added yet (by design): locale switcher and `navigation.ts` (2.1c), brand fetch (2.1d), `not-found`/`error` pages (2.1c).
 
+**Local verification result (2026-11-04) and fixes (patch `2.1b-verification`):**
+- `next/font/google` failed at build (the build machine cannot reach fonts.googleapis.com). Fonts are now self-hosted
+  through `@fontsource-variable/inter` and `@fontsource-variable/vazirmatn`, imported in the root layout; no network is
+  needed at build or run time. (This replaces the `next/font` decision above.)
+- `@radix-ui/react-accordion` was imported by `packages/ui` (step 1.6b) but missing from its `package.json` and the
+  lockfile, so ui typecheck and the accordion test failed on `main` before this step. Added to `packages/ui/package.json`.
+- Prettier flagged two files in `apps/store`; formatted.
+
+Before the fixes, lint and the 11 store tests passed.
+
 **Not executed in the authoring sandbox** (no network, so no `pnpm install`): lint, typecheck, tests and build.
 Gate G1 (visual sign-off of the 1.6b and 1.6c checklists) is still open and must be closed before this merges.
-Things most likely to need a fix, in order: `pnpm install` peer warnings; the `@import "@front-dashboard/ui/styles.css"`
+Still unverified: the `@import "@front-dashboard/ui/styles.css"`
 resolution in Tailwind v4 (fallback: a relative path to `../../../../packages/ui/src/styles/index.css`);
 `next typegen` in the `typecheck` script; the `defineRouting` locale typing.
 

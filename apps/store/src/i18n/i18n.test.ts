@@ -15,7 +15,8 @@ function flatten(tree: Tree, prefix = ""): Record<string, string> {
   }, {});
 }
 
-const placeholders = (text: string) => [...text.matchAll(/\{(\w+)\}/g)].map((match) => match[1]).sort();
+const placeholders = (text: string) =>
+  [...text.matchAll(/\{(\w+)\}/g)].map((match) => match[1]).sort();
 
 describe("routing", () => {
   it("serves exactly the locales of the design system", () => {

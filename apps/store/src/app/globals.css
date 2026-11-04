@@ -3,8 +3,8 @@
 /* Pnpm links the ui package, so Tailwind does not scan it on its own. */
 @source "../../../../packages/ui/src";
 
-/* Map the next/font variables set in the root layout onto the design-system font tokens. */
+/* Self-hosted variable fonts (@fontsource-variable, imported in the root layout) mapped onto the design-system font tokens. */
 :root {
-  --font-latin: var(--font-inter), "Inter";
-  --font-persian: var(--font-vazirmatn), "Vazirmatn";
+  --font-latin: "Inter Variable", "Inter";
+  --font-persian: "Vazirmatn Variable", "Vazirmatn";
 }
