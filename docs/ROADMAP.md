@@ -19,6 +19,7 @@ A step may start only when its dependencies are `done` and its plan is approved 
 | 1     | 1.6b | Data display (2/2): Tabs, Accordion                                             | 1.6a          | done\*  |
 | 1     | 1.6b | Data display (2/2): Tabs, Accordion                                             | 1.6a          | done    |
 | 1     | 1.6c | Data display (extra): DataTable (TanStack: sort, filter, selection)             | 1.
+
 | 1     | 1.7  | Forms: react-hook-form + zod integration, field components                      | 1.4b          | done    |
 | 1     | 1.8a | Storybook infra: mode/locale toolbar + Button, Badge, Card, Label               | 1.4a, 1.3b    | done    |
 | 1     | 1.8b | Storybook: brand toolbar, 1.4b stories, visual review checklist                 | 1.8a, 1.4b    | done    |
