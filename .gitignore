@@ -11,3 +11,4 @@ coverage/
 storybook-static/
 storybook-static
 next-env.d.ts
+*.tsbuildinfo
