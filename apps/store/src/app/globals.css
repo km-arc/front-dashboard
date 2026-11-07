@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@import "@front-dashboard/ui/styles.css";
+/* Pnpm links the ui package, so Tailwind does not scan it on its own. */
+@source "../../../../packages/ui/src";
+
+/* Self-hosted variable fonts (@fontsource-variable, imported in the root layout) mapped onto the design-system font tokens. */
+:root {
+  --font-latin: "Inter Variable", "Inter";
+  --font-persian: "Vazirmatn Variable", "Vazirmatn";
+}

@@ -8,6 +8,8 @@
   ],
   "exports": {
     ".": "./src/index.ts",
+    "./locales": "./src/i18n/locales.ts",
+    "./theme-ssr": "./src/theme/ssr.ts",
     "./styles.css": "./src/styles/index.css"
   },
   "scripts": {
@@ -48,6 +50,7 @@
     "react-hook-form": "^7.54.0"
   },
   "dependencies": {
+    "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-checkbox": "^1.4.1",
     "@radix-ui/react-dialog": "^1.3.1",
     "@radix-ui/react-direction": "^1.2.0",
