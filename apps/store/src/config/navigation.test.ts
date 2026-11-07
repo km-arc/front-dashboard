@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import en from "../../messages/en.json";
 import fa from "../../messages/fa.json";
-import { isActivePath, mainNav, utilityNav } from "./navigation";
+import { drawerNav, isActivePath, mainNav, tabNav, utilityNav } from "./navigation";
 
 const items = [...mainNav, ...utilityNav];
 
@@ -23,9 +23,32 @@ describe("navigation config", () => {
     }
   });
 
-  it("keeps the order: main places, then frequent tools", () => {
+  it("keeps the order of every surface", () => {
     expect(mainNav.map((item) => item.id)).toEqual(["home", "categories", "contact"]);
     expect(utilityNav.map((item) => item.id)).toEqual(["search", "cart", "dashboard"]);
+    expect(tabNav.map((item) => item.id)).toEqual([
+      "home",
+      "categories",
+      "search",
+      "cart",
+      "dashboard",
+    ]);
+    expect(drawerNav.map((item) => item.id)).toEqual(["contact"]);
+  });
+
+  it("keeps the phone tab bar to at most five tabs", () => {
+    expect(tabNav.length).toBeLessThanOrEqual(5);
+  });
+
+  it("covers every destination on phones (tab bar or drawer)", () => {
+    const onPhones = new Set([...tabNav, ...drawerNav].map((item) => item.id));
+    expect(onPhones).toEqual(new Set(items.map((item) => item.id)));
+  });
+
+  it("shares one availability per destination across surfaces", () => {
+    for (const item of [...tabNav, ...drawerNav]) {
+      expect(items.find((other) => other.id === item.id), item.id).toBe(item);
+    }
   });
 
   it("keeps the home page available", () => {

@@ -5,6 +5,8 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
   CloseIcon,
+  GridIcon,
+  HomeIcon,
   MenuIcon,
   MinusIcon,
   MoonIcon,
@@ -32,6 +34,8 @@ const icons = [
   { name: "UserIcon", Icon: UserIcon },
   { name: "SunIcon", Icon: SunIcon },
   { name: "MoonIcon", Icon: MoonIcon },
+  { name: "HomeIcon", Icon: HomeIcon },
+  { name: "GridIcon", Icon: GridIcon },
 ];
 
 export const Gallery: Story = {

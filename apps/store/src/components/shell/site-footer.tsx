@@ -10,7 +10,7 @@ export async function SiteFooter() {
     <footer className="border-t">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
         <p>{t("footer", { name: app("name") })}</p>
-        <nav aria-label={t("footerNav")}>
+        <nav aria-label={t("footerNav")} className="hidden md:block">
           <ul className="flex flex-wrap gap-x-2">
             {mainNav.map((item) => (
               <li key={item.id}>

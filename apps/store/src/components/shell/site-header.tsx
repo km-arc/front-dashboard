@@ -9,13 +9,13 @@ import { ThemeToggle } from "./theme-toggle";
 const desktopLink =
   "inline-flex min-h-11 items-center rounded-md px-3 text-sm text-muted-foreground transition-colors hover:text-foreground";
 
-/** 360px: menu, brand, then search, cart and account icons. From `md`: brand, links, tools, language, theme. */
+/** Phones: menu and brand (navigation is the bottom tab bar). From `md`: brand, links, tools, language, theme. */
 export async function SiteHeader() {
   const app = await getTranslations("app");
   const t = await getTranslations("shell");
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+    <header className="sticky top-0 z-40 border-b bg-background/95 pt-[env(safe-area-inset-top)] backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-1 px-4">
         <MobileMenu />
         <Link
@@ -29,14 +29,12 @@ export async function SiteHeader() {
             <NavLink key={item.id} item={item} className={desktopLink} />
           ))}
         </nav>
-        <div className="flex items-center gap-1">
+        <div className="hidden items-center gap-1 md:flex">
           {utilityNav.map((item) => (
-            <NavLink key={item.id} item={item} iconOnly />
+            <NavLink key={item.id} item={item} variant="icon" />
           ))}
-          <div className="hidden items-center gap-1 md:flex">
-            <LocaleSwitcher />
-            <ThemeToggle />
-          </div>
+          <LocaleSwitcher />
+          <ThemeToggle />
         </div>
       </div>
     </header>

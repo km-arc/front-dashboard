@@ -11,7 +11,7 @@ import {
   SheetTrigger,
   useLocale,
 } from "@front-dashboard/ui";
-import { mainNav } from "../../config/navigation";
+import { drawerNav } from "../../config/navigation";
 import { LocaleSwitcher } from "./locale-switcher";
 import { NavLink } from "./nav-link";
 import { ThemeToggle } from "./theme-toggle";
@@ -19,7 +19,7 @@ import { ThemeToggle } from "./theme-toggle";
 const linkClass =
   "flex min-h-11 items-center rounded-md px-3 text-base text-muted-foreground hover:bg-accent hover:text-foreground";
 
-/** Navigation drawer for small screens; from `md` the header shows the links inline instead. */
+/** Phone drawer: the destinations the tab bar has no room for, plus language and theme. */
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
   const t = useTranslations("shell");
@@ -35,7 +35,7 @@ export function MobileMenu() {
       <SheetContent side="start" closeLabel={ui("a11y.closeMenu")} aria-describedby={undefined}>
         <SheetTitle>{t("menu")}</SheetTitle>
         <nav aria-label={t("menu")} className="flex flex-col gap-1">
-          {mainNav.map((item) => (
+          {drawerNav.map((item) => (
             <NavLink
               key={item.id}
               item={item}

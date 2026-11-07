@@ -68,6 +68,7 @@ All sub-steps must keep `pnpm lint && pnpm typecheck && pnpm test && pnpm build`
 | 2.1c | Shell layout: skip link, header (logo slot, nav, locale switcher, theme toggle, cart link placeholder), mobile menu in a `Sheet`, footer, `loading`, `error`, `not-found`; 3–4 additive icons in `packages/ui` | unit tests for the navigation config and message parity; menu, switchers and focus are checked by `docs/checklists/visual-review-2.1c.md` now and by Playwright in 2.1f (Radix menus need a real browser); ui story for the new icons |
 | 2.1d | `packages/api`: contract for `GET /brand`, `POST /auth/login`, `GET /auth/session`, `POST /auth/logout`; generated types; client factory; MSW handlers; brand wired into the root layout | contract tests (each handler's response validates against the contract), generated files up to date check, brand fallback test (endpoint down → default theme) |
 | 2.1e | Auth stub: `SessionService`, login page using ui `Form` (react-hook-form + zod), logout, protected `/account` placeholder, server-side guard | tests: login success/failure/validation messages in en and fa, guard redirects when signed out, session survives reload (mock) |
+| 2.1g | Installable app (PWA, owner-approved 2026-11-07): web app manifest (name, colors, `display: standalone`), app icons (192, 512, maskable), theme color per mode, safe areas already in place from 2.1c | manifest validity test, icon files exist with the declared sizes, `pnpm build` serves `/manifest.webmanifest`; install check by hand on a phone |
 | 2.1f (optional) | Playwright smoke: 360 and 1280 px × en/fa × light/dark, axe scan, no horizontal scroll | runs in CI; owner decides whether it is worth the CI time |
 
 ## UI inventory and states / فهرست رابط کاربری
@@ -148,17 +149,18 @@ resolution in Tailwind v4 (fallback: a relative path to `../../../../packages/ui
 
 ### 2.1c – store layout (patch delivered, awaiting local verification)
 
-Navigation approved by the owner (2026-11-07), six destinations in two groups, configured in
-`apps/store/src/config/navigation.ts` (order, paths and availability; labels in `messages/*.json` under `shell.nav`):
-- Main places (drawer, desktop header, footer): Home, Categories, Contact us.
-- Frequent tools (icons, always visible): Search, Cart, Dashboard (account).
+Navigation approved by the owner (2026-11-07); the owner then asked for an app-like phone experience with its own
+navigation, approved as a bottom tab bar. Six destinations, configured in `apps/store/src/config/navigation.ts`
+(destinations, availability and the order of each surface; labels in `messages/*.json` under `shell.nav`):
+- Phones (below `md`): a fixed bottom tab bar with Home, Categories, Search, Cart, Dashboard (at most five tabs);
+  the top bar has only the menu button and the brand; the drawer holds Contact us, language and theme.
+- Desktop: header with brand, Home, Categories, Contact us, the three tool icons, language and theme; footer with links.
 - Only Home is available now; the others render disabled ("coming soon") instead of linking to a 404. Each later
   step switches its destination on with `available: true` (Categories and Search in 2.2, Cart in 2.3, Dashboard in 2.1e).
-- 360px header order: menu, brand, search, cart, account. From `md`: brand, links, tools, language, theme.
-  Language and theme live at the bottom of the drawer on small screens. No bottom tab bar.
+- The shell is safe-area aware (`viewportFit: "cover"`, insets on the header and the tab bar).
 
-Delivered (about 20 files): `packages/ui` icons (menu, close, search, cart, user, sun, moon), exported from the barrel,
-with the icon story updated; `apps/store` header, drawer (`Sheet`), footer, skip link, locale switcher, theme toggle,
+Delivered (about 30 files in two patches): `packages/ui` icons (menu, close, search, cart, user, sun, moon, home, grid),
+exported from the barrel, with the icon story updated; `BottomNav`; `apps/store` header, drawer (`Sheet`), footer, skip link, locale switcher, theme toggle,
 `NavLink`, `loading`, `error`, localized `not-found` plus the catch-all route that triggers it, `src/i18n/navigation.ts`,
 navigation config and tests, en/fa messages, and the visual review checklist.
 
