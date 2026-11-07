@@ -21,8 +21,8 @@ A step may start only when its dependencies are `done` and its plan is approved 
 | 1     | 1.8a | Storybook infra: mode/locale toolbar + Button, Badge, Card, Label                             | 1.4a, 1.3b    | done        |
 | 1     | 1.8b | Storybook: brand toolbar, 1.4b stories, visual review checklist                               | 1.8a, 1.4b    | done        |
 | 2     | 2.1a | Store shell plan: `docs/phases/phase-2.1-store-shell.md`, open-question proposals (docs only) | Phase 1       | done        |
-| 2     | 2.1b | `apps/store` scaffold: Next.js, `[locale]` routing, providers, theme exports in ui            | 2.1a          | in-progress |
-| 2     | 2.1c | Store layout: header, mobile menu, footer, theme and locale switchers                         | 2.1b          | planned     |
+| 2     | 2.1b | `apps/store` scaffold: Next.js, `[locale]` routing, providers, theme exports in ui            | 2.1a          | done        |
+| 2     | 2.1c | Store layout: header, mobile menu, footer, theme and locale switchers                         | 2.1b          | in-progress |
 | 2     | 2.1d | `packages/api`: OpenAPI contract, generated client, MSW mocks, brand fetch                    | 2.1b          | planned     |
 | 2     | 2.1e | Auth stub: session interface, login page, server-side guard                                   | 2.1c, 2.1d    | planned     |
 | 2     | 2.2  | Store: product listing + detail (read)                                                        | 2.1e          | planned     |

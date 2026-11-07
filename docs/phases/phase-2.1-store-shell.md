@@ -1,6 +1,6 @@
 # Step 2.1 – `apps/store` shell / پوستهٔ فروشگاه (`apps/store`)
 
-Status: **approved by owner (2026-11-04)**. 2.1a done; 2.1b delivered as a patch; 2.1c–2.1e not started.
+Status: **approved by owner (2026-11-04)**. 2.1a and 2.1b done (merged, PR #18, CI green); 2.1c delivered as a patch; 2.1d–2.1e not started.
 Owner request: prefer configuration over hard-coded choices where it is cheap (applied to the fallback locale and time zone in 2.1b).
 
 Depends on / وابسته به: Phase 1 · Split into 2.1a–2.1e; each sub-step is one PR, budget ≤ 20 files and
@@ -65,7 +65,7 @@ All sub-steps must keep `pnpm lint && pnpm typecheck && pnpm test && pnpm build`
 |------|---------|----------------------|
 | 2.1a | This plan, OPEN_QUESTIONS proposals, ROADMAP split. **Docs only, no code** | `pnpm format:check`, markdown links reviewed by owner |
 | 2.1b | `apps/store` scaffold: Next config (`transpilePackages`), Tailwind v4 + ui styles, `[locale]` routing, `proxy.ts`, providers, env, `.env.example`; additive theme exports in `packages/ui/src/index.ts`; empty home page; turbo tasks | tests: routing/locale resolution, en/fa message parity, `<html lang dir>` for both locales, no physical-direction classes (existing ESLint rule), env validation; `pnpm build` produces `/en` and `/fa` |
-| 2.1c | Shell layout: skip link, header (logo slot, nav, locale switcher, theme toggle, cart link placeholder), mobile menu in a `Sheet`, footer, `loading`, `error`, `not-found`; 3–4 additive icons in `packages/ui` | component tests (nav opens/closes, switchers change locale and mode, focus returns to trigger); axe via `jest-axe`; ui stories for any new ui icon |
+| 2.1c | Shell layout: skip link, header (logo slot, nav, locale switcher, theme toggle, cart link placeholder), mobile menu in a `Sheet`, footer, `loading`, `error`, `not-found`; 3–4 additive icons in `packages/ui` | unit tests for the navigation config and message parity; menu, switchers and focus are checked by `docs/checklists/visual-review-2.1c.md` now and by Playwright in 2.1f (Radix menus need a real browser); ui story for the new icons |
 | 2.1d | `packages/api`: contract for `GET /brand`, `POST /auth/login`, `GET /auth/session`, `POST /auth/logout`; generated types; client factory; MSW handlers; brand wired into the root layout | contract tests (each handler's response validates against the contract), generated files up to date check, brand fallback test (endpoint down → default theme) |
 | 2.1e | Auth stub: `SessionService`, login page using ui `Form` (react-hook-form + zod), logout, protected `/account` placeholder, server-side guard | tests: login success/failure/validation messages in en and fa, guard redirects when signed out, session survives reload (mock) |
 | 2.1f (optional) | Playwright smoke: 360 and 1280 px × en/fa × light/dark, axe scan, no horizontal scroll | runs in CI; owner decides whether it is worth the CI time |
@@ -109,7 +109,7 @@ at 360 px and desktop; login and logout work against mocks; everything above pas
 
 ## Hand-off notes / یادداشت تحویل
 
-### 2.1b – `apps/store` scaffold (patch delivered, awaiting local verification)
+### 2.1b – `apps/store` scaffold (done: merged in PR #18)
 
 Delivered (20 source/config files, about 450 lines):
 - `packages/ui`: public exports for `ThemeProvider`, `useTheme`, `BrandProvider`, `useBrand`, theme mode helpers and
@@ -145,6 +145,32 @@ Gate G1 (visual sign-off of the 1.6b and 1.6c checklists) is still open and must
 Still unverified: the `@import "@front-dashboard/ui/styles.css"`
 resolution in Tailwind v4 (fallback: a relative path to `../../../../packages/ui/src/styles/index.css`);
 `next typegen` in the `typecheck` script; the `defineRouting` locale typing.
+
+### 2.1c – store layout (patch delivered, awaiting local verification)
+
+Navigation approved by the owner (2026-11-07), six destinations in two groups, configured in
+`apps/store/src/config/navigation.ts` (order, paths and availability; labels in `messages/*.json` under `shell.nav`):
+- Main places (drawer, desktop header, footer): Home, Categories, Contact us.
+- Frequent tools (icons, always visible): Search, Cart, Dashboard (account).
+- Only Home is available now; the others render disabled ("coming soon") instead of linking to a 404. Each later
+  step switches its destination on with `available: true` (Categories and Search in 2.2, Cart in 2.3, Dashboard in 2.1e).
+- 360px header order: menu, brand, search, cart, account. From `md`: brand, links, tools, language, theme.
+  Language and theme live at the bottom of the drawer on small screens. No bottom tab bar.
+
+Delivered (about 20 files): `packages/ui` icons (menu, close, search, cart, user, sun, moon), exported from the barrel,
+with the icon story updated; `apps/store` header, drawer (`Sheet`), footer, skip link, locale switcher, theme toggle,
+`NavLink`, `loading`, `error`, localized `not-found` plus the catch-all route that triggers it, `src/i18n/navigation.ts`,
+navigation config and tests, en/fa messages, and the visual review checklist.
+
+Decisions taken while implementing:
+- Server components (`loading`, `not-found`, header, footer) import no ui components, only client components do, to
+  keep the ui barrel out of the server layer; `loading` and `not-found` therefore use plain classes.
+- Built-in ui strings (open/close menu, language, theme, skip link, error, retry) are reused from the ui catalog; only
+  shop-specific text is in the app catalog.
+- The cart badge is not built yet: there is no cart until 2.3.
+- Switching language keeps the path but not the query string (nothing uses one yet).
+
+**Not executed in the authoring sandbox** (no network): lint, typecheck, tests, build and the visual checklist.
 
 ---
 

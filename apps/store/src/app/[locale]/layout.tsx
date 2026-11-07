@@ -6,6 +6,9 @@ import type { ReactNode } from "react";
 import { getHtmlAttributes } from "@front-dashboard/ui/locales";
 import { BRAND_STYLE_ID, getBrandSsr, getThemeInitScript } from "@front-dashboard/ui/theme-ssr";
 import { Providers } from "../../components/providers";
+import { SiteFooter } from "../../components/shell/site-footer";
+import { SiteHeader } from "../../components/shell/site-header";
+import { SkipLink } from "../../components/shell/skip-link";
 import { env } from "../../env";
 import { routing } from "../../i18n/routing";
 import "@fontsource-variable/inter";
@@ -51,10 +54,13 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
           <style id={BRAND_STYLE_ID} dangerouslySetInnerHTML={{ __html: brandSsr.css }} />
         ) : null}
       </head>
-      <body>
+      <body className="flex min-h-dvh flex-col bg-background text-foreground">
         <NextIntlClientProvider messages={messages}>
           <Providers locale={locale} timeZone={env.timeZone} brand={brand}>
-            {children}
+            <SkipLink />
+            <SiteHeader />
+            <div className="flex-1">{children}</div>
+            <SiteFooter />
           </Providers>
         </NextIntlClientProvider>
       </body>

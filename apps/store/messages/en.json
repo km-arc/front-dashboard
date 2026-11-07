@@ -6,5 +6,25 @@
   "home": {
     "title": "Welcome to the store",
     "subtitle": "This page is a placeholder and will be completed in the next steps."
+  },
+  "shell": {
+    "menu": "Menu",
+    "mainNav": "Main",
+    "footerNav": "Footer",
+    "soon": "coming soon",
+    "nav": {
+      "home": "Home",
+      "categories": "Categories",
+      "contact": "Contact us",
+      "search": "Search",
+      "cart": "Cart",
+      "dashboard": "Dashboard"
+    },
+    "footer": "© {name}. All rights reserved."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist or has moved.",
+    "home": "Back to home"
   }
 }
