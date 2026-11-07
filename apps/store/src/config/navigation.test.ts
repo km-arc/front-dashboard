@@ -47,7 +47,10 @@ describe("navigation config", () => {
 
   it("shares one availability per destination across surfaces", () => {
     for (const item of [...tabNav, ...drawerNav]) {
-      expect(items.find((other) => other.id === item.id), item.id).toBe(item);
+      expect(
+        items.find((other) => other.id === item.id),
+        item.id,
+      ).toBe(item);
     }
   });
 
