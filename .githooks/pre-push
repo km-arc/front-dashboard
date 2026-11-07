@@ -1,0 +1,4 @@
+#!/bin/sh
+# Runs the CI gate (without the slow build) before anything leaves this machine.
+# Enabled by `pnpm install` (see the "prepare" script). Emergency bypass: git push --no-verify
+exec pnpm verify
