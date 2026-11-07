@@ -12,7 +12,11 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "check:repo": "node scripts/check-repo.mjs",
+    "test:scripts": "node --test scripts/check-repo.test.mjs",
+    "verify": "pnpm check:repo && pnpm test:scripts && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",
+    "prepare": "git config core.hooksPath .githooks || true"
   },
   "devDependencies": {
     "prettier": "^3.3.3",
