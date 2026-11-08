@@ -48,6 +48,27 @@ describe.each(LOCALES)("manifest (%s)", (locale) => {
   });
 });
 
+describe.each(LOCALES)("manifest screenshots (%s)", (locale) => {
+  const manifest = buildManifest({ locale, name: "Name", description: "Description" });
+  const shots = manifest.screenshots ?? [];
+
+  it("has a wide and a narrow screenshot (richer install dialog on desktop and phones)", () => {
+    expect(shots.some((shot) => shot.form_factor === "wide")).toBe(true);
+    expect(shots.some((shot) => shot.form_factor === "narrow")).toBe(true);
+  });
+
+  it("matches the declared sizes and the limits Chrome enforces", () => {
+    for (const shot of shots) {
+      const [width, height] = (shot.sizes ?? "").split("x").map(Number);
+      const size = pngSize(`${publicDir}${shot.src}`);
+      expect(size, shot.src).toEqual({ width, height });
+      expect(Math.min(width, height), shot.src).toBeGreaterThanOrEqual(320);
+      expect(Math.max(width, height), shot.src).toBeLessThanOrEqual(3840);
+      expect(Math.max(width, height) / Math.min(width, height), shot.src).toBeLessThanOrEqual(2.3);
+    }
+  });
+});
+
 describe("app assets", () => {
   it("has the Apple touch icon (180px) and the vector icon", () => {
     expect(pngSize(`${publicDir}/icons/apple-touch-icon.png`)).toEqual({ width: 180, height: 180 });

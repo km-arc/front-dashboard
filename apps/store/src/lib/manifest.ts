@@ -48,5 +48,22 @@ export function buildManifest({
         purpose: "maskable",
       },
     ],
+    // Needed for Chrome's richer install dialog: one wide (desktop) and one narrow (phone) screenshot.
+    screenshots: [
+      {
+        src: "/screenshots/home-wide.png",
+        sizes: "1280x720",
+        type: "image/png",
+        form_factor: "wide",
+        label: name,
+      },
+      {
+        src: "/screenshots/home-narrow.png",
+        sizes: "720x1280",
+        type: "image/png",
+        form_factor: "narrow",
+        label: name,
+      },
+    ],
   };
 }

@@ -184,12 +184,16 @@ theme, placeholder icon):
 - `public/icons`: placeholder icons (a shopping bag on the default primary color): `icon-192.png`, `icon-512.png`,
   `icon-maskable-512.png`, `apple-touch-icon.png` (180) and `icon.svg`.
 - The locale layout links the manifest, the icons and the Apple web-app tags, and sets `themeColor` for light and dark.
+- `public/screenshots`: one wide (1280x720) and one narrow (720x1280) screenshot declared in the manifest, which Chrome
+  needs for the richer install dialog (DevTools otherwise warns). They are schematic placeholders of the home page
+  (no text, so they fit both languages); replace them with real captures once there are real pages, keeping the
+  `form_factor`, the sizes (320 to 3840 px) and an aspect ratio of at most 2.3. The test checks all of that.
 - `globals.css`: no tap highlight and `touch-action: manipulation` on links and buttons.
 - Tests: manifest fields per locale, hex colors, scope contains the start page, and the icon files exist with exactly
   the sizes the manifest declares (read from the PNG header).
 
 Known limits, on purpose:
-- The icons are placeholders. To use the real logo, replace the four PNGs and the SVG with the same sizes; the test
+- The icons and screenshots are placeholders. To use the real logo, replace the four PNGs and the SVG with the same sizes; the test
   fails if a size does not match what the manifest declares.
 - Colors in the manifest and the status bar are static hex values of the default theme. A runtime brand (2.1d) and the
   in-app light/dark toggle do not change them (the status bar follows the system theme).

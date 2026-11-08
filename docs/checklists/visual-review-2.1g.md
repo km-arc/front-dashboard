@@ -5,7 +5,7 @@ Run a production build (`pnpm build`, then `pnpm --filter @front-dashboard/store
 
 Manifest (desktop Chrome, DevTools, Application, Manifest) at `/en` and `/fa`
 - [ ] No errors or warnings; name, start URL (`/en` or `/fa`), display "standalone" and three icons are listed
-- [ ] The Installability section reports no problems
+- [ ] The Installability section reports no problems, and there is no "Richer PWA Install UI" warning (screenshots are present)
 - [ ] `/en/manifest.webmanifest` shows `lang: en`, `dir: ltr`; `/fa/manifest.webmanifest` shows the Persian name, `lang: fa`, `dir: rtl`
 - [ ] The icons render correctly in the Manifest panel, including the maskable one in the safe-zone preview
 
