@@ -26,7 +26,12 @@ describe("unwrap", () => {
     const client = createSampleApiClient({
       "GET /brand": () => problem(503, "Brand service unavailable", "Try again later"),
     });
-    const failure = await client.GET("/brand").then(unwrap, (error: unknown) => error);
+    let failure: unknown;
+    try {
+      unwrap(await client.GET("/brand"));
+    } catch (error) {
+      failure = error;
+    }
     expect(failure).toBeInstanceOf(ApiError);
     expect(failure).toMatchObject({
       status: 503,
@@ -39,7 +44,12 @@ describe("unwrap", () => {
     const client = createSampleApiClient({
       "GET /brand": () => new Response("boom", { status: 500 }),
     });
-    const failure = await client.GET("/brand").then(unwrap, (error: unknown) => error);
+    let failure: unknown;
+    try {
+      unwrap(await client.GET("/brand"));
+    } catch (error) {
+      failure = error;
+    }
     expect(failure).toBeInstanceOf(ApiError);
     expect(failure).toMatchObject({ status: 500, problem: undefined });
   });
