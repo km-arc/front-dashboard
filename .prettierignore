@@ -5,3 +5,4 @@ coverage
 pnpm-lock.yaml
 *.patch
 *.md
+packages/api/src/schema.d.ts

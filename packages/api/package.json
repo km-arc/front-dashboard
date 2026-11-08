@@ -1,0 +1,29 @@
+{
+  "name": "@front-dashboard/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./mock": "./src/mock.ts"
+  },
+  "scripts": {
+    "generate": "openapi-typescript openapi/openapi.yaml -o src/schema.d.ts",
+    "generate:check": "node scripts/check-generated.mjs",
+    "lint": "eslint src --ignore-pattern src/schema.d.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "pnpm generate:check && vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "openapi-fetch": "^0.13.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.15.0",
+    "@types/node": "^20.17.0",
+    "eslint": "^9.15.0",
+    "openapi-typescript": "^7.4.0",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.15.0",
+    "vitest": "^2.1.5"
+  }
+}

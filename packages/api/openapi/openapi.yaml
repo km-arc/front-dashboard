@@ -1,0 +1,76 @@
+openapi: 3.0.3
+info:
+  title: Store API
+  version: 0.1.0
+  description: Contract between the front end and the backend. The front end authors it until the backend publishes its own; this file is the single source for the generated types, the client and the sample API.
+tags:
+  - name: Theming
+paths:
+  /brand:
+    get:
+      operationId: getBrand
+      tags:
+        - Theming
+      summary: Active brand of the store
+      description: Public and cacheable. Colors the store (overrides of the design tokens). The front end validates it before use, so unknown tokens or unsafe values are rejected there.
+      responses:
+        "200":
+          description: The active brand
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Brand"
+        default:
+          $ref: "#/components/responses/Problem"
+components:
+  schemas:
+    Brand:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          pattern: "^[a-z0-9][a-z0-9-]{0,47}$"
+          description: Lowercase slug, used as the data-brand attribute.
+        name:
+          type: string
+        radius:
+          type: string
+          pattern: "^\\d{1,3}(\\.\\d{1,3})?(rem|px)$"
+          description: Corner radius, for example 0.5rem.
+        light:
+          $ref: "#/components/schemas/BrandColors"
+        dark:
+          $ref: "#/components/schemas/BrandColors"
+    BrandColors:
+      type: object
+      description: Design token name to color. Allowed tokens are listed in COLOR_TOKENS of packages/ui. Values are hex, oklch(), hsl() or rgb() only.
+      additionalProperties:
+        type: string
+        maxLength: 64
+    Problem:
+      type: object
+      description: Error body, RFC 9457 (problem details).
+      required:
+        - title
+        - status
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type: string
+  responses:
+    Problem:
+      description: Error
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"

@@ -1,6 +1,6 @@
 # Step 2.1 – `apps/store` shell / پوستهٔ فروشگاه (`apps/store`)
 
-Status: **approved by owner (2026-11-04)**. 2.1a and 2.1b done (merged, PR #18, CI green); 2.1c done (owner visual review passed 2026-11-08); 2.1g (installable app) delivered as a patch; 2.1d–2.1e not started.
+Status: **approved by owner (2026-11-04)**. 2.1a and 2.1b done (merged, PR #18, CI green); 2.1c done (owner visual review passed 2026-11-08); 2.1g (installable app) merged (PR #22); 2.1d-1 (`packages/api`) delivered as a patch; 2.1d-2 and 2.1e not started.
 Owner request: prefer configuration over hard-coded choices where it is cheap (applied to the fallback locale and time zone in 2.1b).
 
 Depends on / وابسته به: Phase 1 · Split into 2.1a–2.1e; each sub-step is one PR, budget ≤ 20 files and
@@ -51,8 +51,8 @@ real payments, SEO beyond basic metadata, analytics.
 | D3 | App messages with **next-intl** (`apps/store/messages/{en,fa}.json`); built-in ui strings stay in `LocaleProvider`. No key lives in both catalogs. Parity test between en and fa | ADR-0003, `docs/I18N.md` |
 | D4 | Provider order in `app/[locale]/layout.tsx`: `<html {...getHtmlAttributes(locale)}>`; `<head>` gets `getThemeInitScript()` and the brand `<style>` from `getBrandSsr()`; body wraps `LocaleProvider` → `ThemeProvider` → `BrandProvider` → `UiProvider` → next-intl provider → `Toaster`, in one client `Providers` component | Matches ui docs; no flash of wrong theme |
 | D5 | Brand is fetched on the server per request with a short cache; any failure falls back to the default light-blue theme and never blocks rendering. Brand JSON is validated by the existing `validateBrand` | OQ 2, 9, 10 |
-| D6 | New workspace package `packages/api` (`@front-dashboard/api`): `openapi/openapi.yaml` (the contract, owned here until the backend publishes one), generated types via `openapi-typescript`, a typed client via `openapi-fetch`, and MSW handlers typed by the same contract. Generated output is committed and CI checks it is up to date. Reused by `apps/admin` in 3.1 | ADR-0005; avoids a second client later |
-| D7 | Mocks are enabled by `NEXT_PUBLIC_API_MOCKING=enabled` (dev and tests only; never in production builds). Without it the client talks to `API_BASE_URL` | Frontend works without the backend |
+| D6 | New workspace package `packages/api` (`@front-dashboard/api`): `openapi/openapi.yaml` (the contract, owned here until the backend publishes one), generated types via `openapi-typescript` (committed, and a test fails when they drift from the contract), a typed client via `openapi-fetch`, and a sample API. Reused by `apps/admin` in 3.1 | ADR-0005; avoids a second client later |
+| D7 | While the backend does not exist, the **sample API** answers the contract in memory: a `fetch` that serves routes with no network, no service worker and no extra dependency (owner decision 2026-11-08, replacing MSW). It is switched on by `NEXT_PUBLIC_API_MOCKING=enabled` (dev and tests only) and lives in the `@front-dashboard/api/mock` entry so production bundles do not include it. Without the switch the client talks to `API_BASE_URL` | Frontend works without the backend; one setting moves to the real API |
 | D8 | Auth stub behind an interface `SessionService { getSession, signIn, signOut }` in `apps/store/src/features/auth`. The stub talks to mock endpoints. Route protection is checked on the server in layouts or pages; `proxy.ts` only does an optimistic redirect | OQ 4 unknown; defence in depth |
 | D9 | Folders: `src/app` (routing only), `src/features/<module>`, `src/components` (shell pieces), `src/lib`. Env values are read through one zod-validated `src/env.ts`; `.env.example` lists them | AGENTS.md, ARCHITECTURE.md |
 | D10 | Tests: Vitest + Testing Library for logic and components, contract tests for handlers; Playwright e2e smoke is proposed as a later optional step 2.1f | NFR-7 |
@@ -66,8 +66,9 @@ All sub-steps must keep `pnpm lint && pnpm typecheck && pnpm test && pnpm build`
 | 2.1a | This plan, OPEN_QUESTIONS proposals, ROADMAP split. **Docs only, no code** | `pnpm format:check`, markdown links reviewed by owner |
 | 2.1b | `apps/store` scaffold: Next config (`transpilePackages`), Tailwind v4 + ui styles, `[locale]` routing, `proxy.ts`, providers, env, `.env.example`; additive theme exports in `packages/ui/src/index.ts`; empty home page; turbo tasks | tests: routing/locale resolution, en/fa message parity, `<html lang dir>` for both locales, no physical-direction classes (existing ESLint rule), env validation; `pnpm build` produces `/en` and `/fa` |
 | 2.1c | Shell layout: skip link, header (logo slot, nav, locale switcher, theme toggle, cart link placeholder), mobile menu in a `Sheet`, footer, `loading`, `error`, `not-found`; 3–4 additive icons in `packages/ui` | unit tests for the navigation config and message parity; menu, switchers and focus are checked by `docs/checklists/visual-review-2.1c.md` now and by Playwright in 2.1f (Radix menus need a real browser); ui story for the new icons |
-| 2.1d | `packages/api`: contract for `GET /brand`, `POST /auth/login`, `GET /auth/session`, `POST /auth/logout`; generated types; client factory; MSW handlers; brand wired into the root layout | contract tests (each handler's response validates against the contract), generated files up to date check, brand fallback test (endpoint down → default theme) |
-| 2.1e | Auth stub: `SessionService`, login page using ui `Form` (react-hook-form + zod), logout, protected `/account` placeholder, server-side guard | tests: login success/failure/validation messages in en and fa, guard redirects when signed out, session survives reload (mock) |
+| 2.1d-1 | `packages/api`: contract for `GET /brand` and the error model, generated types, client factory, `unwrap`/`ApiError`, sample API (in-memory fetch) | tests: sample API answers the contract, `unwrap` and errors, network failures are not hidden; `generate:check` fails when the committed types differ from the contract |
+| 2.1d-2 | `apps/store`: `getBrand()` (cache of a few minutes, checked with `validateBrand`, any failure means the default theme), `API_BASE_URL` and the mock switch in `env.ts`, brand wired into the root layout | tests: sample brand passes `validateBrand`, brand fallback when the API is down, env validation |
+| 2.1e | Auth stub (the auth part of the contract is written here, once the sign-in method is decided): `SessionService`, login page using ui `Form` (react-hook-form + zod), logout, protected `/account` placeholder, server-side guard | tests: login success/failure/validation messages in en and fa, guard redirects when signed out, session survives reload (mock) |
 | 2.1g | Installable app (PWA, owner-approved 2026-11-07): web app manifest (name, colors, `display: standalone`), app icons (192, 512, maskable), theme color per mode, safe areas already in place from 2.1c | manifest validity test, icon files exist with the declared sizes, `pnpm build` serves `/manifest.webmanifest`; install check by hand on a phone |
 | 2.1f (optional) | Playwright smoke: 360 and 1280 px × en/fa × light/dark, axe scan, no horizontal scroll | runs in CI; owner decides whether it is worth the CI time |
 
@@ -200,6 +201,24 @@ Known limits, on purpose:
 - There is no service worker, so no offline mode and no push. Installing does not need one in current Chrome.
 
 **Not executed in the authoring sandbox** (no network): lint, typecheck, tests, build and the install checks.
+
+### 2.1d-1 – `packages/api` (patch delivered, awaiting local verification)
+
+Owner decision (2026-11-08): while the backend does not exist, the server side is served by a **sample API**.
+That is implemented as an in-memory `fetch` instead of MSW, which keeps the dependency list short and works the same on
+the server, in tests and later in the browser (no service worker). The auth endpoints move to 2.1e, because their shape
+depends on the sign-in method (mobile number with a one-time code, or email and password), which is not decided yet.
+
+- `packages/api/openapi/openapi.yaml`: `GET /brand` (the JSON of `docs/THEMING.md`) and the RFC 9457 `Problem` error body.
+- `src/schema.d.ts`: types generated by `pnpm --filter @front-dashboard/api generate` (committed; ignored by Prettier and
+  ESLint). The first version in the patch was written by hand in the generator's format, so **run `generate` once and
+  commit any difference**; afterwards `generate:check` (part of `pnpm test` in this package) keeps it in sync.
+- `src/client.ts`: `createApiClient({ baseUrl, fetch? })` (openapi-fetch), `unwrap()` and `ApiError` with the problem details.
+- `src/mock.ts` (entry `@front-dashboard/api/mock`): `createMockFetch(routes)`, `createSampleApiClient()`, `SAMPLE_BRAND`
+  (a green brand, so it is obvious when the sample answers). Unknown routes answer a 404 problem.
+- New dependencies: `openapi-fetch`, `openapi-typescript`; the lockfile changes.
+
+**Not executed in the authoring sandbox** (no network): install, generate, lint, typecheck and tests.
 
 ---
 
