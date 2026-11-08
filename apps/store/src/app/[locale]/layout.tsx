@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
@@ -6,6 +6,10 @@ import type { ReactNode } from "react";
 import { getHtmlAttributes } from "@front-dashboard/ui/locales";
 import { BRAND_STYLE_ID, getBrandSsr, getThemeInitScript } from "@front-dashboard/ui/theme-ssr";
 import { Providers } from "../../components/providers";
+import { BottomNav } from "../../components/shell/bottom-nav";
+import { SiteFooter } from "../../components/shell/site-footer";
+import { SiteHeader } from "../../components/shell/site-header";
+import { SkipLink } from "../../components/shell/skip-link";
 import { env } from "../../env";
 import { routing } from "../../i18n/routing";
 import "@fontsource-variable/inter";
@@ -16,6 +20,13 @@ interface LocaleLayoutProps {
   children: ReactNode;
   params: Promise<{ locale: string }>;
 }
+
+// `cover` lets the page extend under the notch and home indicator; the shell pads itself with safe-area insets.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -51,10 +62,14 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
           <style id={BRAND_STYLE_ID} dangerouslySetInnerHTML={{ __html: brandSsr.css }} />
         ) : null}
       </head>
-      <body>
+      <body className="flex min-h-dvh flex-col bg-background pb-[calc(3.5rem+env(safe-area-inset-bottom))] text-foreground md:pb-0">
         <NextIntlClientProvider messages={messages}>
           <Providers locale={locale} timeZone={env.timeZone} brand={brand}>
-            {children}
+            <SkipLink />
+            <SiteHeader />
+            <div className="flex-1">{children}</div>
+            <SiteFooter />
+            <BottomNav />
           </Providers>
         </NextIntlClientProvider>
       </body>

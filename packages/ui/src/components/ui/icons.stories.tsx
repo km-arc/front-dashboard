@@ -1,5 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon, MinusIcon } from "./icons";
+import {
+  CartIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  CloseIcon,
+  GridIcon,
+  HomeIcon,
+  MenuIcon,
+  MinusIcon,
+  MoonIcon,
+  SearchIcon,
+  SunIcon,
+  UserIcon,
+} from "./icons";
 
 const meta = {
   title: "Primitives/Icons",
@@ -13,6 +27,15 @@ const icons = [
   { name: "MinusIcon", Icon: MinusIcon },
   { name: "ChevronDownIcon", Icon: ChevronDownIcon },
   { name: "ChevronUpIcon", Icon: ChevronUpIcon },
+  { name: "MenuIcon", Icon: MenuIcon },
+  { name: "CloseIcon", Icon: CloseIcon },
+  { name: "SearchIcon", Icon: SearchIcon },
+  { name: "CartIcon", Icon: CartIcon },
+  { name: "UserIcon", Icon: UserIcon },
+  { name: "SunIcon", Icon: SunIcon },
+  { name: "MoonIcon", Icon: MoonIcon },
+  { name: "HomeIcon", Icon: HomeIcon },
+  { name: "GridIcon", Icon: GridIcon },
 ];
 
 export const Gallery: Story = {
