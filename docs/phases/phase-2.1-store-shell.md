@@ -1,6 +1,6 @@
 # Step 2.1 – `apps/store` shell / پوستهٔ فروشگاه (`apps/store`)
 
-Status: **approved by owner (2026-11-04)**. 2.1a and 2.1b done (merged, PR #18, CI green); 2.1c done (owner visual review passed 2026-11-08); 2.1g (installable app) merged (PR #22); 2.1d-1 (`packages/api`) delivered as a patch; 2.1d-2 and 2.1e not started.
+Status: **approved by owner (2026-11-04)**. 2.1a and 2.1b done (merged, PR #18, CI green); 2.1c done (owner visual review passed 2026-11-08); 2.1g (installable app) merged (PR #22); 2.1d-1 (`packages/api`) done (merged, PR #23); 2.1d-2 (brand from the sample API) delivered as a patch; 2.1e not started.
 Owner request: prefer configuration over hard-coded choices where it is cheap (applied to the fallback locale and time zone in 2.1b).
 
 Depends on / وابسته به: Phase 1 · Split into 2.1a–2.1e; each sub-step is one PR, budget ≤ 20 files and
@@ -171,7 +171,9 @@ Decisions taken while implementing:
 - Built-in ui strings (open/close menu, language, theme, skip link, error, retry) are reused from the ui catalog; only
   shop-specific text is in the app catalog.
 - The cart badge is not built yet: there is no cart until 2.3.
-- Switching language keeps the path but not the query string (nothing uses one yet).
+- Switching language is a full page load that keeps the path, the query string and the hash. A client navigation re-renders the
+  root layout in place, which unmounts the `<style>` of the brand that `BrandProvider` also manages, and throws `removeChild`
+  errors (found in 2.1d-2, when the brand first had CSS).
 
 **Not executed in the authoring sandbox** (no network): lint, typecheck, tests, build and the visual checklist.
 
@@ -202,7 +204,7 @@ Known limits, on purpose:
 
 **Not executed in the authoring sandbox** (no network): lint, typecheck, tests, build and the install checks.
 
-### 2.1d-1 – `packages/api` (patch delivered, awaiting local verification)
+### 2.1d-1 – `packages/api` (done: merged in PR #23)
 
 Owner decision (2026-11-08): while the backend does not exist, the server side is served by a **sample API**.
 That is implemented as an in-memory `fetch` instead of MSW, which keeps the dependency list short and works the same on
@@ -219,6 +221,29 @@ depends on the sign-in method (mobile number with a one-time code, or email and 
 - New dependencies: `openapi-fetch`, `openapi-typescript`; the lockfile changes.
 
 **Not executed in the authoring sandbox** (no network): install, generate, lint, typecheck and tests.
+
+### 2.1d-2 – brand from the sample API in `apps/store` (patch delivered, awaiting local verification)
+
+- `src/env.ts`: `API_BASE_URL` (server side, optional URL) and `NEXT_PUBLIC_API_MOCKING` (`enabled` turns the sample API on;
+  anything else is rejected at startup). `.env.example` documents both.
+- `src/lib/api.ts`: `getApiClient()` returns the sample API client when mocking is on, a client for `API_BASE_URL`
+  otherwise (answers are reused for 5 minutes through Next's fetch cache), or `null` when neither is set.
+  The sample API is imported only when mocking is on.
+- `src/lib/brand.ts`: `loadBrand(client)` calls `GET /brand`, checks the answer with `validateBrand` and returns the brand,
+  or `null` (the default theme) when there is no API, the call fails, or the brand has unsafe values. It never throws and
+  logs one warning. `getBrand()` is wired into the root layout in place of the former `null`.
+- `packages/ui`: the server-safe entry `@front-dashboard/ui/theme-ssr` also exports `validateBrand` and `BrandDefinition`,
+  so server code can validate without loading the component library.
+- Tests: the sample brand passes the real validator; no API, API error, network failure and an unsafe brand all fall back
+  to the default theme; env parsing of the two new settings.
+- Dependency: `@front-dashboard/api` (workspace link); the lockfile changes.
+- Dev server on the network: `ALLOWED_DEV_ORIGINS` (comma separated hosts) feeds Next's `allowedDevOrigins`; without it a phone or
+  another computer opening the dev server gets a page that never becomes interactive (Next blocks `/_next/hmr` for other hosts).
+
+Try it: with `NEXT_PUBLIC_API_MOCKING=enabled` in `apps/store/.env.local` the accents turn green (the sample brand, light and
+dark): the page title and the active navigation item use the primary color; without it they keep the default blue. The PWA manifest colors stay on the default theme (known limit of 2.1g).
+
+**Not executed in the authoring sandbox** (no network): install, lint, typecheck, tests, build and the visual check.
 
 ---
 

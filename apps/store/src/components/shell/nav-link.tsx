@@ -116,7 +116,7 @@ export function NavLink({ item, variant = "text", className, onNavigate }: NavLi
       href={item.href}
       aria-current={current}
       onClick={onNavigate}
-      className={cn(className, current && "font-semibold text-foreground")}
+      className={cn(className, current && "font-semibold text-primary")}
     >
       {label}
     </Link>
