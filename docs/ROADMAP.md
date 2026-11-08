@@ -23,8 +23,8 @@ A step may start only when its dependencies are `done` and its plan is approved 
 | 2     | 2.1a   | Store shell plan: `docs/phases/phase-2.1-store-shell.md`, open-question proposals (docs only) | Phase 1       | done        |
 | 2     | 2.1b   | `apps/store` scaffold: Next.js, `[locale]` routing, providers, theme exports in ui            | 2.1a          | done        |
 | 2     | 2.1c   | Store layout: header, bottom tab bar (phones), drawer, footer, theme and locale switchers     | 2.1b          | done        |
-| 2     | 2.1d-1 | `packages/api`: OpenAPI contract (brand, errors), generated types, typed client, sample API   | 2.1b          | in-progress |
-| 2     | 2.1d-2 | Brand from the sample API in `apps/store`: `getBrand`, `API_BASE_URL`, mock switch            | 2.1d-1        | planned     |
+| 2     | 2.1d-1 | `packages/api`: OpenAPI contract (brand, errors), generated types, typed client, sample API   | 2.1b          | done        |
+| 2     | 2.1d-2 | Brand from the sample API in `apps/store`: `getBrand`, `API_BASE_URL`, mock switch            | 2.1d-1        | in-progress |
 | 2     | 2.1e   | Auth stub: session interface, login page, server-side guard                                   | 2.1c, 2.1d-2  | planned     |
 | 2     | 2.1g   | Installable app (PWA): manifest, icons, standalone display, theme color                       | 2.1c          | in-progress |
 | 2     | 2.2    | Store: product listing + detail (read)                                                        | 2.1e          | planned     |

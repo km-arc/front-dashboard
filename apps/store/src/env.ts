@@ -20,6 +20,12 @@ const schema = z.object({
     blankToUndefined,
     z.string().refine(isTimeZone, "Unknown IANA time zone").default("Asia/Tehran"),
   ),
+  /** Backend API (server side). Without it, and without the sample API, the default theme is used. */
+  apiBaseUrl: z.preprocess(blankToUndefined, z.url().optional()),
+  /** "enabled" answers API calls from the built-in sample API instead of the network. */
+  apiMocking: z
+    .preprocess(blankToUndefined, z.enum(["enabled", "disabled"]).default("disabled"))
+    .transform((value) => value === "enabled"),
 });
 
 export type Env = z.infer<typeof schema>;
@@ -27,6 +33,8 @@ export type Env = z.infer<typeof schema>;
 export interface RawEnv {
   defaultLocale?: string | undefined;
   timeZone?: string | undefined;
+  apiBaseUrl?: string | undefined;
+  apiMocking?: string | undefined;
 }
 
 /** Validates the raw values and fails fast with one readable message. */
@@ -45,4 +53,6 @@ export function parseEnv(raw: RawEnv): Env {
 export const env: Env = parseEnv({
   defaultLocale: process.env.NEXT_PUBLIC_DEFAULT_LOCALE,
   timeZone: process.env.NEXT_PUBLIC_TIME_ZONE,
+  apiBaseUrl: process.env.API_BASE_URL,
+  apiMocking: process.env.NEXT_PUBLIC_API_MOCKING,
 });

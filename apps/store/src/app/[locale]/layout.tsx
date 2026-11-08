@@ -11,6 +11,7 @@ import { SiteFooter } from "../../components/shell/site-footer";
 import { SiteHeader } from "../../components/shell/site-header";
 import { SkipLink } from "../../components/shell/skip-link";
 import { env } from "../../env";
+import { getBrand } from "../../lib/brand";
 import { APP_COLORS } from "../../lib/manifest";
 import { routing } from "../../i18n/routing";
 import "@fontsource-variable/inter";
@@ -66,8 +67,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   setRequestLocale(locale);
 
   const messages = await getMessages();
-  // Step 2.1d replaces `null` with the brand fetched from the backend.
-  const brand = null;
+  const brand = await getBrand();
   const brandSsr = getBrandSsr(brand);
 
   return (

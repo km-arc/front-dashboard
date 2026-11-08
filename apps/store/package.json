@@ -13,6 +13,7 @@
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.0",
     "@fontsource-variable/vazirmatn": "^5.2.0",
+    "@front-dashboard/api": "workspace:*",
     "@front-dashboard/ui": "workspace:*",
     "next": "^16.4.0",
     "next-intl": "^4.0.0",

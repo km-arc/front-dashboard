@@ -2,4 +2,4 @@
 // so layouts and server components can build the first paint without loading the component library.
 export { getThemeInitScript, type ThemeInitScriptOptions } from "./mode";
 export { getBrandSsr } from "./brand-ssr";
-export { BRAND_STYLE_ID } from "./brand";
+export { BRAND_STYLE_ID, validateBrand, type BrandDefinition } from "./brand";
