@@ -41,8 +41,7 @@ export class ApiError extends Error {
 }
 
 type FetchResult<T, E> =
-  | { data: T; error?: never; response: Response }
-  | { data?: never; error: E; response: Response };
+  { data: T; error?: never; response: Response } | { data?: never; error: E; response: Response };
 
 /** Returns the data of a call or throws an ApiError, so callers do not branch on `error`. */
 export function unwrap<T, E>(result: FetchResult<T, E>): T {
