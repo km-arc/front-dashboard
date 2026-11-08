@@ -23,6 +23,7 @@ Desktop
 
 Language and theme
 - [ ] Switching language keeps the same page, flips `dir`, and shows the Vazirmatn font in fa
+- [ ] Switching language leaves the browser console free of errors and warnings (with the sample API on as well)
 - [ ] Light, dark and system work; the choice survives a reload without a flash
 - [ ] The theme icon shows a sun in light and a moon in dark
 

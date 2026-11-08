@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState } from "react";
 import {
   Button,
   DropdownMenu,
@@ -13,18 +13,23 @@ import {
   isLocale,
   useLocale,
 } from "@front-dashboard/ui";
-import { usePathname, useRouter } from "../../i18n/navigation";
+import { getPathname, usePathname } from "../../i18n/navigation";
 
-/** Switches the language and stays on the same page. */
+/**
+ * Switches the language and stays on the same page.
+ * It is a full page load on purpose: <html lang dir>, the fonts and the theme and brand tags in <head> belong to the
+ * root layout, and React must not unmount and re-render that layout in place (it throws removeChild errors).
+ */
 export function LocaleSwitcher() {
   const { locale, t } = useLocale();
-  const router = useRouter();
   const pathname = usePathname();
-  const [pending, startTransition] = useTransition();
+  const [pending, setPending] = useState(false);
 
   function change(next: string) {
     if (!isLocale(next) || next === locale) return;
-    startTransition(() => router.replace(pathname, { locale: next }));
+    setPending(true);
+    const { search, hash } = window.location;
+    window.location.assign(`${getPathname({ href: pathname, locale: next })}${search}${hash}`);
   }
 
   return (

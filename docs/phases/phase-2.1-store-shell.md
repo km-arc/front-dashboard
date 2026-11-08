@@ -171,7 +171,9 @@ Decisions taken while implementing:
 - Built-in ui strings (open/close menu, language, theme, skip link, error, retry) are reused from the ui catalog; only
   shop-specific text is in the app catalog.
 - The cart badge is not built yet: there is no cart until 2.3.
-- Switching language keeps the path but not the query string (nothing uses one yet).
+- Switching language is a full page load that keeps the path, the query string and the hash. A client navigation re-renders the
+  root layout in place, which unmounts the `<style>` of the brand that `BrandProvider` also manages, and throws `removeChild`
+  errors (found in 2.1d-2, when the brand first had CSS).
 
 **Not executed in the authoring sandbox** (no network): lint, typecheck, tests, build and the visual checklist.
 
@@ -235,9 +237,11 @@ depends on the sign-in method (mobile number with a one-time code, or email and 
 - Tests: the sample brand passes the real validator; no API, API error, network failure and an unsafe brand all fall back
   to the default theme; env parsing of the two new settings.
 - Dependency: `@front-dashboard/api` (workspace link); the lockfile changes.
+- Dev server on the network: `ALLOWED_DEV_ORIGINS` (comma separated hosts) feeds Next's `allowedDevOrigins`; without it a phone or
+  another computer opening the dev server gets a page that never becomes interactive (Next blocks `/_next/hmr` for other hosts).
 
-Try it: with `NEXT_PUBLIC_API_MOCKING=enabled` in `apps/store/.env.local` the store turns green (the sample brand, light and
-dark); without it the store keeps the default blue. The PWA manifest colors stay on the default theme (known limit of 2.1g).
+Try it: with `NEXT_PUBLIC_API_MOCKING=enabled` in `apps/store/.env.local` the accents turn green (the sample brand, light and
+dark): the page title and the active navigation item use the primary color; without it they keep the default blue. The PWA manifest colors stay on the default theme (known limit of 2.1g).
 
 **Not executed in the authoring sandbox** (no network): install, lint, typecheck, tests, build and the visual check.
 
