@@ -59,7 +59,7 @@ describe.each(LOCALES)("manifest screenshots (%s)", (locale) => {
 
   it("matches the declared sizes and the limits Chrome enforces", () => {
     for (const shot of shots) {
-      const [width, height] = (shot.sizes ?? "").split("x").map(Number);
+      const [width = 0, height = 0] = (shot.sizes ?? "").split("x").map(Number);
       const size = pngSize(`${publicDir}${shot.src}`);
       expect(size, shot.src).toEqual({ width, height });
       expect(Math.min(width, height), shot.src).toBeGreaterThanOrEqual(320);
