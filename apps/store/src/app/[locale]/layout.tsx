@@ -11,6 +11,7 @@ import { SiteFooter } from "../../components/shell/site-footer";
 import { SiteHeader } from "../../components/shell/site-header";
 import { SkipLink } from "../../components/shell/skip-link";
 import { env } from "../../env";
+import { APP_COLORS } from "../../lib/manifest";
 import { routing } from "../../i18n/routing";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/vazirmatn";
@@ -26,6 +27,11 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  // Colors the browser or installed-app status bar; follows the system theme, not the in-app toggle.
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: APP_COLORS.backgroundLight },
+    { media: "(prefers-color-scheme: dark)", color: APP_COLORS.backgroundDark },
+  ],
 };
 
 export function generateStaticParams() {
@@ -41,6 +47,16 @@ export async function generateMetadata({
   return {
     title: { default: t("name"), template: `%s · ${t("name")}` },
     description: t("description"),
+    manifest: `/${locale}/manifest.webmanifest`,
+    icons: {
+      icon: [
+        { url: "/icons/icon.svg", type: "image/svg+xml" },
+        { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      ],
+      apple: "/icons/apple-touch-icon.png",
+    },
+    appleWebApp: { capable: true, title: t("name"), statusBarStyle: "default" },
+    formatDetection: { telephone: false },
   };
 }
 

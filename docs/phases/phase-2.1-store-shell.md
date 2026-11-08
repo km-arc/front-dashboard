@@ -1,6 +1,6 @@
 # Step 2.1 – `apps/store` shell / پوستهٔ فروشگاه (`apps/store`)
 
-Status: **approved by owner (2026-11-04)**. 2.1a and 2.1b done (merged, PR #18, CI green); 2.1c delivered as a patch; 2.1d–2.1e not started.
+Status: **approved by owner (2026-11-04)**. 2.1a and 2.1b done (merged, PR #18, CI green); 2.1c done (owner visual review passed 2026-11-08); 2.1g (installable app) delivered as a patch; 2.1d–2.1e not started.
 Owner request: prefer configuration over hard-coded choices where it is cheap (applied to the fallback locale and time zone in 2.1b).
 
 Depends on / وابسته به: Phase 1 · Split into 2.1a–2.1e; each sub-step is one PR, budget ≤ 20 files and
@@ -147,7 +147,7 @@ Still unverified: the `@import "@front-dashboard/ui/styles.css"`
 resolution in Tailwind v4 (fallback: a relative path to `../../../../packages/ui/src/styles/index.css`);
 `next typegen` in the `typecheck` script; the `defineRouting` locale typing.
 
-### 2.1c – store layout (patch delivered, awaiting local verification)
+### 2.1c – store layout (done)
 
 Navigation approved by the owner (2026-11-07); the owner then asked for an app-like phone experience with its own
 navigation, approved as a bottom tab bar. Six destinations, configured in `apps/store/src/config/navigation.ts`
@@ -173,6 +173,29 @@ Decisions taken while implementing:
 - Switching language keeps the path but not the query string (nothing uses one yet).
 
 **Not executed in the authoring sandbox** (no network): lint, typecheck, tests, build and the visual checklist.
+
+### 2.1g – installable app (patch delivered, awaiting local verification)
+
+Owner-approved on 2026-11-07, with the default choices (app name from the app messages, theme color from the default
+theme, placeholder icon):
+- `src/lib/manifest.ts` builds one manifest per locale, served by `src/app/[locale]/manifest.webmanifest/route.ts` at
+  `/en/manifest.webmanifest` and `/fa/manifest.webmanifest`: name, `lang`, `dir`, `display: standalone`, portrait,
+  colors, icons (192, 512, maskable 512). Scope is `/` so a language switch stays inside the installed window.
+- `public/icons`: placeholder icons (a shopping bag on the default primary color): `icon-192.png`, `icon-512.png`,
+  `icon-maskable-512.png`, `apple-touch-icon.png` (180) and `icon.svg`.
+- The locale layout links the manifest, the icons and the Apple web-app tags, and sets `themeColor` for light and dark.
+- `globals.css`: no tap highlight and `touch-action: manipulation` on links and buttons.
+- Tests: manifest fields per locale, hex colors, scope contains the start page, and the icon files exist with exactly
+  the sizes the manifest declares (read from the PNG header).
+
+Known limits, on purpose:
+- The icons are placeholders. To use the real logo, replace the four PNGs and the SVG with the same sizes; the test
+  fails if a size does not match what the manifest declares.
+- Colors in the manifest and the status bar are static hex values of the default theme. A runtime brand (2.1d) and the
+  in-app light/dark toggle do not change them (the status bar follows the system theme).
+- There is no service worker, so no offline mode and no push. Installing does not need one in current Chrome.
+
+**Not executed in the authoring sandbox** (no network): lint, typecheck, tests, build and the install checks.
 
 ---
 
