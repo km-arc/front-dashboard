@@ -8,3 +8,14 @@
   --font-latin: "Inter Variable", "Inter";
   --font-persian: "Vazirmatn Variable", "Vazirmatn";
 }
+
+/* App feel on phones: no grey tap flash, no double-tap zoom delay on controls. */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a,
+button,
+[role="button"] {
+  touch-action: manipulation;
+}
