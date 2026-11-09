@@ -113,9 +113,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /**
-         * End the session
-         */
+        /** End the session */
         post: operations["logout"];
         delete?: never;
         options?: never;
