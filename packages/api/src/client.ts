@@ -50,3 +50,10 @@ export function unwrap<T, E>(result: FetchResult<T, E>): T {
   }
   return result.data;
 }
+
+/** For calls whose answer has no body (204): throws an ApiError unless the call succeeded. */
+export function expectOk<E>(result: { error?: E; response: Response }): void {
+  if (!result.response.ok) {
+    throw new ApiError(result.response.status, isProblem(result.error) ? result.error : undefined);
+  }
+}

@@ -5,7 +5,7 @@
 | 1 | Brand themes: initial list and token source | 1.1 | Brand comes from the backend; start with a light-blue default |
 | 2 | Brand mechanism: build-time or runtime? | 1.1 | Runtime, loaded from the backend |
 | 3 | Persian and English fonts | 1.1 | Agent's proposal accepted: Vazirmatn (fa) + Inter (en) |
-| 4 | Auth mechanism of the .NET backend (JWT, cookies, OIDC)? | 2.1 | **Approved by owner (2026-11-04):** build against the `SessionService` interface with a mock-backed stub; pick JWT-in-httpOnly-cookie via a Next BFF or a backend-set cookie once the .NET side is known |
+| 4 | Auth mechanism of the .NET backend (JWT, cookies, OIDC)? | 2.1 | **Approved by owner (2026-11-04):** build against the `SessionService` interface with a mock-backed stub; pick JWT-in-httpOnly-cookie via a Next BFF or a backend-set cookie once the .NET side is known Owner (2026-11-08): sign in with a mobile number and a one-time code, or with a verified mobile number and a password; email sign-in comes later. A first sign-in is always by code; setting a password is a later step in the profile. Mobile numbers are Iranian (09...) for now. |
 | 5 | Is an OpenAPI spec available or will it be produced alongside the backend? | 2.1 | **Approved by owner (2026-11-04):** the frontend authors `packages/api/openapi/openapi.yaml` for now; replace it when the backend publishes its spec |
 | 6 | Roles list (admin, instructor, support, student, customer…) | 3.1 | |
 | 7 | Notification channels (in-app, SMS, email, push, …) and real-time needs | 8 | |
