@@ -23,6 +23,9 @@ export const getSession = cache(async (): Promise<Session | null> => {
  */
 export async function requireSession(locale: Locale, next: string): Promise<Session> {
   const session = await getSession();
-  if (!session) redirect({ href: { pathname: "/login", query: { next } }, locale });
-  return session;
+  if (session) return session;
+  // `redirect` does not return; TypeScript only knows that for functions declared with an explicit `never` type,
+  // and this one is created by next-intl, so the throw below states it (and is never reached).
+  redirect({ href: { pathname: "/login", query: { next } }, locale });
+  throw new Error("redirect() returned");
 }

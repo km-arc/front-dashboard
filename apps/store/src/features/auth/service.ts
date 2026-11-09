@@ -65,7 +65,6 @@ export interface SessionServiceDeps {
 }
 
 export function createSessionService({ client, tokens }: SessionServiceDeps): SessionService {
-
   async function start(auth: Schemas["AuthResult"]): Promise<Session> {
     await tokens.set(auth.token, new Date(auth.expiresAt));
     return { user: auth.user, expiresAt: auth.expiresAt };
