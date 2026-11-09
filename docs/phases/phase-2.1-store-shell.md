@@ -1,6 +1,6 @@
 # Step 2.1 – `apps/store` shell / پوستهٔ فروشگاه (`apps/store`)
 
-Status: **approved by owner (2026-11-04)**. 2.1a and 2.1b done (merged, PR #18, CI green); 2.1c done (owner visual review passed 2026-11-08); 2.1g (installable app) merged (PR #22); 2.1d-1 (`packages/api`) done (merged, PR #23); 2.1d-2 (brand from the sample API) done; 2.1e-1 (auth contract) delivered as a patch; 2.1e-2 and 2.1e-3 not started.
+Status: **approved by owner (2026-11-04)**. 2.1a and 2.1b done (merged, PR #18, CI green); 2.1c done (owner visual review passed 2026-11-08); 2.1g (installable app) merged (PR #22); 2.1d-1 (`packages/api`) done (merged, PR #23); 2.1d-2 (brand from the sample API) done; 2.1e-1 (auth contract) done (merged, PR #25); 2.1e-2 (session and route guard) delivered as a patch; 2.1e-3 not started.
 Owner request: prefer configuration over hard-coded choices where it is cheap (applied to the fallback locale and time zone in 2.1b).
 
 Depends on / وابسته به: Phase 1 · Split into 2.1a–2.1e; each sub-step is one PR, budget ≤ 20 files and
@@ -247,7 +247,7 @@ dark): the page title and the active navigation item use the primary color; with
 
 **Not executed in the authoring sandbox** (no network): install, lint, typecheck, tests, build and the visual check.
 
-### 2.1e-1 – auth contract and sample accounts (patch delivered, awaiting local verification)
+### 2.1e-1 – auth contract and sample accounts (done)
 
 Owner decisions (2026-11-08): sign in with a mobile number and a one-time code, or with a verified mobile number and a
 password; email sign-in comes later. A first sign-in is always by code (a mobile number with no account gets one); setting
@@ -267,6 +267,37 @@ a password is a later step in the profile and is not part of 2.1e. Mobile number
 
 **Not executed in the authoring sandbox** (no network): install, generate, lint, typecheck and tests (only the logic of the
 identity helpers was run with plain Node).
+
+### 2.1e-2 – session, cookie and route guard (patch delivered, awaiting local verification)
+
+- `src/features/auth/service.ts` (no Next imports, so it is unit-tested with the sample API): the `SessionService` interface
+  (`requestCode`, `signInWithCode`, `signInWithPassword`, `getSession`, `signOut`), `createSessionService`, the `TokenStore`
+  interface and `AuthError` with four codes the interface can explain: `invalid_mobile`, `invalid_code`,
+  `invalid_credentials` (a 401 means a wrong code or a wrong password depending on the call) and `unavailable`
+  (network or 5xx). The real backend replaces only this implementation.
+- `token-store.ts`: the token lives in the **httpOnly** cookie `fd_session` (`SameSite=Lax`, `Secure` in production,
+  expires when the server says), so browser scripts can never read it. It is server only (uses `next/headers`).
+- `server.ts`: `getSessionService()`, `getSession()` (asked from the API once per request) and
+  `requireSession(locale, next)`, the guard: call it on the server at the top of a protected page; without a sign-in it
+  redirects to `/login?next=...`. The check is on the server in the page itself, not only in `proxy.ts`
+  (an optimistic redirect in the proxy was left out on purpose to keep the next-intl proxy unchanged).
+- `actions.ts` (server actions): `requestCodeAction`, `signInWithCodeAction`, `signInWithPasswordAction` and `signOutAction`.
+  They normalize and re-check the mobile number and the code on the server, and answer `{ ok, data }` or
+  `{ ok: false, error }` instead of throwing. `getSession()` says `unavailable` when the API fails (it does not pretend
+  nobody is signed in), and `signOut` forgets the token even if the API cannot be reached.
+- `next-path.ts`: `safeNextPath()` accepts only a path on this site for the `?next=` return address (no open redirect).
+- `/dashboard`: a protected placeholder page with the user's name or mobile number and a sign-out button.
+- `/dashboard` is `force-dynamic` (never prerendered), and a visitor with no session cookie is signed out without calling the API. Found by CI:
+  the build ran without `.env.local`, so no API was configured and the prerender of `/en/dashboard` threw. `pnpm build:ci` and the
+  pre-push hook now build the same way, so the difference between a developer machine and CI shows up before pushing.
+- No new dependency; the lockfile does not change. The dashboard tab stays off until the login page exists (2.1e-3), so
+  the guard's redirect target `/login` shows the not-found page until then.
+
+Try the guard by hand (no login page yet): open `/fa/dashboard`; it should redirect to `/fa/login?next=%2Fdashboard`
+(the not-found page for now). Then in DevTools, Application, Cookies, add a cookie `fd_session` with the value
+`sample.09120000000` (path `/`) and open `/fa/dashboard` again: it shows the sample user. The sign-out button removes it.
+
+**Not executed in the authoring sandbox** (no network): install, lint, typecheck, tests and the manual checks.
 
 ---
 

@@ -1,4 +1,5 @@
 #!/bin/sh
-# Runs the CI gate (without the slow build) before anything leaves this machine.
+# Runs the CI gate before anything leaves this machine, including a build that ignores the local .env.local
+# (CI has none, which is how a build that only passes on one machine slips through).
 # Enabled by `pnpm install` (see the "prepare" script). Emergency bypass: git push --no-verify
-exec pnpm verify
+pnpm verify && pnpm build:ci

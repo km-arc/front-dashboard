@@ -16,7 +16,8 @@
     "check:repo": "node scripts/check-repo.mjs",
     "test:scripts": "node --test scripts/check-repo.test.mjs",
     "verify": "pnpm check:repo && pnpm test:scripts && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",
-    "prepare": "git config core.hooksPath .githooks || true"
+    "prepare": "git config core.hooksPath .githooks || true",
+    "build:ci": "NEXT_PUBLIC_API_MOCKING= API_BASE_URL= pnpm exec turbo run build --force"
   },
   "devDependencies": {
     "prettier": "^3.3.3",
