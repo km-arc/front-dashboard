@@ -43,10 +43,20 @@ export class ApiError extends Error {
 type FetchResult<T, E> =
   { data: T; error?: never; response: Response } | { data?: never; error: E; response: Response };
 
-/** Returns the data of a call or throws an ApiError, so callers do not branch on `error`. */
-export function unwrap<T, E>(result: FetchResult<T, E>): T {
+/**
+ * Returns the data of a call or throws an ApiError, so callers do not branch on `error`.
+ * The result type is the success type without `undefined` (TypeScript infers it from both arms of the union).
+ */
+export function unwrap<T, E>(result: FetchResult<T, E>): Exclude<T, undefined> {
   if (result.error !== undefined || result.data === undefined) {
     throw new ApiError(result.response.status, isProblem(result.error) ? result.error : undefined);
   }
-  return result.data;
+  return result.data as Exclude<T, undefined>;
+}
+
+/** For calls whose answer has no body (204): throws an ApiError unless the call succeeded. */
+export function expectOk<E>(result: { error?: E; response: Response }): void {
+  if (!result.response.ok) {
+    throw new ApiError(result.response.status, isProblem(result.error) ? result.error : undefined);
+  }
 }

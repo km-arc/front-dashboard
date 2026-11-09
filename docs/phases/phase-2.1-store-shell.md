@@ -1,6 +1,6 @@
 # Step 2.1 – `apps/store` shell / پوستهٔ فروشگاه (`apps/store`)
 
-Status: **approved by owner (2026-11-04)**. 2.1a and 2.1b done (merged, PR #18, CI green); 2.1c done (owner visual review passed 2026-11-08); 2.1g (installable app) merged (PR #22); 2.1d-1 (`packages/api`) done (merged, PR #23); 2.1d-2 (brand from the sample API) delivered as a patch; 2.1e not started.
+Status: **approved by owner (2026-11-04)**. 2.1a and 2.1b done (merged, PR #18, CI green); 2.1c done (owner visual review passed 2026-11-08); 2.1g (installable app) merged (PR #22); 2.1d-1 (`packages/api`) done (merged, PR #23); 2.1d-2 (brand from the sample API) done; 2.1e-1 (auth contract) delivered as a patch; 2.1e-2 and 2.1e-3 not started.
 Owner request: prefer configuration over hard-coded choices where it is cheap (applied to the fallback locale and time zone in 2.1b).
 
 Depends on / وابسته به: Phase 1 · Split into 2.1a–2.1e; each sub-step is one PR, budget ≤ 20 files and
@@ -68,7 +68,9 @@ All sub-steps must keep `pnpm lint && pnpm typecheck && pnpm test && pnpm build`
 | 2.1c | Shell layout: skip link, header (logo slot, nav, locale switcher, theme toggle, cart link placeholder), mobile menu in a `Sheet`, footer, `loading`, `error`, `not-found`; 3–4 additive icons in `packages/ui` | unit tests for the navigation config and message parity; menu, switchers and focus are checked by `docs/checklists/visual-review-2.1c.md` now and by Playwright in 2.1f (Radix menus need a real browser); ui story for the new icons |
 | 2.1d-1 | `packages/api`: contract for `GET /brand` and the error model, generated types, client factory, `unwrap`/`ApiError`, sample API (in-memory fetch) | tests: sample API answers the contract, `unwrap` and errors, network failures are not hidden; `generate:check` fails when the committed types differ from the contract |
 | 2.1d-2 | `apps/store`: `getBrand()` (cache of a few minutes, checked with `validateBrand`, any failure means the default theme), `API_BASE_URL` and the mock switch in `env.ts`, brand wired into the root layout | tests: sample brand passes `validateBrand`, brand fallback when the API is down, env validation |
-| 2.1e | Auth stub (the auth part of the contract is written here, once the sign-in method is decided): `SessionService`, login page using ui `Form` (react-hook-form + zod), logout, protected `/account` placeholder, server-side guard | tests: login success/failure/validation messages in en and fa, guard redirects when signed out, session survives reload (mock) |
+| 2.1e-1 | Auth contract (`POST /auth/otp/request`, `/auth/otp/verify`, `/auth/login`, `GET /auth/session`, `POST /auth/logout`), sample accounts, mobile and code normalization | sample API tests (code, password, session, sign-out), normalization tests, `generate:check` |
+| 2.1e-2 | `SessionService` (httpOnly cookie, server only), sign-in and sign-out server actions, server-side route guard, protected `/dashboard` page | tests for the service and the guard with the sample API |
+| 2.1e-3 | Login page with the code and password methods, resend timer, localized errors, dashboard tab on, sign-out | visual review checklist; form validation tests |
 | 2.1g | Installable app (PWA, owner-approved 2026-11-07): web app manifest (name, colors, `display: standalone`), app icons (192, 512, maskable), theme color per mode, safe areas already in place from 2.1c | manifest validity test, icon files exist with the declared sizes, `pnpm build` serves `/manifest.webmanifest`; install check by hand on a phone |
 | 2.1f (optional) | Playwright smoke: 360 and 1280 px × en/fa × light/dark, axe scan, no horizontal scroll | runs in CI; owner decides whether it is worth the CI time |
 
@@ -222,7 +224,7 @@ depends on the sign-in method (mobile number with a one-time code, or email and 
 
 **Not executed in the authoring sandbox** (no network): install, generate, lint, typecheck and tests.
 
-### 2.1d-2 – brand from the sample API in `apps/store` (patch delivered, awaiting local verification)
+### 2.1d-2 – brand from the sample API in `apps/store` (done)
 
 - `src/env.ts`: `API_BASE_URL` (server side, optional URL) and `NEXT_PUBLIC_API_MOCKING` (`enabled` turns the sample API on;
   anything else is rejected at startup). `.env.example` documents both.
@@ -244,6 +246,27 @@ Try it: with `NEXT_PUBLIC_API_MOCKING=enabled` in `apps/store/.env.local` the ac
 dark): the page title and the active navigation item use the primary color; without it they keep the default blue. The PWA manifest colors stay on the default theme (known limit of 2.1g).
 
 **Not executed in the authoring sandbox** (no network): install, lint, typecheck, tests, build and the visual check.
+
+### 2.1e-1 – auth contract and sample accounts (patch delivered, awaiting local verification)
+
+Owner decisions (2026-11-08): sign in with a mobile number and a one-time code, or with a verified mobile number and a
+password; email sign-in comes later. A first sign-in is always by code (a mobile number with no account gets one); setting
+a password is a later step in the profile and is not part of 2.1e. Mobile numbers are Iranian (`09...`) for now.
+
+- `openapi.yaml`: `POST /auth/otp/request` (answers `retryAfterSeconds` and `codeLength`), `POST /auth/otp/verify`,
+  `POST /auth/login`, `GET /auth/session` and `POST /auth/logout` (Bearer token). Request bodies carry `kind: "mobile"` and an
+  `identifier`, so email can be added as another `kind` without a new endpoint. The password login gives the same answer for
+  a wrong password and for an account without one, so it does not reveal which accounts exist.
+- Sample API (`@front-dashboard/api/mock`, `createSampleRoutes`): every valid mobile number signs in with the code
+  `123456`; the account `09120000000` also has the password `Sample#2026`; the token is `sample.<mobile>` and lasts 7 days.
+- `expectOk()` in the client, for answers with no body (sign-out).
+- `apps/store/src/lib/identity.ts`: `normalizeIranMobile` (Persian and Arabic digits; `+98`, `0098`, `98` and a missing 0)
+  and `normalizeOtpCode`, with tests.
+- `src/schema.d.ts` was written by hand in the generator's format: **run `pnpm --filter @front-dashboard/api generate` once and
+  commit any difference**.
+
+**Not executed in the authoring sandbox** (no network): install, generate, lint, typecheck and tests (only the logic of the
+identity helpers was run with plain Node).
 
 ---
 

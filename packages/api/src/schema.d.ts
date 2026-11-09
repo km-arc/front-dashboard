@@ -24,6 +24,103 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/otp/request": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Send a one-time code to a mobile number
+         * @description The first step of signing in with a code. The answer says when another code may be requested and how long the code is.
+         */
+        post: operations["requestOtp"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/otp/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Sign in with a one-time code
+         * @description The second step of signing in with a code. A mobile number that has no account yet gets one.
+         */
+        post: operations["verifyOtp"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Sign in with a verified mobile number and a password
+         * @description Only works for an account that already has a password. A wrong mobile number or password gets the same answer, so the response does not reveal which accounts exist.
+         */
+        post: operations["passwordLogin"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * The signed-in user
+         * @description Needs the token as a Bearer header; answers 401 when it is missing, wrong or expired.
+         */
+        get: operations["getSession"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** End the session */
+        post: operations["logout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -48,6 +145,51 @@ export interface components {
             status: number;
             detail?: string;
             instance?: string;
+        };
+        OtpRequest: {
+            /**
+             * @description How the user is identified. Email will be added later.
+             * @enum {string}
+             */
+            kind: "mobile";
+            /** @description The mobile number in the form 09123456789. */
+            identifier: string;
+        };
+        OtpRequested: {
+            /** @description Seconds before another code may be requested. */
+            retryAfterSeconds: number;
+            /** @description Number of digits in the code. */
+            codeLength: number;
+        };
+        OtpVerify: {
+            /** @enum {string} */
+            kind: "mobile";
+            identifier: string;
+            /** @description The digits of the one-time code. */
+            code: string;
+        };
+        PasswordLogin: {
+            /** @enum {string} */
+            kind: "mobile";
+            identifier: string;
+            password: string;
+        };
+        User: {
+            id: string;
+            mobile: string;
+            displayName?: string;
+        };
+        AuthResult: {
+            /** @description Opaque bearer token. The front end keeps it in an httpOnly cookie on the server, never in browser storage. */
+            token: string;
+            /** Format: date-time */
+            expiresAt: string;
+            user: components["schemas"]["User"];
+        };
+        SessionInfo: {
+            user: components["schemas"]["User"];
+            /** Format: date-time */
+            expiresAt: string;
         };
     };
     responses: {
@@ -85,6 +227,121 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["Brand"];
                 };
+            };
+            default: components["responses"]["Problem"];
+        };
+    };
+    requestOtp: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OtpRequest"];
+            };
+        };
+        responses: {
+            /** @description Code sent */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OtpRequested"];
+                };
+            };
+            default: components["responses"]["Problem"];
+        };
+    };
+    verifyOtp: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OtpVerify"];
+            };
+        };
+        responses: {
+            /** @description Signed in */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthResult"];
+                };
+            };
+            default: components["responses"]["Problem"];
+        };
+    };
+    passwordLogin: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PasswordLogin"];
+            };
+        };
+        responses: {
+            /** @description Signed in */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthResult"];
+                };
+            };
+            default: components["responses"]["Problem"];
+        };
+    };
+    getSession: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The current session */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionInfo"];
+                };
+            };
+            default: components["responses"]["Problem"];
+        };
+    };
+    logout: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Signed out */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             default: components["responses"]["Problem"];
         };
