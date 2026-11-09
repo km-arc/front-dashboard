@@ -25,8 +25,8 @@ A step may start only when its dependencies are `done` and its plan is approved 
 | 2     | 2.1c   | Store layout: header, bottom tab bar (phones), drawer, footer, theme and locale switchers     | 2.1b          | done        |
 | 2     | 2.1d-1 | `packages/api`: OpenAPI contract (brand, errors), generated types, typed client, sample API   | 2.1b          | done        |
 | 2     | 2.1d-2 | Brand from the sample API in `apps/store`: `getBrand`, `API_BASE_URL`, mock switch            | 2.1d-1        | done        |
-| 2     | 2.1e-1 | Auth contract (code, password, session), sample accounts, mobile and code normalization       | 2.1d-2        | in-progress |
-| 2     | 2.1e-2 | `SessionService`, httpOnly cookie, server actions, route guard, dashboard page                | 2.1c, 2.1e-1  | planned     |
+| 2     | 2.1e-1 | Auth contract (code, password, session), sample accounts, mobile and code normalization       | 2.1d-2        | done        |
+| 2     | 2.1e-2 | `SessionService`, httpOnly cookie, server actions, route guard, dashboard page                | 2.1c, 2.1e-1  | in-progress |
 | 2     | 2.1e-3 | Login page (code and password), messages, dashboard tab and sign-out                          | 2.1e-2        | planned     |
 | 2     | 2.1g   | Installable app (PWA): manifest, icons, standalone display, theme color                       | 2.1c          | in-progress |
 | 2     | 2.2    | Store: product listing + detail (read)                                                        | 2.1e-3        | planned     |
