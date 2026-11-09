@@ -287,6 +287,9 @@ identity helpers was run with plain Node).
   nobody is signed in), and `signOut` forgets the token even if the API cannot be reached.
 - `next-path.ts`: `safeNextPath()` accepts only a path on this site for the `?next=` return address (no open redirect).
 - `/dashboard`: a protected placeholder page with the user's name or mobile number and a sign-out button.
+- `/dashboard` is `force-dynamic` (never prerendered), and a visitor with no session cookie is signed out without calling the API. Found by CI:
+  the build ran without `.env.local`, so no API was configured and the prerender of `/en/dashboard` threw. `pnpm build:ci` and the
+  pre-push hook now build the same way, so the difference between a developer machine and CI shows up before pushing.
 - No new dependency; the lockfile does not change. The dashboard tab stays off until the login page exists (2.1e-3), so
   the guard's redirect target `/login` shows the not-found page until then.
 

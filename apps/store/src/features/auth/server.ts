@@ -12,8 +12,13 @@ export async function getSessionService(): Promise<SessionService> {
   return createSessionService({ client, tokens: cookieTokenStore() });
 }
 
-/** The signed-in user of this request (asked from the API once per request). */
+/**
+ * The signed-in user of this request (asked from the API once per request).
+ * A visitor without the session cookie is signed out without calling the API, so a store with no API configured
+ * still works for signed-out visitors (and a build that cannot reach an API does not fail).
+ */
 export const getSession = cache(async (): Promise<Session | null> => {
+  if (!(await cookieTokenStore().get())) return null;
   return (await getSessionService()).getSession();
 });
 
