@@ -18,7 +18,7 @@ const items: Record<NavId, NavItem> = {
   contact: { id: "contact", href: "/contact", available: false },
   search: { id: "search", href: "/search", available: false },
   cart: { id: "cart", href: "/cart", available: false },
-  dashboard: { id: "dashboard", href: "/dashboard", available: false },
+  dashboard: { id: "dashboard", href: "/dashboard", available: true },
 };
 
 const pick = (...ids: NavId[]): readonly NavItem[] => ids.map((id) => items[id]);

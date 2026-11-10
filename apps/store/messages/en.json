@@ -32,5 +32,29 @@
     "title": "Dashboard",
     "welcome": "Signed in as {name}",
     "signOut": "Sign out"
+  },
+  "login": {
+    "title": "Sign in",
+    "subtitle": "Sign in with your mobile number.",
+    "methodCode": "One-time code",
+    "methodPassword": "Password",
+    "mobileLabel": "Mobile number",
+    "mobileHint": "Example: 09123456789",
+    "sendCode": "Send code",
+    "codeSentTo": "We sent a code to",
+    "changeNumber": "Change number",
+    "codeLabel": "Verification code",
+    "codeHint": "Enter the code from the message.",
+    "signIn": "Sign in",
+    "passwordLabel": "Password",
+    "passwordHint": "Works only if you have already set a password. Otherwise sign in with a one-time code.",
+    "resend": "Send again",
+    "resendIn": "Send again in {seconds, number} s",
+    "errors": {
+      "invalid_mobile": "Enter a valid mobile number, like 09123456789.",
+      "invalid_code": "The code is wrong or has expired.",
+      "invalid_credentials": "The mobile number or password is wrong.",
+      "unavailable": "Sign-in is not available right now. Please try again in a moment."
+    }
   }
 }
