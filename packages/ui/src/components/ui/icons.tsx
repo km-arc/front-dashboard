@@ -127,3 +127,62 @@ export function GridIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export function PackageIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="m7.5 4.27 9 5.15" />
+      <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+      <path d="m3.3 7 8.7 5 8.7-5" />
+      <path d="M12 22V12" />
+    </svg>
+  );
+}
+
+export function MapPinIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+}
+
+export function WalletIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" />
+      <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
+    </svg>
+  );
+}
+
+export function LifeBuoyIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="12" cy="12" r="10" />
+      <path d="m4.93 4.93 4.24 4.24M14.83 9.17l4.24-4.24M14.83 14.83l4.24 4.24M9.17 14.83l-4.24 4.24" />
+      <circle cx="12" cy="12" r="4" />
+    </svg>
+  );
+}
+
+/** Points to the end of a line of text: it turns around by itself in languages written from right to left. */
+export function ChevronEndIcon({ className, ...props }: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props} className={`rtl:rotate-180 ${className ?? ""}`.trim()}>
+      <path d="m9 18 6-6-6-6" />
+    </svg>
+  );
+}
+
+/** The arrow leaves through the end of the line, so it turns around in languages written from right to left. */
+export function LogOutIcon({ className, ...props }: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props} className={`rtl:rotate-180 ${className ?? ""}`.trim()}>
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+      <path d="m16 17 5-5-5-5" />
+      <path d="M21 12H9" />
+    </svg>
+  );
+}

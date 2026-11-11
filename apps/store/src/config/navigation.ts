@@ -32,11 +32,35 @@ export const drawerNav = pick("contact");
 /** Places to browse on desktop: header links and footer. */
 export const mainNav = pick("home", "categories", "contact");
 
-/** Frequent tools on desktop: icons in the header. */
-export const utilityNav = pick("search", "cart", "dashboard");
+/** Frequent tools on desktop: icons in the header (the account has its own menu there). */
+export const utilityNav = pick("search", "cart");
 
 /** `pathname` is the locale-less path from next-intl's `usePathname`. */
 export function isActivePath(pathname: string, href: string): boolean {
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+export type AccountNavId = "overview" | "orders" | "profile" | "addresses" | "wallet" | "support";
+
+export interface AccountNavItem {
+  id: AccountNavId;
+  /** Path without the locale prefix. */
+  href: string;
+  available: boolean;
+}
+
+/** The options of the signed-in account: the header menu, the dashboard sidebar and the phone account screen. */
+export const accountNav: readonly AccountNavItem[] = [
+  { id: "overview", href: "/dashboard", available: true },
+  { id: "orders", href: "/dashboard/orders", available: false },
+  { id: "profile", href: "/dashboard/profile", available: false },
+  { id: "addresses", href: "/dashboard/addresses", available: false },
+  { id: "wallet", href: "/dashboard/wallet", available: false },
+  { id: "support", href: "/dashboard/support", available: false },
+];
+
+/** The overview is only current on its own path; the other options also match their sub-pages. */
+export function isActiveAccountPath(pathname: string, item: AccountNavItem): boolean {
+  return item.id === "overview" ? pathname === item.href : isActivePath(pathname, item.href);
 }

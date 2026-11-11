@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { mainNav, utilityNav } from "../../config/navigation";
 import { Link } from "../../i18n/navigation";
 import { LocaleSwitcher } from "./locale-switcher";
+import { AccountMenu } from "./account-menu";
 import { MobileMenu } from "./mobile-menu";
 import { NavLink } from "./nav-link";
 import { ThemeToggle } from "./theme-toggle";
@@ -33,6 +34,7 @@ export async function SiteHeader() {
           {utilityNav.map((item) => (
             <NavLink key={item.id} item={item} variant="icon" />
           ))}
+          <AccountMenu />
           <LocaleSwitcher />
           <ThemeToggle />
         </div>

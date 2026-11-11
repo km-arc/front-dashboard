@@ -26,3 +26,15 @@ every valid mobile number signs in with the code `123456`; the account `09120000
 
 Sign-off: Reviewer ____________  Date ____________
 After sign-off set the step to `done` in docs/ROADMAP.md.
+
+2.1e-4: account menu (360px and desktop, `/fa` and `/en`, light and dark)
+- [ ] Signed out, the desktop header shows a "Sign in" button (after a brief placeholder), not an avatar
+- [ ] Signed in, it shows a round avatar (first letter of the name; a person icon for a number without a name)
+- [ ] The avatar menu shows the name, the mobile number (left to right), the six options and Sign out; only Overview is clickable, the rest say "coming soon"
+- [ ] Sign out in the menu returns to the home page and the header goes back to "Sign in"
+- [ ] Signing in from the login page turns the header into the avatar without a manual reload
+- [ ] Phone: the Dashboard tab opens the account screen with the profile card, six rows and a Sign out button; the chevrons point to the reading end (left in fa)
+- [ ] Phone: the Dashboard tab signed out opens the login page, and signing in lands on the account screen
+- [ ] Desktop: `/dashboard` has a sidebar with the profile card, the options (Overview highlighted) and Sign out; no rows or second Sign out in the content
+- [ ] Switching language keeps working and the console has no errors; the pages other than the dashboard are still static (see the build output)
+
