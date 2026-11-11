@@ -64,7 +64,10 @@ describe("navigation config", () => {
 
   it("shares one availability per destination across surfaces", () => {
     for (const item of items) {
-      expect(items.find((other) => other.id === item.id), item.id).toBe(item);
+      expect(
+        items.find((other) => other.id === item.id),
+        item.id,
+      ).toBe(item);
     }
   });
 
