@@ -3,16 +3,22 @@ import {
   CartIcon,
   CheckIcon,
   ChevronDownIcon,
+  ChevronEndIcon,
   ChevronUpIcon,
   CloseIcon,
   GridIcon,
   HomeIcon,
+  LifeBuoyIcon,
+  LogOutIcon,
+  MapPinIcon,
   MenuIcon,
   MinusIcon,
   MoonIcon,
+  PackageIcon,
   SearchIcon,
   SunIcon,
   UserIcon,
+  WalletIcon,
 } from "./icons";
 
 const meta = {
@@ -36,6 +42,12 @@ const icons = [
   { name: "MoonIcon", Icon: MoonIcon },
   { name: "HomeIcon", Icon: HomeIcon },
   { name: "GridIcon", Icon: GridIcon },
+  { name: "PackageIcon", Icon: PackageIcon },
+  { name: "MapPinIcon", Icon: MapPinIcon },
+  { name: "WalletIcon", Icon: WalletIcon },
+  { name: "LifeBuoyIcon", Icon: LifeBuoyIcon },
+  { name: "ChevronEndIcon", Icon: ChevronEndIcon },
+  { name: "LogOutIcon", Icon: LogOutIcon },
 ];
 
 export const Gallery: Story = {

@@ -1,6 +1,6 @@
 # Step 2.1 – `apps/store` shell / پوستهٔ فروشگاه (`apps/store`)
 
-Status: **approved by owner (2026-11-04)**. 2.1a and 2.1b done (merged, PR #18, CI green); 2.1c done (owner visual review passed 2026-11-08); 2.1g (installable app) merged (PR #22); 2.1d-1 (`packages/api`) done (merged, PR #23); 2.1d-2 (brand from the sample API) done; 2.1e-1 (auth contract) done (merged, PR #25); 2.1e-2 (session and route guard) done; 2.1e-3 (login page) delivered as a patch.
+Status: **approved by owner (2026-11-04)**. 2.1a and 2.1b done (merged, PR #18, CI green); 2.1c done (owner visual review passed 2026-11-08); 2.1g (installable app) merged (PR #22); 2.1d-1 (`packages/api`) done (merged, PR #23); 2.1d-2 (brand from the sample API) done; 2.1e-1 (auth contract) done (merged, PR #25); 2.1e-2 (session and route guard) done; 2.1e-3 (login page) done; 2.1e-4 (account menu) delivered as a patch.
 Owner request: prefer configuration over hard-coded choices where it is cheap (applied to the fallback locale and time zone in 2.1b).
 
 Depends on / وابسته به: Phase 1 · Split into 2.1a–2.1e; each sub-step is one PR, budget ≤ 20 files and
@@ -71,6 +71,7 @@ All sub-steps must keep `pnpm lint && pnpm typecheck && pnpm test && pnpm build`
 | 2.1e-1 | Auth contract (`POST /auth/otp/request`, `/auth/otp/verify`, `/auth/login`, `GET /auth/session`, `POST /auth/logout`), sample accounts, mobile and code normalization | sample API tests (code, password, session, sign-out), normalization tests, `generate:check` |
 | 2.1e-2 | `SessionService` (httpOnly cookie, server only), sign-in and sign-out server actions, server-side route guard, protected `/dashboard` page | tests for the service and the guard with the sample API |
 | 2.1e-3 | Login page with the code and password methods, resend timer, localized errors, dashboard tab on, sign-out | visual review checklist; form validation tests |
+| 2.1e-4 | Account menu (owner request 2026-11-09): avatar menu or Sign in button in the header, account screen on phones, sidebar on desktop, session endpoint for the header | tests for the account navigation config and the session answer parser; checklist |
 | 2.1g | Installable app (PWA, owner-approved 2026-11-07): web app manifest (name, colors, `display: standalone`), app icons (192, 512, maskable), theme color per mode, safe areas already in place from 2.1c | manifest validity test, icon files exist with the declared sizes, `pnpm build` serves `/manifest.webmanifest`; install check by hand on a phone |
 | 2.1f (optional) | Playwright smoke: 360 and 1280 px × en/fa × light/dark, axe scan, no horizontal scroll | runs in CI; owner decides whether it is worth the CI time |
 
@@ -299,7 +300,7 @@ Try the guard by hand (no login page yet): open `/fa/dashboard`; it should redir
 
 **Not executed in the authoring sandbox** (no network): install, lint, typecheck, tests and the manual checks.
 
-### 2.1e-3 – login page (patch delivered, awaiting local verification)
+### 2.1e-3 – login page (done)
 
 - `/login` (`src/app/[locale]/login/page.tsx`, `force-dynamic`): a server page that reads `?next=`, accepts it only through
   `safeNextPath`, and redirects an already signed-in visitor straight to it (if the API cannot be asked it shows the form).
@@ -317,6 +318,30 @@ Try the guard by hand (no login page yet): open `/fa/dashboard`; it should redir
 
 Sample sign-in data (sample API on): any valid mobile number with the code `123456`; the account `09120000000` also with the
 password `Sample#2026`.
+
+**Not executed in the authoring sandbox** (no network): install, lint, typecheck, tests, build and the manual checks.
+
+### 2.1e-4 – account menu (patch delivered, awaiting local verification)
+
+Owner request (2026-11-09): the dashboard needs a tidy menu with its options and sign-out, in the header and on phones.
+The six options are `accountNav` in `src/config/navigation.ts` (overview, orders, profile, addresses, wallet, support; only
+the overview is on, the rest show "coming soon" until their pages exist).
+
+- **Header:** a `Sign in` button when signed out, and a round avatar (first letter of the name, or a person icon) when signed
+  in. The avatar opens a menu: name and mobile number, the six options, and Sign out. On phones the header is unchanged: the
+  tab bar's Dashboard tab leads to the account screen (or to the login page when signed out).
+- **Phones:** `/dashboard` is the account screen: a profile card, the options as large 56px rows with a chevron that turns
+  around in right-to-left languages, and a Sign out button.
+- **Desktop:** `/dashboard/*` has a sidebar with the profile card, the options (the current one highlighted) and Sign out. One
+  guard in `dashboard/layout.tsx` covers every page below it.
+- **Pages stay static.** The header learns who is signed in from `GET /api/auth/session` (new route handler, never cached), asked
+  by `SessionProvider` after the first render and again on every navigation, since signing in or out always navigates. While it
+  loads the header shows a small placeholder. Reading the cookie in the header itself would have made every page dynamic.
+- `packages/ui`: icons package, map pin, wallet, life buoy, chevron-end and log-out (the last two turn around in RTL), with the
+  icon story updated.
+- The header no longer has a separate dashboard icon (the avatar menu replaces it on desktop); the tab bar keeps its tab.
+- Tests: the account navigation (order, labels in en and fa, the overview is current only on its own path) and the parser
+  of the session answer.
 
 **Not executed in the authoring sandbox** (no network): install, lint, typecheck, tests, build and the manual checks.
 

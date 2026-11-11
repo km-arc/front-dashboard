@@ -1,14 +1,31 @@
 import { describe, expect, it } from "vitest";
 import en from "../../messages/en.json";
 import fa from "../../messages/fa.json";
-import { drawerNav, isActivePath, mainNav, tabNav, utilityNav } from "./navigation";
+import {
+  accountNav,
+  drawerNav,
+  isActiveAccountPath,
+  isActivePath,
+  mainNav,
+  tabNav,
+  utilityNav,
+} from "./navigation";
 
-const items = [...mainNav, ...utilityNav];
+const items = [...mainNav, ...utilityNav, ...tabNav, ...drawerNav];
+const destinations = new Set(items.map((item) => item.id));
 
 describe("navigation config", () => {
-  it("lists every destination once", () => {
-    const ids = items.map((item) => item.id);
-    expect(new Set(ids).size).toBe(ids.length);
+  it("lists each surface without repeating a destination", () => {
+    for (const list of [mainNav, utilityNav, tabNav, drawerNav]) {
+      const ids = list.map((item) => item.id);
+      expect(new Set(ids).size, ids.join()).toBe(ids.length);
+    }
+  });
+
+  it("knows exactly the six destinations", () => {
+    expect([...destinations].sort()).toEqual(
+      ["cart", "categories", "contact", "dashboard", "home", "search"].sort(),
+    );
   });
 
   it("uses locale-less absolute paths", () => {
@@ -25,7 +42,7 @@ describe("navigation config", () => {
 
   it("keeps the order of every surface", () => {
     expect(mainNav.map((item) => item.id)).toEqual(["home", "categories", "contact"]);
-    expect(utilityNav.map((item) => item.id)).toEqual(["search", "cart", "dashboard"]);
+    expect(utilityNav.map((item) => item.id)).toEqual(["search", "cart"]);
     expect(tabNav.map((item) => item.id)).toEqual([
       "home",
       "categories",
@@ -42,15 +59,12 @@ describe("navigation config", () => {
 
   it("covers every destination on phones (tab bar or drawer)", () => {
     const onPhones = new Set([...tabNav, ...drawerNav].map((item) => item.id));
-    expect(onPhones).toEqual(new Set(items.map((item) => item.id)));
+    expect(onPhones).toEqual(destinations);
   });
 
   it("shares one availability per destination across surfaces", () => {
-    for (const item of [...tabNav, ...drawerNav]) {
-      expect(
-        items.find((other) => other.id === item.id),
-        item.id,
-      ).toBe(item);
+    for (const item of items) {
+      expect(items.find((other) => other.id === item.id), item.id).toBe(item);
     }
   });
 
@@ -69,5 +83,38 @@ describe("isActivePath", () => {
     expect(isActivePath("/categories", "/categories")).toBe(true);
     expect(isActivePath("/categories/books", "/categories")).toBe(true);
     expect(isActivePath("/categories-old", "/categories")).toBe(false);
+  });
+});
+
+describe("account navigation", () => {
+  it("lists the six options in order, with the overview available", () => {
+    expect(accountNav.map((item) => item.id)).toEqual([
+      "overview",
+      "orders",
+      "profile",
+      "addresses",
+      "wallet",
+      "support",
+    ]);
+    expect(accountNav[0]?.available).toBe(true);
+  });
+
+  it("has a label for every option in en and fa", () => {
+    for (const messages of [en, fa]) {
+      for (const item of accountNav) expect(messages.account.nav[item.id], item.id).toBeTruthy();
+    }
+  });
+
+  it("keeps every option under /dashboard", () => {
+    for (const item of accountNav) expect(item.href.startsWith("/dashboard"), item.id).toBe(true);
+  });
+
+  it("marks the overview only on its own path", () => {
+    const overview = { id: "overview", href: "/dashboard", available: true } as const;
+    const orders = { id: "orders", href: "/dashboard/orders", available: false } as const;
+    expect(isActiveAccountPath("/dashboard", overview)).toBe(true);
+    expect(isActiveAccountPath("/dashboard/orders", overview)).toBe(false);
+    expect(isActiveAccountPath("/dashboard/orders", orders)).toBe(true);
+    expect(isActiveAccountPath("/dashboard/orders/42", orders)).toBe(true);
   });
 });

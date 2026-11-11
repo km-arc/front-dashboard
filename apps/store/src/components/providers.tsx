@@ -12,6 +12,7 @@ import {
   type BrandDefinition,
   type Locale,
 } from "@front-dashboard/ui";
+import { SessionProvider } from "../features/auth/session-context";
 
 export interface ProvidersProps {
   locale: Locale;
@@ -33,7 +34,7 @@ export function Providers({ locale, timeZone, brand, children }: ProvidersProps)
       <ThemeProvider>
         <BrandProvider brand={brand}>
           <UiProvider dir={getDirection(locale)}>
-            {children}
+            <SessionProvider>{children}</SessionProvider>
             <ThemedToaster />
           </UiProvider>
         </BrandProvider>

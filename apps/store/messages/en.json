@@ -56,5 +56,16 @@
       "invalid_credentials": "The mobile number or password is wrong.",
       "unavailable": "Sign-in is not available right now. Please try again in a moment."
     }
+  },
+  "account": {
+    "menu": "Account menu",
+    "nav": {
+      "overview": "Overview",
+      "orders": "Orders",
+      "profile": "Profile",
+      "addresses": "Addresses",
+      "wallet": "Wallet",
+      "support": "Support"
+    }
   }
 }
