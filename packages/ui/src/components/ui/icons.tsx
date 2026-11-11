@@ -167,7 +167,7 @@ export function LifeBuoyIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-/** Points to the end of a line of text: it turns around by itself in right-to-left languages. */
+/** Points to the end of a line of text: it turns around by itself in languages written from right to left. */
 export function ChevronEndIcon({ className, ...props }: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} {...props} className={`rtl:rotate-180 ${className ?? ""}`.trim()}>
@@ -176,7 +176,7 @@ export function ChevronEndIcon({ className, ...props }: SVGProps<SVGSVGElement>)
   );
 }
 
-/** The arrow leaves through the end of the line, so it turns around in right-to-left languages. */
+/** The arrow leaves through the end of the line, so it turns around in languages written from right to left. */
 export function LogOutIcon({ className, ...props }: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} {...props} className={`rtl:rotate-180 ${className ?? ""}`.trim()}>
