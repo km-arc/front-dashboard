@@ -1,6 +1,6 @@
 # Step 2.1 – `apps/store` shell / پوستهٔ فروشگاه (`apps/store`)
 
-Status: **approved by owner (2026-11-04)**. 2.1a and 2.1b done (merged, PR #18, CI green); 2.1c done (owner visual review passed 2026-11-08); 2.1g (installable app) merged (PR #22); 2.1d-1 (`packages/api`) done (merged, PR #23); 2.1d-2 (brand from the sample API) done; 2.1e-1 (auth contract) done (merged, PR #25); 2.1e-2 (session and route guard) delivered as a patch; 2.1e-3 not started.
+Status: **approved by owner (2026-11-04)**. 2.1a and 2.1b done (merged, PR #18, CI green); 2.1c done (owner visual review passed 2026-11-08); 2.1g (installable app) merged (PR #22); 2.1d-1 (`packages/api`) done (merged, PR #23); 2.1d-2 (brand from the sample API) done; 2.1e-1 (auth contract) done (merged, PR #25); 2.1e-2 (session and route guard) done; 2.1e-3 (login page) delivered as a patch.
 Owner request: prefer configuration over hard-coded choices where it is cheap (applied to the fallback locale and time zone in 2.1b).
 
 Depends on / وابسته به: Phase 1 · Split into 2.1a–2.1e; each sub-step is one PR, budget ≤ 20 files and
@@ -268,7 +268,7 @@ a password is a later step in the profile and is not part of 2.1e. Mobile number
 **Not executed in the authoring sandbox** (no network): install, generate, lint, typecheck and tests (only the logic of the
 identity helpers was run with plain Node).
 
-### 2.1e-2 – session, cookie and route guard (patch delivered, awaiting local verification)
+### 2.1e-2 – session, cookie and route guard (done)
 
 - `src/features/auth/service.ts` (no Next imports, so it is unit-tested with the sample API): the `SessionService` interface
   (`requestCode`, `signInWithCode`, `signInWithPassword`, `getSession`, `signOut`), `createSessionService`, the `TokenStore`
@@ -298,6 +298,27 @@ Try the guard by hand (no login page yet): open `/fa/dashboard`; it should redir
 `sample.09120000000` (path `/`) and open `/fa/dashboard` again: it shows the sample user. The sign-out button removes it.
 
 **Not executed in the authoring sandbox** (no network): install, lint, typecheck, tests and the manual checks.
+
+### 2.1e-3 – login page (patch delivered, awaiting local verification)
+
+- `/login` (`src/app/[locale]/login/page.tsx`, `force-dynamic`): a server page that reads `?next=`, accepts it only through
+  `safeNextPath`, and redirects an already signed-in visitor straight to it (if the API cannot be asked it shows the form).
+- `features/auth/login-form.tsx`: two methods in tabs. **One-time code**: mobile number, then the code with a resend timer
+  (`retryAfterSeconds` from the server, counted from timestamps in `countdown.ts` so a throttled tab stays right) and "change
+  number"; **password**: mobile number and password, with a hint that it only works once a password has been set. Persian and
+  Arabic digits are accepted; the number and code fields read left to right in Persian too; `autocomplete` is `tel-national`,
+  `one-time-code` and `current-password`. Errors from the server actions map to four localized messages
+  (invalid number, wrong or expired code, wrong credentials, unavailable). After a sign-in it goes to `next` and refreshes.
+- The dashboard tab and the header icon are now on (`available: true`); signed out, they lead to the login page and back.
+- Built with the ui `Input`, `Label`, `Button`, `Alert` and `Tabs` and plain state, not `react-hook-form`: the form is two
+  fields, and this keeps the dependency list (and the lockfile) unchanged. The checks live in the server actions anyway.
+- Tests: the countdown helper; the en and fa message parity test covers the new texts. The form itself is checked by hand
+  (`docs/checklists/visual-review-2.1e.md`) until the Playwright smoke test exists.
+
+Sample sign-in data (sample API on): any valid mobile number with the code `123456`; the account `09120000000` also with the
+password `Sample#2026`.
+
+**Not executed in the authoring sandbox** (no network): install, lint, typecheck, tests, build and the manual checks.
 
 ---
 
