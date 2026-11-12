@@ -1,4 +1,14 @@
 import { createApiClient, type ApiFetch, type Brand, type components } from "./client";
+import {
+  SAMPLE_CATEGORIES,
+  SAMPLE_CURRENCY,
+  findSampleProduct,
+  queryProducts,
+  toCategory,
+  toProduct,
+  type CatalogLocale,
+  type ProductSort,
+} from "./sample-catalog";
 
 type Schemas = components["schemas"];
 type AuthResult = Schemas["AuthResult"];
@@ -30,8 +40,12 @@ const TOKEN_PREFIX = "sample.";
 const OTP_RETRY_SECONDS = 60;
 const SESSION_MS = 7 * 24 * 60 * 60 * 1000;
 
-export type MockHandler = (request: Request) => Response | Promise<Response>;
-/** Keys look like "GET /brand". */
+/** `params` holds the values of `:name` segments of the route key (for example the slug of /products/:slug). */
+export type MockHandler = (
+  request: Request,
+  params: Record<string, string>,
+) => Response | Promise<Response>;
+/** Keys look like "GET /brand" or "GET /products/:slug". */
 export type MockRoutes = Record<string, MockHandler>;
 
 export function json(body: unknown, status = 200): Response {
@@ -76,6 +90,29 @@ function mobileFromBearer(request: Request): string | null {
   const token = header.startsWith("Bearer ") ? header.slice("Bearer ".length) : "";
   const mobile = token.startsWith(TOKEN_PREFIX) ? token.slice(TOKEN_PREFIX.length) : "";
   return MOBILE.test(mobile) ? mobile : null;
+}
+
+
+const LOCALES: readonly CatalogLocale[] = ["en", "fa"];
+const SORTS: readonly ProductSort[] = ["newest", "price_asc", "price_desc"];
+
+/** The `locale` query value (default en), or null when it is not a language of the store. */
+function readLocale(query: URLSearchParams): CatalogLocale | null {
+  const value = query.get("locale") ?? "en";
+  return LOCALES.find((locale) => locale === value) ?? null;
+}
+
+/** A whole number in [min, max] from the query, `fallback` when absent, null when invalid. */
+function readInt(
+  query: URLSearchParams,
+  name: string,
+  fallback: number,
+  max: number,
+): number | null {
+  const raw = query.get(name);
+  if (raw === null) return fallback;
+  const value = Number(raw);
+  return Number.isInteger(value) && value >= 1 && value <= max ? value : null;
 }
 
 export interface SampleRoutesOptions {
@@ -128,16 +165,76 @@ export function createSampleRoutes({ now = Date.now }: SampleRoutesOptions = {})
         ? new Response(null, { status: 204 })
         : problem(401, "Not signed in");
     },
+
+    "GET /store/settings": () => {
+      const settings: Schemas["StoreSettings"] = { currency: { code: SAMPLE_CURRENCY } };
+      return json(settings);
+    },
+
+    "GET /categories": (request) => {
+      const locale = readLocale(new URL(request.url).searchParams);
+      if (!locale) return problem(400, "Invalid locale");
+      const list: Schemas["CategoryList"] = {
+        items: SAMPLE_CATEGORIES.map((category) => toCategory(category, locale)),
+      };
+      return json(list);
+    },
+
+    "GET /products": (request) => {
+      const query = new URL(request.url).searchParams;
+      const locale = readLocale(query);
+      const page = readInt(query, "page", 1, Number.MAX_SAFE_INTEGER);
+      const pageSize = readInt(query, "pageSize", 12, 48);
+      const sort = SORTS.find((value) => value === (query.get("sort") ?? "newest"));
+      if (!locale || !page || !pageSize || !sort) return problem(400, "Invalid query");
+      const category = query.get("category") ?? undefined;
+      const q = query.get("q") ?? undefined;
+      return json(queryProducts({ locale, category, q, sort, page, pageSize }));
+    },
+
+    "GET /products/:slug": (request, params) => {
+      const locale = readLocale(new URL(request.url).searchParams);
+      if (!locale) return problem(400, "Invalid locale");
+      const product = findSampleProduct(params.slug ?? "");
+      return product ? json(toProduct(product, locale)) : problem(404, "Product not found");
+    },
   };
 }
 
 export const sampleRoutes: MockRoutes = createSampleRoutes();
 
+/** Finds the handler for a request: an exact key first, then keys with `:name` segments. */
+function findHandler(
+  routes: MockRoutes,
+  method: string,
+  pathname: string,
+): { handler: MockHandler; params: Record<string, string> } | null {
+  const exact = routes[`${method} ${pathname}`];
+  if (exact) return { handler: exact, params: {} };
+  const segments = pathname.split("/");
+  for (const [key, handler] of Object.entries(routes)) {
+    const [keyMethod, keyPath = ""] = key.split(" ");
+    const pattern = keyPath.split("/");
+    if (keyMethod !== method || pattern.length !== segments.length) continue;
+    const params: Record<string, string> = {};
+    const matches = pattern.every((part, index) => {
+      const segment = segments[index] ?? "";
+      if (part.startsWith(":")) {
+        params[part.slice(1)] = decodeURIComponent(segment);
+        return segment !== "";
+      }
+      return part === segment;
+    });
+    if (matches) return { handler, params };
+  }
+  return null;
+}
+
 /** A fetch that serves `routes`; anything else is a 404 problem, like a real server would answer. */
 export function createMockFetch(routes: MockRoutes = sampleRoutes): ApiFetch {
   return async (request) => {
-    const handler = routes[`${request.method} ${new URL(request.url).pathname}`];
-    return handler ? handler(request) : problem(404, "Not found");
+    const found = findHandler(routes, request.method, new URL(request.url).pathname);
+    return found ? found.handler(request, found.params) : problem(404, "Not found");
   };
 }
 

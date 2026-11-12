@@ -121,6 +121,85 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/store/settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Settings of the store
+         * @description Public and cacheable. The currency is chosen here, so the front end never hard-codes the unit of a price.
+         */
+        get: operations["getStoreSettings"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Product categories
+         * @description The whole tree as a flat list; parentSlug links a category to its parent.
+         */
+        get: operations["listCategories"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Products, filtered, sorted and paged
+         * @description pageSize defaults to 12 and may be at most 48. A page past the end is empty. An unknown category gives an empty page.
+         */
+        get: operations["listProducts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/products/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * One product
+         */
+        get: operations["getProduct"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -191,6 +270,80 @@ export interface components {
             /** Format: date-time */
             expiresAt: string;
         };
+        StoreSettings: {
+            currency: components["schemas"]["Currency"];
+        };
+        Currency: {
+            /** @description ISO 4217 code, or IRT for Toman. Every price in the API is an amount in the major unit of this currency. */
+            code: string;
+        };
+        Category: {
+            slug: string;
+            name: string;
+            description?: string;
+            /** @description Slug of the parent category; missing for a top-level category. */
+            parentSlug?: string;
+            /** @description Products in this category and in all the categories below it. */
+            productCount: number;
+        };
+        CategoryList: {
+            items: components["schemas"]["Category"][];
+        };
+        /**
+         * @description How the product is delivered. A physical product is shipped, a digital product is downloaded or activated, and a course gives access to lessons.
+         * @enum {string}
+         */
+        ProductKind: "physical" | "digital" | "course";
+        ProductImage: {
+            url: string;
+            alt?: string;
+        };
+        ProductSummary: {
+            id: string;
+            slug: string;
+            name: string;
+            summary?: string;
+            /** @description In the major unit of the store currency. */
+            price: number;
+            /** @description The price before a discount; only present when it is higher than the price. */
+            compareAtPrice?: number;
+            image?: components["schemas"]["ProductImage"];
+            kind: components["schemas"]["ProductKind"];
+            categorySlug: string;
+            inStock: boolean;
+        };
+        ProductPage: {
+            items: components["schemas"]["ProductSummary"][];
+            page: number;
+            pageSize: number;
+            total: number;
+            totalPages: number;
+        };
+        ProductAttribute: {
+            name: string;
+            value: string;
+        };
+        CategoryRef: {
+            slug: string;
+            name: string;
+        };
+        Product: {
+            id: string;
+            slug: string;
+            name: string;
+            summary?: string;
+            description: string;
+            /** @description In the major unit of the store currency. */
+            price: number;
+            compareAtPrice?: number;
+            kind: components["schemas"]["ProductKind"];
+            images: components["schemas"]["ProductImage"][];
+            category: components["schemas"]["CategoryRef"];
+            /** @description The category and its ancestors, from the top-level category down; for breadcrumbs. */
+            categoryPath: components["schemas"]["CategoryRef"][];
+            attributes: components["schemas"]["ProductAttribute"][];
+            inStock: boolean;
+        };
     };
     responses: {
         /** @description Error */
@@ -203,7 +356,10 @@ export interface components {
             };
         };
     };
-    parameters: never;
+    parameters: {
+        /** @description Language of the texts in the answer. Defaults to en. */
+        Locale: "en" | "fa";
+    };
     requestBodies: never;
     headers: never;
     pathItems: never;
@@ -342,6 +498,105 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            default: components["responses"]["Problem"];
+        };
+    };
+    getStoreSettings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The store settings */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StoreSettings"];
+                };
+            };
+            default: components["responses"]["Problem"];
+        };
+    };
+    listCategories: {
+        parameters: {
+            query?: {
+                locale?: components["parameters"]["Locale"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description All categories */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CategoryList"];
+                };
+            };
+            default: components["responses"]["Problem"];
+        };
+    };
+    listProducts: {
+        parameters: {
+            query?: {
+                locale?: components["parameters"]["Locale"];
+                /** @description Category slug. A top-level category also matches the products of every category below it. */
+                category?: string;
+                /** @description Search text, matched against the name and the summary. */
+                q?: string;
+                sort?: "newest" | "price_asc" | "price_desc";
+                page?: number;
+                pageSize?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description One page of products */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProductPage"];
+                };
+            };
+            default: components["responses"]["Problem"];
+        };
+    };
+    getProduct: {
+        parameters: {
+            query?: {
+                locale?: components["parameters"]["Locale"];
+            };
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The product */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Product"];
+                };
             };
             default: components["responses"]["Problem"];
         };

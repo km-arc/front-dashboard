@@ -6,6 +6,8 @@ info:
 tags:
   - name: Theming
   - name: Auth
+  - name: Store
+  - name: Catalog
 paths:
   /brand:
     get:
@@ -118,6 +120,114 @@ paths:
       responses:
         "204":
           description: Signed out
+        default:
+          $ref: "#/components/responses/Problem"
+  /store/settings:
+    get:
+      operationId: getStoreSettings
+      tags:
+        - Store
+      summary: Settings of the store
+      description: Public and cacheable. The currency is chosen here, so the front end never hard-codes the unit of a price.
+      responses:
+        "200":
+          description: The store settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StoreSettings"
+        default:
+          $ref: "#/components/responses/Problem"
+  /categories:
+    get:
+      operationId: listCategories
+      tags:
+        - Catalog
+      summary: Product categories
+      description: The whole tree as a flat list; parentSlug links a category to its parent.
+      parameters:
+        - $ref: "#/components/parameters/Locale"
+      responses:
+        "200":
+          description: All categories
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryList"
+        default:
+          $ref: "#/components/responses/Problem"
+  /products:
+    get:
+      operationId: listProducts
+      tags:
+        - Catalog
+      summary: Products, filtered, sorted and paged
+      description: pageSize defaults to 12 and may be at most 48. A page past the end is empty. An unknown category gives an empty page.
+      parameters:
+        - $ref: "#/components/parameters/Locale"
+        - name: category
+          in: query
+          required: false
+          description: Category slug. A top-level category also matches the products of every category below it.
+          schema:
+            type: string
+        - name: q
+          in: query
+          required: false
+          description: Search text, matched against the name and the summary.
+          schema:
+            type: string
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - newest
+              - price_asc
+              - price_desc
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 48
+      responses:
+        "200":
+          description: One page of products
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductPage"
+        default:
+          $ref: "#/components/responses/Problem"
+  /products/{slug}:
+    get:
+      operationId: getProduct
+      tags:
+        - Catalog
+      summary: One product
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+        - $ref: "#/components/parameters/Locale"
+      responses:
+        "200":
+          description: The product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
         default:
           $ref: "#/components/responses/Problem"
 components:
@@ -267,6 +377,203 @@ components:
         expiresAt:
           type: string
           format: date-time
+    StoreSettings:
+      type: object
+      required:
+        - currency
+      properties:
+        currency:
+          $ref: "#/components/schemas/Currency"
+    Currency:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          description: ISO 4217 code, or IRT for Toman. Every price in the API is an amount in the major unit of this currency.
+    Category:
+      type: object
+      required:
+        - slug
+        - name
+        - productCount
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        parentSlug:
+          type: string
+          description: Slug of the parent category; missing for a top-level category.
+        productCount:
+          type: integer
+          description: Products in this category and in all the categories below it.
+    CategoryList:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+    ProductKind:
+      type: string
+      description: How the product is delivered. A physical product is shipped, a digital product is downloaded or activated, and a course gives access to lessons.
+      enum:
+        - physical
+        - digital
+        - course
+    ProductImage:
+      type: object
+      required:
+        - url
+      properties:
+        url:
+          type: string
+        alt:
+          type: string
+    ProductSummary:
+      type: object
+      required:
+        - id
+        - slug
+        - name
+        - price
+        - kind
+        - categorySlug
+        - inStock
+      properties:
+        id:
+          type: string
+        slug:
+          type: string
+        name:
+          type: string
+        summary:
+          type: string
+        price:
+          type: number
+          minimum: 0
+          description: In the major unit of the store currency.
+        compareAtPrice:
+          type: number
+          minimum: 0
+          description: The price before a discount; only present when it is higher than the price.
+        image:
+          $ref: "#/components/schemas/ProductImage"
+        kind:
+          $ref: "#/components/schemas/ProductKind"
+        categorySlug:
+          type: string
+        inStock:
+          type: boolean
+    ProductPage:
+      type: object
+      required:
+        - items
+        - page
+        - pageSize
+        - total
+        - totalPages
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductSummary"
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
+    ProductAttribute:
+      type: object
+      required:
+        - name
+        - value
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    CategoryRef:
+      type: object
+      required:
+        - slug
+        - name
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+    Product:
+      type: object
+      required:
+        - id
+        - slug
+        - name
+        - description
+        - price
+        - kind
+        - images
+        - category
+        - categoryPath
+        - attributes
+        - inStock
+      properties:
+        id:
+          type: string
+        slug:
+          type: string
+        name:
+          type: string
+        summary:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          minimum: 0
+          description: In the major unit of the store currency.
+        compareAtPrice:
+          type: number
+          minimum: 0
+        kind:
+          $ref: "#/components/schemas/ProductKind"
+        images:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductImage"
+        category:
+          $ref: "#/components/schemas/CategoryRef"
+        categoryPath:
+          type: array
+          description: The category and its ancestors, from the top-level category down; for breadcrumbs.
+          items:
+            $ref: "#/components/schemas/CategoryRef"
+        attributes:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductAttribute"
+        inStock:
+          type: boolean
+  parameters:
+    Locale:
+      name: locale
+      in: query
+      required: false
+      description: Language of the texts in the answer. Defaults to en.
+      schema:
+        type: string
+        enum:
+          - en
+          - fa
   responses:
     Problem:
       description: Error
