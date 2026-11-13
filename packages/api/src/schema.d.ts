@@ -188,9 +188,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /**
-         * One product
-         */
+        /** One product */
         get: operations["getProduct"];
         put?: never;
         post?: never;
@@ -526,6 +524,7 @@ export interface operations {
     listCategories: {
         parameters: {
             query?: {
+                /** @description Language of the texts in the answer. Defaults to en. */
                 locale?: components["parameters"]["Locale"];
             };
             header?: never;
@@ -549,6 +548,7 @@ export interface operations {
     listProducts: {
         parameters: {
             query?: {
+                /** @description Language of the texts in the answer. Defaults to en. */
                 locale?: components["parameters"]["Locale"];
                 /** @description Category slug. A top-level category also matches the products of every category below it. */
                 category?: string;
@@ -579,6 +579,7 @@ export interface operations {
     getProduct: {
         parameters: {
             query?: {
+                /** @description Language of the texts in the answer. Defaults to en. */
                 locale?: components["parameters"]["Locale"];
             };
             header?: never;

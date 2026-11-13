@@ -92,7 +92,6 @@ function mobileFromBearer(request: Request): string | null {
   return MOBILE.test(mobile) ? mobile : null;
 }
 
-
 const LOCALES: readonly CatalogLocale[] = ["en", "fa"];
 const SORTS: readonly ProductSort[] = ["newest", "price_asc", "price_desc"];
 
