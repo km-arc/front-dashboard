@@ -12,7 +12,7 @@
 | 8 | Video hosting / player for course activities | 5 | |
 | 9 | Backend brand endpoint: URL, auth, caching, and does it follow the JSON in THEMING.md? | 2.1 | **Approved by owner (2026-11-04):** `GET /brand` (public, short cache), returning the JSON from THEMING.md; failure falls back to the default theme |
 | 10 | Who guarantees brand contrast (backend validation or frontend warn-only)? | 2.1 | |
-| 11 | Store currency: Toman or Rial for display? Stored in which unit by the backend? | 2.2 | |
+| 11 | Store currency: Toman or Rial for display? Stored in which unit by the backend? | 2.2 | Owner (2026-11-12): the unit of a price is configurable from the backend. `GET /store/settings` returns `currency.code` (`IRT` for Toman, `IRR` for Rial, or an ISO code), and every price in the API is an amount in the major unit of that currency; the front end formats it with `formatters.money`. |
 | 12 | Default time zone for dates (proposal: Asia/Tehran)? | 2.1 | **Approved by owner (2026-11-04):** Asia/Tehran |
 | 13 | Confirm next-intl for app-level messages and `[locale]` URL routing (e.g. /fa, /en)? | 2.1 | **Approved by owner (2026-11-04):** yes, next-intl with `/en` and `/fa` URL prefixes |
 | 14 | Where do the OpenAPI contract and generated client live: a shared `packages/api` used by store and admin? | 2.1d | **Approved by owner (2026-11-04):** yes, `packages/api` |
