@@ -67,5 +67,26 @@
       "wallet": "کیف پول",
       "support": "پشتیبانی"
     }
+  },
+  "catalog": {
+    "title": "دسته‌بندی‌ها",
+    "subcategories": "زیرمجموعه‌ها",
+    "breadcrumb": "مسیر",
+    "productCount": "{count, number} کالا",
+    "sortLabel": "مرتب‌سازی",
+    "sort": {
+      "newest": "جدیدترین",
+      "price_asc": "ارزان‌ترین",
+      "price_desc": "گران‌ترین"
+    },
+    "empty": "هنوز کالایی در اینجا نیست.",
+    "unavailable": "کاتالوگ در حال حاضر در دسترس نیست. لطفاً کمی بعد دوباره تلاش کنید.",
+    "outOfStock": "ناموجود",
+    "discount": "{percent, number}٪ تخفیف",
+    "kind": {
+      "physical": "کالای فیزیکی",
+      "digital": "دیجیتال",
+      "course": "دوره"
+    }
   }
 }

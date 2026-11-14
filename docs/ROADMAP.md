@@ -30,8 +30,8 @@ A step may start only when its dependencies are `done` and its plan is approved 
 | 2     | 2.1e-3 | Login page (code and password), messages, dashboard tab and sign-out                             | 2.1e-2        | done        |
 | 2     | 2.1e-4 | Account menu: header avatar menu, phone account screen, dashboard sidebar, session endpoint      | 2.1e-3        | done        |
 | 2     | 2.1g   | Installable app (PWA): manifest, icons, standalone display, theme color                          | 2.1c          | in-progress |
-| 2     | 2.2a   | Catalog contract (store settings, category tree, products), sample catalog and sample API routes | 2.1e-4        | in-progress |
-| 2     | 2.2b   | Category and product list pages: product card, price from the store currency, sort, paging       | 2.2a          | planned     |
+| 2     | 2.2a   | Catalog contract (store settings, category tree, products), sample catalog and sample API routes | 2.1e-4        | done        |
+| 2     | 2.2b   | Category and product list pages: product card, price from the store currency, sort, paging       | 2.2a          | in-progress |
 | 2     | 2.2c   | Search page, and the search tab and header icon on                                               | 2.2b          | planned     |
 | 2     | 2.2d   | Product page: gallery, price, kind-specific details, breadcrumb                                  | 2.2b          | planned     |
 | 2     | 2.3    | Store: cart and checkout creating an order                                                       | 2.2d          | planned     |

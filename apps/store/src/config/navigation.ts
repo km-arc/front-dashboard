@@ -14,7 +14,7 @@ export interface NavItem {
 
 const items: Record<NavId, NavItem> = {
   home: { id: "home", href: "/", available: true },
-  categories: { id: "categories", href: "/categories", available: false },
+  categories: { id: "categories", href: "/categories", available: true },
   contact: { id: "contact", href: "/contact", available: false },
   search: { id: "search", href: "/search", available: false },
   cart: { id: "cart", href: "/cart", available: false },
