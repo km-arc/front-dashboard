@@ -87,7 +87,9 @@
       "physical": "کالای فیزیکی",
       "digital": "دیجیتال",
       "course": "دوره"
-    }
+    },
+    "viewAll": "مشاهدهٔ همه در {name}",
+    "menuLabel": "دسته‌بندی کالاها"
   },
   "search": {
     "title": "جستجو",

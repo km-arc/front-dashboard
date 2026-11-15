@@ -87,7 +87,9 @@
       "physical": "Physical product",
       "digital": "Digital",
       "course": "Course"
-    }
+    },
+    "viewAll": "View all in {name}",
+    "menuLabel": "Product categories"
   },
   "search": {
     "title": "Search",
