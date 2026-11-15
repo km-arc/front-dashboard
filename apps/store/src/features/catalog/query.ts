@@ -26,3 +26,16 @@ export function toSearchParams(query: ListQuery): Record<string, string> {
     ...(query.page > 1 ? { page: String(query.page) } : {}),
   };
 }
+
+export const MAX_QUERY_LENGTH = 100;
+
+export interface SearchQuery extends ListQuery {
+  /** The search text, cleaned up; empty when there is none. */
+  q: string;
+}
+
+/** The search text with its sort and page. Spaces are collapsed and the text is cut at MAX_QUERY_LENGTH. */
+export function parseSearchQuery(params: { q?: Raw; sort?: Raw; page?: Raw }): SearchQuery {
+  const q = (first(params.q) ?? "").replace(/\s+/g, " ").trim().slice(0, MAX_QUERY_LENGTH);
+  return { q, ...parseListQuery(params) };
+}

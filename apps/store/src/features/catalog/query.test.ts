@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseListQuery, toSearchParams } from "./query";
+import { MAX_QUERY_LENGTH, parseListQuery, parseSearchQuery, toSearchParams } from "./query";
 
 describe("parseListQuery", () => {
   it("uses the defaults when nothing is given", () => {
@@ -35,6 +35,32 @@ describe("toSearchParams", () => {
     expect(toSearchParams({ sort: "price_desc", page: 4 })).toEqual({
       sort: "price_desc",
       page: "4",
+    });
+  });
+});
+
+describe("parseSearchQuery", () => {
+  it("is empty without a search text and keeps the list defaults", () => {
+    expect(parseSearchQuery({})).toEqual({ q: "", sort: "newest", page: 1 });
+  });
+
+  it("trims the text and collapses the spaces inside it", () => {
+    expect(parseSearchQuery({ q: "  green   tea  " }).q).toBe("green tea");
+  });
+
+  it("takes the first value of a repeated parameter", () => {
+    expect(parseSearchQuery({ q: ["notebook", "pen"] }).q).toBe("notebook");
+  });
+
+  it("cuts a very long text", () => {
+    expect(parseSearchQuery({ q: "x".repeat(500) }).q).toHaveLength(MAX_QUERY_LENGTH);
+  });
+
+  it("reads the sort and page like a list", () => {
+    expect(parseSearchQuery({ q: "tea", sort: "price_asc", page: "2" })).toEqual({
+      q: "tea",
+      sort: "price_asc",
+      page: 2,
     });
   });
 });

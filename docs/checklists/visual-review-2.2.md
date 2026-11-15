@@ -16,5 +16,14 @@ Check `/fa` and `/en`, 360px and desktop, light and dark.
 - [ ] The breadcrumb and chips read well in right-to-left; the touch targets are at least 44px
 - [ ] With the sample API off, `/categories` shows the "catalog is not available" notice instead of an error page
 
+2.2c: search
+- [ ] The Search tab (phones) and the header icon open `/search` with the field focused
+- [ ] `/fa/search?q=دفترچه` shows one result (the A5 notebook); `/en/search?q=tea` shows the green tea
+- [ ] Typing a word and pressing Enter (or the button) shows the results and puts the word in the address
+- [ ] Sorting keeps the search text and returns to page 1
+- [ ] `/en/search?q=zzzz` shows the no-results box with the link to the categories
+- [ ] `/en/search` without text shows the prompt; the text field does not zoom on iOS
+- [ ] The tab title says "Results for ..." and the page is `noindex` (view source: `robots`)
+
 Sign-off: Reviewer ____________  Date ____________
 After sign-off set the step to `done` in docs/ROADMAP.md.

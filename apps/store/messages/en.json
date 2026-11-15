@@ -88,5 +88,15 @@
       "digital": "Digital",
       "course": "Course"
     }
+  },
+  "search": {
+    "title": "Search",
+    "label": "Search products",
+    "placeholder": "What are you looking for?",
+    "button": "Search",
+    "prompt": "Type a word to find products.",
+    "resultsFor": "Results for “{query}”",
+    "noResults": "No products found for “{query}”. Try another word or browse the categories.",
+    "browse": "Browse the categories"
   }
 }

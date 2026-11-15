@@ -16,7 +16,7 @@ const items: Record<NavId, NavItem> = {
   home: { id: "home", href: "/", available: true },
   categories: { id: "categories", href: "/categories", available: true },
   contact: { id: "contact", href: "/contact", available: false },
-  search: { id: "search", href: "/search", available: false },
+  search: { id: "search", href: "/search", available: true },
   cart: { id: "cart", href: "/cart", available: false },
   dashboard: { id: "dashboard", href: "/dashboard", available: true },
 };

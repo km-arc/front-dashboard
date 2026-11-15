@@ -4,7 +4,7 @@ import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Breadcrumb, type BreadcrumbItem } from "../../../../components/catalog/breadcrumb";
 import { PageNav } from "../../../../components/catalog/page-nav";
-import { ProductCard } from "../../../../components/catalog/product-card";
+import { ProductGrid } from "../../../../components/catalog/product-grid";
 import { SortSelect } from "../../../../components/catalog/sort-select";
 import { CatalogUnavailable } from "../../../../components/catalog/unavailable";
 import {
@@ -104,11 +104,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
       </div>
 
       {data.products.items.length > 0 ? (
-        <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
-          {data.products.items.map((product) => (
-            <ProductCard key={product.id} product={product} currency={data.currency} />
-          ))}
-        </ul>
+        <ProductGrid products={data.products.items} currency={data.currency} />
       ) : (
         <p className="rounded-lg border bg-card p-6 text-center text-muted-foreground">
           {t("empty")}
