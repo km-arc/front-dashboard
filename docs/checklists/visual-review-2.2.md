@@ -16,5 +16,26 @@ Check `/fa` and `/en`, 360px and desktop, light and dark.
 - [ ] The breadcrumb and chips read well in right-to-left; the touch targets are at least 44px
 - [ ] With the sample API off, `/categories` shows the "catalog is not available" notice instead of an error page
 
+2.2c: search
+- [ ] The Search tab (phones) and the header icon open `/search` with the field focused
+- [ ] `/fa/search?q=دفترچه` shows one result (the A5 notebook); `/en/search?q=tea` shows the green tea
+- [ ] Typing a word and pressing Enter (or the button) shows the results and puts the word in the address
+- [ ] Sorting keeps the search text and returns to page 1
+- [ ] `/en/search?q=zzzz` shows the no-results box with the link to the categories
+- [ ] `/en/search` without text shows the prompt; the text field does not zoom on iOS
+- [ ] The tab title says "Results for ..." and the page is `noindex` (view source: `robots`)
+
+2.2e-1: desktop header and mega menu (width 1024 and up)
+- [ ] Two rows: brand, a wide search bar, the cart and the account; below it the Categories button, four quick links, language and theme
+- [ ] Pointing at Categories opens the large panel after a short delay; pointing at another top-level category swaps the sub-categories at once
+- [ ] Moving the mouse out closes it a moment later; moving across the gap between the button and the panel does not close it
+- [ ] Click toggles it; Escape closes it and returns focus to the button; clicking outside closes it; Tab out of it closes it
+- [ ] Tab walks the top-level list, then the sub-categories; arrows are not needed because they are plain links
+- [ ] A sub-category link opens its page and the panel closes; "View all in ..." opens the top-level category
+- [ ] Typing in the search bar and pressing Enter opens `/search?q=...`
+- [ ] In fa the layout mirrors (list on the right, panel text right to left, chevrons turn); light and dark look right
+- [ ] With the sample API off the menu and quick links are missing but the search bar, cart and account still work
+- [ ] Phones are unchanged: menu button, brand and the bottom tab bar
+
 Sign-off: Reviewer ____________  Date ____________
 After sign-off set the step to `done` in docs/ROADMAP.md.
