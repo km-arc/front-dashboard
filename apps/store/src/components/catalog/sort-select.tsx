@@ -2,13 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@front-dashboard/ui";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@front-dashboard/ui";
 import { SORTS, type Sort } from "../../features/catalog/query";
 import { usePathname, useRouter } from "../../i18n/navigation";
 
