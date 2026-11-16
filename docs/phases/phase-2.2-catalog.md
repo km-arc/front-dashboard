@@ -1,6 +1,6 @@
 # Step 2.2 – catalog: lists and product pages (read only) / فهرست و صفحهٔ محصول
 
-Status: **2.2a delivered as a patch** (contract and sample catalog); 2.2b–2.2d not started.
+Status: 2.2a done (contract and sample catalog); **2.2b delivered as a patch** (category and list pages); 2.2c–2.2d not started.
 
 Depends on / وابسته به: 2.1e-4 · Split into 2.2a–2.2d; each sub-step is one PR.
 
@@ -50,7 +50,7 @@ fast and indexable. Buying (cart, checkout) is 2.3; the add-to-cart button is sh
 
 ## Hand-off notes / یادداشت تحویل
 
-### 2.2a – contract and sample catalog (patch delivered, awaiting local verification)
+### 2.2a – contract and sample catalog (done)
 
 - `openapi.yaml` and `src/schema.d.ts`: the four endpoints above and the `StoreSettings`, `Currency`, `Category`,
   `ProductKind`, `ProductImage`, `ProductSummary`, `ProductPage`, `ProductAttribute`, `CategoryRef` and `Product` schemas.
@@ -63,6 +63,27 @@ fast and indexable. Buying (cart, checkout) is 2.3; the add-to-cart button is sh
 - No new dependency; the lockfile does not change.
 
 **Not executed in the authoring sandbox** (no network): install, generate, lint, typecheck and tests.
+
+### 2.2b – category and list pages (patch delivered, awaiting local verification)
+
+- `/categories`: the four top-level categories as cards with their sub-categories and product counts (static, rebuilt at most
+  every five minutes). `/categories/[slug]`: breadcrumb, sub-category chips, product count, sort, a grid of product cards
+  (2 columns on phones, up to 4 on desktop) and paging. The categories tab, the header link and the footer link are on.
+- `features/catalog/`: `api.ts` (server readers `getStoreCurrency`, `getCategories`, `getProducts`; any failure or a missing API
+  becomes `CatalogUnavailableError`, and the pages then show a notice instead of an error page, so a build without an API
+  still works), `categories.ts` (tree, path and children from the flat list), `query.ts` (sort and page from the URL, invalid
+  values fall back to the defaults), `pricing.ts` (whole-percent discount) and `config.ts`.
+- `ProductCard` (server): a neutral placeholder where the picture will go (the first letter of the name), the name, the price in
+  the store currency through `createFormatters(...).money` (new server-safe entry `@front-dashboard/ui/format`), the old price and
+  the saving, the kind (course or digital) and "out of stock". It is **not a link yet**: `PRODUCT_PAGES_AVAILABLE` in
+  `features/catalog/config.ts` is `false` until the product page exists (2.2d), which prevents links to a 404.
+- Sort and page live in the URL (`?sort=price_asc&page=2`, defaults left out); changing the sort returns to page 1.
+  `SortSelect` and `PageNav` are small client components that use the ui `Select` and `Pagination`.
+- Known limit: the page buttons are buttons, not links, so a crawler follows only the first page of a list. Real links can
+  replace them if SEO needs it.
+- Tests: pricing, URL query parsing and the category tree helpers; the en and fa message parity test covers the new texts.
+
+**Not executed in the authoring sandbox** (no network): install, lint, typecheck, tests, build and the manual checks.
 
 ---
 

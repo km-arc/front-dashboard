@@ -67,5 +67,26 @@
       "wallet": "Wallet",
       "support": "Support"
     }
+  },
+  "catalog": {
+    "title": "Categories",
+    "subcategories": "Subcategories",
+    "breadcrumb": "Breadcrumb",
+    "productCount": "{count, plural, one {# product} other {# products}}",
+    "sortLabel": "Sort",
+    "sort": {
+      "newest": "Newest",
+      "price_asc": "Price: low to high",
+      "price_desc": "Price: high to low"
+    },
+    "empty": "There are no products here yet.",
+    "unavailable": "The catalog is not available right now. Please try again in a moment.",
+    "outOfStock": "Out of stock",
+    "discount": "{percent, number}% off",
+    "kind": {
+      "physical": "Physical product",
+      "digital": "Digital",
+      "course": "Course"
+    }
   }
 }
