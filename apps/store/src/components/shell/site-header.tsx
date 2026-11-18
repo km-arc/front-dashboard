@@ -9,6 +9,7 @@ import { AccountMenu } from "./account-menu";
 import { HeaderSearch } from "./header-search";
 import { LocaleSwitcher } from "./locale-switcher";
 import { MobileMenu } from "./mobile-menu";
+import { MobileSearch } from "./mobile-search";
 import { NavLink } from "./nav-link";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -27,7 +28,7 @@ async function loadMenu(): Promise<MenuCategory[]> {
 }
 
 /**
- * Phones: the menu button and the brand (the rest is the bottom tab bar).
+ * Phones: the menu button, the brand and a search field (the rest is the bottom tab bar).
  * From `md`, two rows. Row 1: brand, a wide search bar, the cart and the account. Row 2: the Categories button with its
  * large menu, quick links to the top-level categories, then language and theme.
  */
@@ -44,10 +45,11 @@ export async function SiteHeader() {
         <MobileMenu />
         <Link
           href="/"
-          className="me-auto inline-flex min-h-11 items-center px-2 text-lg font-semibold md:me-0"
+          className="inline-flex min-h-11 shrink-0 items-center px-2 text-lg font-semibold"
         >
           {app("name")}
         </Link>
+        <MobileSearch />
         <div className="hidden flex-1 md:block">
           <HeaderSearch />
         </div>

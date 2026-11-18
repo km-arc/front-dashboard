@@ -37,5 +37,13 @@ Check `/fa` and `/en`, 360px and desktop, light and dark.
 - [ ] With the sample API off the menu and quick links are missing but the search bar, cart and account still work
 - [ ] Phones are unchanged: menu button, brand and the bottom tab bar
 
+2.2e-2: phone navigation (360px)
+- [ ] The top bar is one row: menu button, brand and a round search field with the placeholder text; nothing wraps, even with the longer Persian brand name
+- [ ] Tapping the search field opens `/search` with the keyboard ready; from 768px the field is gone and the wide bar shows
+- [ ] The Categories tab opens a list of four rows with counts; tapping a row opens it to "View all in ..." and its sub-categories; opening another row closes the first
+- [ ] A sub-category row opens its page; the chevron turns when a row is open; it mirrors correctly in fa
+- [ ] From 768px `/categories` shows the cards again, not the list
+- [ ] Rows are at least 44px high; the list works with the keyboard (Tab, Enter or Space opens a row)
+
 Sign-off: Reviewer ____________  Date ____________
 After sign-off set the step to `done` in docs/ROADMAP.md.

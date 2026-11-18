@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { CategoryAccordion } from "../../../components/catalog/category-accordion";
 import { CatalogUnavailable } from "../../../components/catalog/unavailable";
 import { CatalogUnavailableError, getCategories } from "../../../features/catalog/api";
 import { buildTree } from "../../../features/catalog/categories";
@@ -27,7 +28,10 @@ export default async function CategoriesPage({ params }: { params: Promise<{ loc
   return (
     <main id="main" className="mx-auto w-full max-w-5xl space-y-6 p-4 md:p-6">
       <h1 className="text-2xl font-semibold text-primary">{t("title")}</h1>
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="md:hidden">
+        <CategoryAccordion tree={tree} />
+      </div>
+      <ul className="hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-4">
         {tree.map((top) => (
           <li key={top.slug} className="rounded-lg border bg-card p-4">
             <Link

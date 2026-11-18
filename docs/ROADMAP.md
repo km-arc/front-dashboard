@@ -33,8 +33,8 @@ A step may start only when its dependencies are `done` and its plan is approved 
 | 2     | 2.2a   | Catalog contract (store settings, category tree, products), sample catalog and sample API routes   | 2.1e-4        | done        |
 | 2     | 2.2b   | Category and product list pages: product card, price from the store currency, sort, paging         | 2.2a          | done        |
 | 2     | 2.2c   | Search page (`/search?q=`), search field, search tab and header icon on                            | 2.2b          | done        |
-| 2     | 2.2e-1 | Desktop navigation: two-row header with a wide search bar and the category mega menu               | 2.2c          | in-progress |
-| 2     | 2.2e-2 | Phone navigation: search field in the top bar, app-style category list                             | 2.2e-1        | planned     |
+| 2     | 2.2e-1 | Desktop navigation: two-row header with a wide search bar and the category mega menu               | 2.2c          | done        |
+| 2     | 2.2e-2 | Phone navigation: search field in the top bar, app-style category list                             | 2.2e-1        | in-progress |
 | 2     | 2.2d   | Product page: gallery, price, kind-specific details, breadcrumb                                    | 2.2e-2        | planned     |
 | 2     | 2.2f   | Home page: banner carousel, category shortcuts, product shelves (new, special offers, supermarket) | 2.2d          | planned     |
 | 2     | 2.3    | Store: cart and checkout creating an order                                                         | 2.2f          | planned     |

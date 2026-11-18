@@ -1,6 +1,6 @@
 # Step 2.2 – catalog: lists and product pages (read only) / فهرست و صفحهٔ محصول
 
-Status: 2.2a and 2.2b done; 2.2c done (search); **2.2e-1 delivered as a patch** (desktop header and mega menu); 2.2e-2 (phones), 2.2d (product page) and 2.2f (home) not started.
+Status: 2.2a and 2.2b done; 2.2c done (search); **2.2e-1 done (desktop header and mega menu, merged in PR #31); **2.2e-2 delivered as a patch** (phones); 2.2d (product page) and 2.2f (home) not started.
 
 Depends on / وابسته به: 2.1e-4 · Split into 2.2a–2.2f; each sub-step is one PR.
 
@@ -119,7 +119,7 @@ backend (see the brand step), and pictures from the backend. Nothing is copied f
 
 **Not executed in the authoring sandbox** (no network): install, lint, typecheck, tests, build and the manual checks.
 
-### 2.2e-1 – desktop header and mega menu (patch delivered, awaiting local verification)
+### 2.2e-1 – desktop header and mega menu (done)
 
 - **Header from `md` up, two rows.** Row 1: brand, the wide search bar (`HeaderSearch`: Enter opens `/search?q=...`), the cart
   icon and the account control. Row 2: the "Categories" button, quick links to the four top-level categories, then language and
@@ -132,6 +132,19 @@ backend (see the brand step), and pictures from the backend. Nothing is copied f
 - The categories come from `GET /categories` in the header (a server component; the answer is cached like the other catalog
   reads). If the catalog cannot be read, the menu and the quick links are left out and the rest of the header still works,
   so a build without an API is fine. `toMenuCategories` turns the tree into plain data for the client, with tests.
+- No new dependency.
+
+**Not executed in the authoring sandbox** (no network): install, lint, typecheck, tests, build and the manual checks.
+
+### 2.2e-2 – phone navigation (patch delivered, awaiting local verification)
+
+- **Search field in the phone top bar** (`MobileSearch`): the menu button, the brand and a pill-shaped search field fill the row;
+  a tap opens `/search`, where the field is focused and the keyboard is ready. It is a link, not an input, so the header stays
+  light and no keyboard pops up in front of the page. From `md` it is hidden (the wide search bar takes over).
+- **Categories tab as an app-style list** (`CategoryAccordion`): on phones `/categories` shows one 56px row per top-level
+  category with its product count and a chevron; a row opens to "view all in ..." and its sub-categories (44px rows).
+  It is plain `<details>` elements: no script, keyboard and screen reader support for free, and the `name` attribute keeps
+  only one row open (a browser too old for it simply lets several stay open). From `md` the page keeps the cards.
 - No new dependency.
 
 **Not executed in the authoring sandbox** (no network): install, lint, typecheck, tests, build and the manual checks.
